@@ -1,0 +1,1 @@
+setenv NTU_TOOL_DIR INSTALLDIR
