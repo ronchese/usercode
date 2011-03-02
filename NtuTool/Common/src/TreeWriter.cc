@@ -1,6 +1,3 @@
-//using namespace std;
-//#include <iostream>
-
 #include "NtuTool/Common/interface/TreeWriter.h"
 #include "NtuTool/Common/interface/DataHandler.h"
 #include "NtuTool/Common/interface/TreeTypeManager.h"

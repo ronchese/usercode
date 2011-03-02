@@ -6,7 +6,7 @@
  *    Base class to select type-specific calls to EDProducer and Event
  *    functions
  *
- *  $Date: 2010-11-05 16:31:20 $
+ *  $Date: 2011/03/01 18:09:03 $
  *  $Revision: 1.1 $
  *  \author Paolo Ronchese INFN Padova
  *
@@ -55,8 +55,6 @@ class EDMTypeReader: public DataHandler {
 
   /// Utility functions
   virtual void* setAuxPtr( void* p, DataHandlerManager* hm = 0 );
-//  virtual void setVectorPtr();
-//  virtual void setVectorData( void* p );
 
  protected:
 

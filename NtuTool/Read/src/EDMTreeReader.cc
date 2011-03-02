@@ -1,4 +1,3 @@
-//using namespace std;
 #include <iostream>
 
 #include "NtuTool/Read/interface/EDMTreeReader.h"
@@ -20,10 +19,8 @@ EDMTreeReader::~EDMTreeReader() {
 }
 
 
-//void EDMTreeReader::initRead( TFile* file ) {
 void EDMTreeReader::initRead( const std::string& file ) {
 
-//  currentTree = dynamic_cast<TTree*>( file->Get( treeName.c_str() ) );
   TChain* c = new TChain( treeName.c_str() );
   c->Add( file.c_str() );
   currentTree = c;
@@ -44,24 +41,6 @@ void EDMTreeReader::initRead( const std::string& file ) {
     if ( bDesc->branchPtr == 0 ) bDesc->branchPtr = new TBranch*;
     currentTree->SetBranchAddress( branchName.c_str(), dataPtr,
                                                        bDesc->branchPtr );
-/*
-    if ( bDesc->branchPtr != 0 ) {
-      std::cout << "address: " << dataPtr << std::endl;
-      currentTree->SetBranchAddress( branchName.c_str(), dataPtr,
-                                                         bDesc->branchPtr );
-    }
-    else {
-      currentTree->SetBranchAddress( branchName.c_str(), dataPtr );
-    }
-    handler->setMemberPtr( currentTree, branchName, bDesc->dataPtr );
-*/
-
-//    if ( bDesc->branchPtr != 0 )
-//      currentTree->SetBranchAddress( branchName.c_str(), dataPtr,
-//                                                         bDesc->branchPtr );
-//    else
-//      currentTree->SetBranchAddress( branchName.c_str(), dataPtr );
-//    handler->setMemberPtr( currentTree, branchName, bDesc->dataPtr );
   }
 
   return;

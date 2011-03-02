@@ -6,7 +6,7 @@
  *    Base class to select type-specific calls to EDProducer and Event
  *    functions
  *
- *  $Date: 2010-11-05 16:31:20 $
+ *  $Date: 2011/03/01 18:09:03 $
  *  $Revision: 1.1 $
  *  \author Paolo Ronchese INFN Padova
  *
@@ -49,9 +49,6 @@ class EDMXYZVectorReader: public EDMTypeReader<math::XYZVector> {
   /// get concrete object
   virtual DataHandler* getInstance( const std::string& name,
                                     const std::string& code );
-
-  /// Read functions
-//  virtual void process( void* p );
 
   /// Utility functions
   virtual void setMemberPtr( TTree* tree,

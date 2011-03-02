@@ -1,4 +1,3 @@
-//using namespace std;
 #include <iostream>
 
 #include "NtuTool/Common/interface/DataHandlerManager.h"

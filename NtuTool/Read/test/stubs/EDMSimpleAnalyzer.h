@@ -2,7 +2,6 @@
 #define EDMSimpleAnalyzer_H
 
 #include "NtuTool/Common/test/stubs/SimpleNtuple.h"
-//#include "NtuTool/Common/test/stubs/SimpleNtuple.cc"
 #include "NtuTool/Read/interface/EDMTreeReader.h"
 
 #include "TH1.h"

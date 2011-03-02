@@ -5,7 +5,7 @@
  *  Description: 
  *
  *
- *  $Date: 2010-11-08 13:01:04 $
+ *  $Date: 2011/03/01 18:09:32 $
  *  $Revision: 1.1 $
  *  \author Paolo Ronchese INFN Padova
  *
@@ -50,14 +50,6 @@ class EDMTypeWriterManager: public DataHandlerManager {
 
  private:
 
-/*
-  typedef std::map<std::string,DataHandler*> handler_map;
-  typedef handler_map::const_iterator handler_iterator;
-  static handler_map* handlerMap;
-
-  virtual DataHandler* typeSelector( const std::string& name,
-                                     const std::string& code );
-*/
   static DataHandlerMap* etwMap;
   virtual DataHandlerMap* handlerMap();
 

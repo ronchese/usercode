@@ -3,9 +3,6 @@
 
 #include "NtuTool/Read/interface/TreeReader.h"
 
-//class DataHandlerManager;
-//class TFile;
-
 class EDMTreeReader: public TreeReader {
 
  public:
@@ -13,7 +10,6 @@ class EDMTreeReader: public TreeReader {
   EDMTreeReader();
   virtual ~EDMTreeReader();
 
-//  virtual void initRead( TFile* file );
   virtual void initRead( const std::string& file );
 
  protected:
@@ -28,7 +24,6 @@ class EDMTreeReader: public TreeReader {
   EDMTreeReader( const EDMTreeReader& t );
   EDMTreeReader& operator=( const EDMTreeReader& t );
 
-//  DataHandlerManager* handlerManager;
   std::string producerName;
   std::string  processName;
 

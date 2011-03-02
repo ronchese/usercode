@@ -1,4 +1,3 @@
-//using namespace std;
 #include <iostream>
 
 #include "NtuTool/Read/interface/TreeReader.h"
@@ -29,16 +28,9 @@ TreeReader* TreeReader::getInstance() {
   return readerInstance;
 }
 
-/*
-std::string TreeReader::name() {
-  return treeName;
-}
-*/
 
-//void TreeReader::initRead( TFile* file ) {
 void TreeReader::initRead( const std::string& file ) {
 
-//  currentTree = dynamic_cast<TTree*>( file->Get( treeName.c_str() ) );
   TChain* c = new TChain( treeName.c_str() );
   c->Add( file.c_str() );
   currentTree = c;

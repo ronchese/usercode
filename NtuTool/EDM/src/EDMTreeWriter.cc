@@ -1,4 +1,3 @@
-//using namespace std;
 #include <iostream>
 
 #include "NtuTool/EDM/interface/EDMTreeWriter.h"
