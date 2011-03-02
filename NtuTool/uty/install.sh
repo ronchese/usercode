@@ -13,10 +13,10 @@ mv envset.tmp uty/envset.csh
 mv Read/test/treeAnalyze.cc Read/src
 rmdir Read/test
 
-rm -rf NtuTool/CVS
-rm -rf NtuTool/*/CVS
-rm -rf NtuTool/*/*/CVS
-rm -rf NtuTool/*/*/*/CVS
+rm -rf CVS
+rm -rf */CVS
+rm -rf */*/CVS
+rm -rf */*/*/CVS
 
 
 mkdir include
