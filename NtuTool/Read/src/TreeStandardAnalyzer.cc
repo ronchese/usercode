@@ -1,7 +1,7 @@
 /*
  *  See header file for a description of this class.
  *
- *  $Date: 2011-03-02 13:35:36 $
+ *  $Date: 2011/03/02 14:54:46 $
  *  $Revision: 1.1 $
  *  \author Paolo Ronchese INFN Padova
  *
@@ -136,8 +136,10 @@ int TreeStandardAnalyzer::run( int argc, char* argv[] ) {
     tr->loop( evtmax, evskip );
     int evfana = evfile - evskip;
     if ( evfana <= 0 ) evfana = 0;
-    if ( nmaxTotal ) evtmax -= evfana;
-    if ( evtmax <= 0 ) break;
+    if ( nmaxTotal ) {
+      evtmax -= evfana;
+      if ( evtmax <= 0 ) break;
+    }
     if ( skipTotal ) evskip -= evfile;
     if ( evskip <= 0 ) evskip = 0;
   }
