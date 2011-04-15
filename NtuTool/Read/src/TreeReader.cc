@@ -122,6 +122,11 @@ void TreeReader::save( const std::string& name ) {
 }
 
 
+int TreeReader::events() {
+  return analyzedEvents;
+}
+
+
 void TreeReader::autoSave() {
   AutoSavedObject::obj_iter iter = autoSavedObject.begin();
   AutoSavedObject::obj_iter iend = autoSavedObject.end();
