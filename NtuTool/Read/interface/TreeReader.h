@@ -25,6 +25,8 @@ class TreeReader: public virtual TreeWrapper {
   virtual void plot();
   virtual void save();
 
+  int events();
+
  protected:
 
   virtual void process( int ientry );
