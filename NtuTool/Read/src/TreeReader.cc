@@ -49,7 +49,8 @@ void TreeReader::initRead( const std::string& file ) {
     else                             dataPtr = &bDesc->dataPtr;
     if ( bDesc->splitLevel < 0 ) handler->setAuxPtr( bDesc->dataPtr,
                                                      handlerManager );
-      currentTree->SetBranchAddress( bDesc->branchName->c_str(), dataPtr );
+    currentTree->SetBranchAddress( bDesc->branchName->c_str(), dataPtr,
+                                   bDesc->branchPtr );
   }
 
   return;
