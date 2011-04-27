@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh
 
 INSTALLDIR=`/bin/pwd`
 
@@ -7,7 +7,7 @@ sed s#INSTALLDIR#${INSTALLDIR}# uty/envsetTemplate.sh  > uty/envset.sh
 rm -f uty/envset.csh
 sed s#INSTALLDIR#${INSTALLDIR}# uty/envsetTemplate.csh > uty/envset.csh
 
-source uty/envset.sh
+source uty/envset.csh
 
 mv Read/test/treeAnalyze.cc Read/src
 rmdir Read/test
