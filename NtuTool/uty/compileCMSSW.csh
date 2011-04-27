@@ -5,6 +5,8 @@ setenv INSTDIR $2
 
 setenv SUFFIX `echo ${VERSION} | awk -F_ '{printf($2); for (i=3; i<=NF; i++)printf("_"$i)}'`
 
+unsetenv ROOTSYS
+
 cd ${INSTDIR}
 eval `scramv1 runtime -csh`
 

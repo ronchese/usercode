@@ -5,6 +5,8 @@ export INSTDIR=$2
 
 export SUFFIX=`echo ${VERSION} | awk -F_ '{printf($2); for (i=3; i<=NF; i++)printf("_"$i)}'`
 
+unset ROOTSYS
+
 cd ${INSTDIR}
 eval `scramv1 runtime -sh`
 
