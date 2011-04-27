@@ -17,7 +17,8 @@ class TreeReader: public virtual TreeWrapper {
   static TreeReader* getInstance();
 
   virtual void initRead( const std::string& file );
-  virtual int  loop( int evtmax = 999999999, int ifirst = 0 );
+  virtual int  loop( int evtmax = 999999999, int evskip = 0,
+                     bool anaexe = true );
   virtual void plot( int argc, char* argv[], char flag );
   virtual void save( const std::string& name );
   void autoSave();
