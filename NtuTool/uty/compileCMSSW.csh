@@ -6,7 +6,7 @@ setenv INSTDIR $2
 setenv SUFFIX `echo ${VERSION} | awk -F_ '{printf($2); for (i=3; i<=NF; i++)printf("_"$i)}'`
 
 cd ${INSTDIR}
-cmsenv
+eval `scramv1 runtime -csh`
 
 if ( ! -s "${ROOTSYS}" ) then
 echo "${VERSION}: "
