@@ -28,7 +28,7 @@ sed -i s/"NtuTool\/Read\/test\/stubs\/"// SimpleAnalyzer.cc
 sed -i s/"NtuTool\/Read\/test\/stubs\/"// EDMSimpleAnalyzer.h
 sed -i s/"NtuTool\/Read\/test\/stubs\/"// EDMSimpleAnalyzer.cc
 
-tar -czf ${CMSSW_BASE}/src/NtuTool/Read/test/examples.tgz *
+tar -czf ${CMSSW_BASE}/src/NtuTool/Read/test/ examples.tgz *
 
 cd ${CMSSW_BASE}/src/NtuTool/Read/test
 rm -rf tmp_export
