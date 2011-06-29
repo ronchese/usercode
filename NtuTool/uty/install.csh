@@ -18,7 +18,7 @@ source uty/envset.csh
 
 cd ${NTU_TOOL_DIR}/Read/src
 rm -f treeAnalyze.cc
-ln -s Read/test/treeAnalyze.cc
+ln -s ../test/treeAnalyze.cc
 #mv Read/test/treeAnalyze.cc Read/src
 #rmdir Read/test
 
