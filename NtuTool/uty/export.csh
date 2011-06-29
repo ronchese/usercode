@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh
 
 cd ${CMSSW_BASE}/src
 tar -czf NtuTool.tgz                                   \
