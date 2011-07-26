@@ -18,9 +18,15 @@ endif
 
 cd ${NTU_TOOL_DIR}
 
-echo "build lib for "${VERSION}
+echo "build lib for "${SCRAM_ARCH}" "${VERSION}
+
+setenv LIBDIR ${NTU_TOOL_DIR}/lib/${SCRAM_ARCH}
+if ( ! -d ${LIBDIR} ) then
+mkdir ${LIBDIR}
+endif
+
 c++ -I.. `root-config --cflags` -fPIC \
-    --shared -o ${NTU_TOOL_DIR}/lib/libNtupleTool_cms_${SUFFIX}.so \
+    --shared -o ${LIBDIR}/libNtupleTool_cms_${SUFFIX}.so \
     Common/src/*.cc  Read/src/*.cc
 
 
