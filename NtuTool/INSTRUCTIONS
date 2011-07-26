@@ -10,6 +10,8 @@ scram b
  ----- to export the tool outside -----
 
 cd ${CMSSW_BASE}/src
+cvs co UserCode/PaoloRonch
+mv UserCode/PaoloRonch/NtuTool .
 NtuTool/uty/export.sh
 
 copy the file NtuTool.tgz wherever you want to install the tool, then
