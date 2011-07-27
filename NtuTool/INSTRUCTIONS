@@ -20,6 +20,10 @@ tar -xzf NtuTool.tgz
 cd NtuTool
 uty/install.sh
 . uty/envset.sh
+or
+source uty/envset.csh
+
+to compile with a CMSSW-independent c++/ROOT environment
 uty/compile.sh
 
 to compile using a c++/ROOT environment as defined in a CMSSW release
@@ -107,6 +111,9 @@ copy the file examples.tgz wherever you want
 
 tar -xzf examples.tgz
 compileExample.sh
+(to compile in a CMSSW-independent c++/ROOT environment) or
+compileExample_CMSSW.sh
+(to compile with c++/ROOT as defined in CMSSW)
 
 then run in the same way as before
 
