@@ -1,8 +1,8 @@
 /*
  *  See header file for a description of this class.
  *
- *  $Date: 2011/03/07 15:26:50 $
- *  $Revision: 1.2 $
+ *  $Date: 2011/07/27 09:58:17 $
+ *  $Revision: 1.3 $
  *  \author Paolo Ronchese INFN Padova
  *
  */
@@ -129,7 +129,7 @@ int TreeStandardAnalyzer::run( int argc, char* argv[] ) {
 
 /// loop over files
 int TreeStandardAnalyzer::loop( TreeReader* tr, std::ifstream& treeListFile,
-                                int evtmax, int evskip ) {
+                                int evtmax, int evskip, bool anaexe = true ) {
 
   bool nmaxTotal = ( evtmax > 0 );
   bool skipTotal = ( evskip > 0 );
@@ -156,7 +156,7 @@ int TreeStandardAnalyzer::loop( TreeReader* tr, std::ifstream& treeListFile,
     std::cout << "open file " << treeName << std::endl;
     tr->initRead( treeName );
     int evfile = 
-    tr->loop( evtmax, evskip );
+      tr->loop( evtmax, evskip, anaexe );
     int evfana = evfile - evskip;
     if ( evfana <= 0 ) evfana = 0;
     if ( evfana > evtmax ) evcount += evtmax;
