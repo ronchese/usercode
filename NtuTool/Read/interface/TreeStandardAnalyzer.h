@@ -7,7 +7,7 @@
  *          - open all files in sequence
  *          - loop over the tree for each file
  *
- *  $Date: 2011-03-02 13:35:36 $
+ *  $Date: 2011/03/02 14:54:46 $
  *  $Revision: 1.1 $
  *  \author Paolo Ronchese INFN Padova
  *
@@ -21,12 +21,13 @@
 //------------------------------------
 // Collaborating Class Declarations --
 //------------------------------------
-
+class TreeReader;
 
 //---------------
 // C++ Headers --
 //---------------
-
+#include <iostream>
+#include <fstream>
 
 //              ---------------------
 //              -- Class Interface --
@@ -50,6 +51,10 @@ class TreeStandardAnalyzer {
    */
   /// run the application
   virtual int run( int argc, char* argv[] );
+
+  /// loop over files
+  virtual int loop( TreeReader* tr, std::ifstream& treeListFile,
+                    int evtmax, int evskip );
 
  private:
 

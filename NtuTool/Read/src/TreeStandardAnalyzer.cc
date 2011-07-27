@@ -1,8 +1,8 @@
 /*
  *  See header file for a description of this class.
  *
- *  $Date: 2011/03/02 14:54:46 $
- *  $Revision: 1.1 $
+ *  $Date: 2011/03/07 15:26:50 $
+ *  $Revision: 1.2 $
  *  \author Paolo Ronchese INFN Padova
  *
  */
@@ -114,9 +114,32 @@ int TreeStandardAnalyzer::run( int argc, char* argv[] ) {
   tr->beginJob();
   tr->book();
 
+  loop( tr, treeListFile, evtmax, evskip );
+
+  tr->endJob();
+
+  argc = 1;
+  tr->plot( argc, argv, type );
+  tr->save( histFileName );
+
+  return 0;
+
+}
+
+
+/// loop over files
+int TreeStandardAnalyzer::loop( TreeReader* tr, std::ifstream& treeListFile,
+                                int evtmax, int evskip ) {
+
+  bool nmaxTotal = ( evtmax > 0 );
+  bool skipTotal = ( evskip > 0 );
+  if ( !nmaxTotal ) evtmax = -evtmax;
+  if ( !skipTotal ) evskip = -evskip;
+
   char* treeLine = new char[1000];
   char* treeLptr;
   char* treeName;
+  int evcount = 0;
   while ( treeListFile.getline( treeLine, 1000 ) ) {
     treeLptr = treeLine;
     while ( *treeLptr == ' ' ) treeLptr++;
@@ -136,6 +159,8 @@ int TreeStandardAnalyzer::run( int argc, char* argv[] ) {
     tr->loop( evtmax, evskip );
     int evfana = evfile - evskip;
     if ( evfana <= 0 ) evfana = 0;
+    if ( evfana > evtmax ) evcount += evtmax;
+    else                   evcount += evfana;
     if ( nmaxTotal ) {
       evtmax -= evfana;
       if ( evtmax <= 0 ) break;
@@ -144,13 +169,8 @@ int TreeStandardAnalyzer::run( int argc, char* argv[] ) {
     if ( evskip <= 0 ) evskip = 0;
   }
 
-  tr->endJob();
-
-  argc = 1;
-  tr->plot( argc, argv, type );
-  tr->save( histFileName );
-
-  return 0;
+  delete[] treeLine;
+  return evcount;
 
 }
 
