@@ -1,8 +1,8 @@
 /*
  *  See header file for a description of this class.
  *
- *  $Date: 2011/07/27 10:32:30 $
- *  $Revision: 1.4 $
+ *  $Date: 2011/07/27 10:38:46 $
+ *  $Revision: 1.5 $
  *  \author Paolo Ronchese INFN Padova
  *
  */
@@ -115,6 +115,7 @@ int TreeStandardAnalyzer::run( int argc, char* argv[] ) {
   tr->book();
 
   loop( tr, treeListFile, evtmax, evskip );
+  std::cout << std::endl << tr->events() << " events read" << std::endl;
 
   tr->endJob();
 

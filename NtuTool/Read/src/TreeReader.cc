@@ -20,7 +20,6 @@ TreeReader::TreeReader(): analyzedEvents( 0 ) {
 
 
 TreeReader::~TreeReader() {
-  std::cout << std::endl << analyzedEvents << " events read" << std::endl;
 }
 
 
