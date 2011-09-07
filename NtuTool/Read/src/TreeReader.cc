@@ -63,6 +63,7 @@ int TreeReader::loop( int evtmax, int evskip, int accmax, bool anaexe ) {
 
   // get number of events
   int evtnum = static_cast<int>( currentTree->GetEntries() );
+  std::cout << "MAX: " << accmax << std::endl;
 
   // last required event
   if (   evtmax >  0       ) evtmax += evskip;
@@ -70,7 +71,7 @@ int TreeReader::loop( int evtmax, int evskip, int accmax, bool anaexe ) {
        ( evtmax > evtnum ) ) evtmax  = evtnum;
 
   if ( !anaexe ) return evtnum;
-  if (   accmax == 0       ) accmax  = evtnum;
+  if (   accmax == 0       ) accmax  = evtnum + acceptedEvts;
 
   int analyzedFile = 0;
   // loop over all events
