@@ -12,7 +12,7 @@ cp ${CMSSW_BASE}/src/NtuTool/Read/test/stubs/SimpleAnalyzer.h      .
 cp ${CMSSW_BASE}/src/NtuTool/Read/test/stubs/SimpleAnalyzer.cc     .
 cp ${CMSSW_BASE}/src/NtuTool/Read/test/stubs/EDMSimpleAnalyzer.h   .
 cp ${CMSSW_BASE}/src/NtuTool/Read/test/stubs/EDMSimpleAnalyzer.cc  .
-cp ${CMSSW_BASE}/src/NtuTool/Read/test/compileExample.*h           .
+cp ${CMSSW_BASE}/src/NtuTool/Read/test/compileExample*h            .
 cp ${CMSSW_BASE}/src/NtuTool/Read/test/ntuList                     .
 cp ${CMSSW_BASE}/src/NtuTool/Read/test/edmList                     .
 cp ${CMSSW_BASE}/src/NtuTool/EDM/test/ntuple_base.root             .

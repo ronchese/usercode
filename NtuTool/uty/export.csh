@@ -1,8 +1,8 @@
 #!/bin/csh
 
 cd ${CMSSW_BASE}/src
-setenv ROOT_DIR `find . | grep 'NtuTool$'`
-cd ${ROOT_DIR}
+setenv NTU_ROOT_DIR `find . | grep 'NtuTool$'`
+cd ${NTU_ROOT_DIR}
 cd ..
 
 rm -f NtuTool.tgz

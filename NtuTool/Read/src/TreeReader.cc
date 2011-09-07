@@ -13,7 +13,9 @@
 TreeReader* TreeReader::readerInstance = 0;
 
 
-TreeReader::TreeReader(): analyzedEvents( 0 ) {
+TreeReader::TreeReader():
+ analyzedEvts( 0 ),
+ acceptedEvts( 0 ) {
   handlerManager = new TreeTypeManager;
   if ( readerInstance == 0 ) readerInstance = this;
 }
@@ -57,10 +59,11 @@ void TreeReader::initRead( const std::string& file ) {
 }
 
 
-int TreeReader::loop( int evtmax, int evskip, bool anaexe ) {
+int TreeReader::loop( int evtmax, int evskip, int accmax, bool anaexe ) {
 
   // get number of events
   int evtnum = static_cast<int>( currentTree->GetEntries() );
+  std::cout << "MAX: " << accmax << std::endl;
 
   // last required event
   if (   evtmax >  0       ) evtmax += evskip;
@@ -68,18 +71,21 @@ int TreeReader::loop( int evtmax, int evskip, bool anaexe ) {
        ( evtmax > evtnum ) ) evtmax  = evtnum;
 
   if ( !anaexe ) return evtnum;
+  if (   accmax == 0       ) accmax  = evtnum;
 
-  int analyzedEvFile = 0;
+  int analyzedFile = 0;
   // loop over all events
   int ientry;
   for ( ientry = evskip; ientry < evtmax; ientry++ ) {
+    if ( acceptedEvts >= accmax ) break;
     reset();
     // read tree
     currentTree->GetEntry( ientry );
     // preliminary data process
     process( ientry );
     // perform user analysis
-    analyze( ientry, ++analyzedEvFile, ++analyzedEvents );
+    if ( analyze( ientry, analyzedFile++, analyzedEvts++ ) )
+                                          acceptedEvts++;
   }
 
   return evtnum;
@@ -124,8 +130,13 @@ void TreeReader::save( const std::string& name ) {
 }
 
 
-int TreeReader::events() {
-  return analyzedEvents;
+int TreeReader::analyzedEvents() {
+  return analyzedEvts;
+}
+
+
+int TreeReader::acceptedEvents() {
+  return acceptedEvts;
 }
 
 

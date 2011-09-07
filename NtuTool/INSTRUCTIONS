@@ -29,9 +29,9 @@ uty/compile.sh
 to compile using a c++/ROOT environment as defined in a CMSSW release
 do the following
 
-uty/compile.sh X_Y_Z
+uty/compile_CMSSW.sh CMSSW_X_Y_Z
 
-where X_Y_Z is the CMSSW version, e.g. 4_2_3 . To compile for all 
+where CMSSW_X_Y_Z is the CMSSW version, e.g. CMSSW_4_2_3 . To compile for all 
 available CMSSW versions do the following
 
 uty/go_compileNtuTool.sh
@@ -66,7 +66,7 @@ cmsRun sedmw.py
 compile the examples
 
 cd ${CMSSW_BASE}/src/NtuTool/Read/test
-compileCMSSW.sh
+compileTest.sh
 
 then copy the previously produced .root files
 
@@ -74,13 +74,15 @@ then copy the previously produced .root files
 
 read "ntuple_base.root"
 
-treeAnalyze_Base ntuList -n 6 -s 2 hs.root x
+treeAnalyze_Base ntuList -n 6 -s 2 -a 5 hs.root x
 
 ntuList is a text file with the list of the files to read
 hs.root is the ouptut histogram file
 -n      set the max number of events to read, if negative its applied 
         to each input file
 -s      set the number of events to skip, if negative its applied 
+        to each input file
+-a      set the max number of events to accept, if negative its applied 
         to each input file
 x       a flag to draw the histograms at the end (as coded in plot() )
         at the end of the execution

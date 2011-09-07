@@ -43,6 +43,12 @@ void TreeWrapper::beginJob() {
 }
 
 
+void TreeWrapper::book() {
+// default analysis - dummy
+  return;
+}
+
+
 void TreeWrapper::endJob() {
 // default analysis - dummy
   return;
@@ -111,21 +117,15 @@ void TreeWrapper::setBranch( const char* branchName, void* dataPtr,
 }
 
 
-void TreeWrapper::book() {
-// default analysis - dummy
-  return;
-}
-
-
-void TreeWrapper::analyze( int entry, int event_file, int event_tot ) {
-// default analysis - dummy
-  return;
-}
-
-
 void TreeWrapper::reset() {
 // default analysis - dummy
   return;
+}
+
+
+bool TreeWrapper::analyze( int entry, int event_file, int event_tot ) {
+// default analysis - dummy
+  return true;
 }
 
 

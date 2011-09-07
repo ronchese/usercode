@@ -1,9 +1,12 @@
 #!/bin/csh
 
 setenv VERSION $1
-setenv INSTDIR $2
+setenv INSTDIR `scramv1 list CMSSW | awk -v VERSION=${VERSION} 'BEGIN{FOUND="FALSE"} ($1 == "CMSSW" && $2 == VERSION && FOUND == "FALSE") {FOUND="TRUE"} ($1 == "-->" && FOUND == "TRUE") {print $2; FOUND="FALSE"}'`
 
-setenv SUFFIX `echo ${VERSION} | awk -F_ '{printf($2); for (i=3; i<=NF; i++)printf("_"$i)}'`
+if ( ! -s "${INSTDIR}" ) then
+echo "${VERSION}: not found"
+exit
+endif
 
 unsetenv ROOTSYS
 
@@ -26,7 +29,7 @@ mkdir ${LIBDIR}
 endif
 
 c++ -I.. `root-config --cflags` -fPIC \
-    --shared -o ${LIBDIR}/libNtupleTool_cms_${SUFFIX}.so \
+    --shared -o ${LIBDIR}/libNtupleTool_${VERSION}.so \
     Common/src/*.cc  Read/src/*.cc
 
 

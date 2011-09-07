@@ -21,10 +21,15 @@ class TreeWrapper {
                                  const std::string& val );
   virtual std::string getUserParameter( const std::string& key );
 
-  virtual void book();
+  // function to do initialization
   virtual void beginJob();
+  // function to book histograms, called after "beginJob"
+  virtual void book();
+  // function to do final operations
   virtual void endJob();
+  // function to plot histograms, called after "endJob"
   virtual void plot();
+  // function to save histograms, called after "plot"
   virtual void save();
 
  protected:
@@ -67,8 +72,11 @@ class TreeWrapper {
                   int splitLevel,
                   TBranch** branchPtr );
 
+  // function to reset class content before reading from file
   virtual void reset();
-  virtual void analyze( int entry, int event_file, int event_tot );
+  // function to do event-by-event analysis,
+  // return value "true" for accepted events
+  virtual bool analyze( int entry, int event_file, int event_tot );
 
   DataHandlerManager* handlerManager;
   void autoReset();

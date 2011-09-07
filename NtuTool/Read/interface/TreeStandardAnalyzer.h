@@ -7,8 +7,8 @@
  *          - open all files in sequence
  *          - loop over the tree for each file
  *
- *  $Date: 2011/07/27 09:58:28 $
- *  $Revision: 1.2 $
+ *  $Date: 2011/07/27 10:32:24 $
+ *  $Revision: 1.3 $
  *  \author Paolo Ronchese INFN Padova
  *
  */
@@ -54,7 +54,7 @@ class TreeStandardAnalyzer {
 
   /// loop over files
   virtual int loop( TreeReader* tr, std::ifstream& treeListFile,
-                    int evtmax, int evskip, bool anaexe = true );
+                    int evtmax, int evskip, int accmax, bool anaexe = true );
 
  private:
 

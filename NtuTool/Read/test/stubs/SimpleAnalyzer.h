@@ -24,7 +24,7 @@ class SimpleAnalyzer: private SimpleNtuple,
 
   // functions called for each event
   virtual void reset();
-  virtual void analyze( int entry, int event_file, int event_tot );
+  virtual bool analyze( int entry, int event_file, int event_tot );
 
   // functions called at the end of the event loop
   virtual void plot();   // plot the histograms on the screen

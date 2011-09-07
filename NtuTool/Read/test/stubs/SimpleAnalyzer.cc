@@ -39,7 +39,7 @@ void SimpleAnalyzer::reset() {
 }
 
 
-void SimpleAnalyzer::analyze( int entry, int event_file, int event_tot ) {
+bool SimpleAnalyzer::analyze( int entry, int event_file, int event_tot ) {
 
   std::cout << " +++++++++++++++++++++++++++ " << std::endl;
 
@@ -71,7 +71,7 @@ void SimpleAnalyzer::analyze( int entry, int event_file, int event_tot ) {
 
   std::cout << " --------------------------- " << std::endl;
 
-  return;
+  return !( i_run % 3 );
 
 }
 

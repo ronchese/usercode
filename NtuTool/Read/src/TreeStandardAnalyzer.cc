@@ -1,8 +1,8 @@
 /*
  *  See header file for a description of this class.
  *
- *  $Date: 2011/07/27 10:38:46 $
- *  $Revision: 1.5 $
+ *  $Date: 2011/08/27 08:23:48 $
+ *  $Revision: 1.6 $
  *  \author Paolo Ronchese INFN Padova
  *
  */
@@ -64,6 +64,8 @@ int TreeStandardAnalyzer::run( int argc, char* argv[] ) {
   nmaxString.str( "0" );
   std::stringstream skipString;
   skipString.str( "0" );
+  std::stringstream amaxString;
+  nmaxString.str( "0" );
   char type = 'b';
   bool listMissing = true;
   bool histMissing = true;
@@ -79,6 +81,10 @@ int TreeStandardAnalyzer::run( int argc, char* argv[] ) {
     }
     if ( args == "-s" ) {
       skipString.str( *argp++ );
+      continue;
+    }
+    if ( args == "-a" ) {
+      amaxString.str( *argp++ );
       continue;
     }
     if ( args == "-v" ) {
@@ -105,17 +111,15 @@ int TreeStandardAnalyzer::run( int argc, char* argv[] ) {
   nmaxString >> evtmax;
   int evskip;
   skipString >> evskip;
-
-  bool nmaxTotal = ( evtmax > 0 );
-  bool skipTotal = ( evskip > 0 );
-  if ( !nmaxTotal ) evtmax = -evtmax;
-  if ( !skipTotal ) evskip = -evskip;
+  int accmax;
+  amaxString >> accmax;
 
   tr->beginJob();
   tr->book();
 
-  loop( tr, treeListFile, evtmax, evskip );
-  std::cout << std::endl << tr->events() << " events read" << std::endl;
+  loop( tr, treeListFile, evtmax, evskip, accmax );
+  std::cout << std::endl << tr->analyzedEvents() << " events read, "
+                         << tr->acceptedEvents() << " accepted" << std::endl;
 
   tr->endJob();
 
@@ -130,12 +134,15 @@ int TreeStandardAnalyzer::run( int argc, char* argv[] ) {
 
 /// loop over files
 int TreeStandardAnalyzer::loop( TreeReader* tr, std::ifstream& treeListFile,
-                                int evtmax, int evskip, bool anaexe ) {
+                                int evtmax, int evskip, int accmax,
+                                bool anaexe ) {
 
   bool nmaxTotal = ( evtmax > 0 );
   bool skipTotal = ( evskip > 0 );
+  bool amaxTotal = ( accmax > 0 );
   if ( !nmaxTotal ) evtmax = -evtmax;
   if ( !skipTotal ) evskip = -evskip;
+  if ( !amaxTotal ) accmax = -accmax;
 
   char* treeLine = new char[1000];
   char* treeLptr;
@@ -156,8 +163,9 @@ int TreeStandardAnalyzer::loop( TreeReader* tr, std::ifstream& treeListFile,
     *treeLptr = '\0';
     std::cout << "open file " << treeName << std::endl;
     tr->initRead( treeName );
+    int tmpmax = ( amaxTotal ? accmax : accmax + tr->acceptedEvents() );
     int evfile = 
-      tr->loop( evtmax, evskip, anaexe );
+    tr->loop( evtmax, evskip, tmpmax, anaexe );
     int evfana = evfile - evskip;
     if ( evfana <= 0 ) evfana = 0;
     if ( evfana > evtmax ) evcount += evtmax;

@@ -44,7 +44,7 @@ void EDMSimpleAnalyzer::reset() {
 }
 
 
-void EDMSimpleAnalyzer::analyze( int entry, int event_file, int event_tot ) {
+bool EDMSimpleAnalyzer::analyze( int entry, int event_file, int event_tot ) {
 
   std::cout << " +++++++++++++++++++++++++++ " << std::endl;
 
@@ -76,7 +76,7 @@ void EDMSimpleAnalyzer::analyze( int entry, int event_file, int event_tot ) {
 
   std::cout << " --------------------------- " << std::endl;
 
-  return;
+  return true;
 
 }
 
