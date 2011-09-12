@@ -1,8 +1,8 @@
 /*
  *  See header file for a description of this class.
  *
- *  $Date: 2011/09/07 12:54:34 $
- *  $Revision: 1.7 $
+ *  $Date: 2011/09/07 17:06:20 $
+ *  $Revision: 1.8 $
  *  \author Paolo Ronchese INFN Padova
  *
  */
@@ -168,7 +168,7 @@ int TreeStandardAnalyzer::loop( TreeReader* tr, std::ifstream& treeListFile,
     tr->loop( evtmax, evskip, tmpmax, anaexe );
     int evfana = evfile - evskip;
     if ( evfana <= 0 ) evfana = 0;
-    if ( evfana > evtmax ) evcount += evtmax;
+    if ( evfana > evtmax ) evcount += ( evtmax ? evtmax : evfana );
     else                   evcount += evfana;
     if ( nmaxTotal ) {
       evtmax -= evfana;
