@@ -155,7 +155,8 @@ void TreeReader::plot() {
 
 
 void TreeReader::save() {
-// default analysis - dummy
+// default analysis - automatic save
+  autoSave();
   return;
 }
 
