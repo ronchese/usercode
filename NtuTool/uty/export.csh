@@ -8,6 +8,7 @@ cd ..
 rm -f NtuTool.tgz
 tar -czf NtuTool.tgz                                   \
          NtuTool/INSTRUCTIONS                          \
+         NtuTool/VERSION                               \
          NtuTool/Common/interface NtuTool/Common/src   \
          NtuTool/Read/interface NtuTool/Read/src       \
          NtuTool/Read/test/treeAnalyze.cc              \
