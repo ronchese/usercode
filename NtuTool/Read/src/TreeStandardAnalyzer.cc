@@ -139,10 +139,10 @@ int TreeStandardAnalyzer::loop( TreeReader* tr, std::ifstream& treeListFile,
 
   bool nmaxTotal = ( evtmax > 0 );
   bool skipTotal = ( evskip > 0 );
-  bool accByFile = ( accmax < 0 );
+  bool accnTotal = ( accmax > 0 );
   if ( !nmaxTotal ) evtmax = -evtmax;
   if ( !skipTotal ) evskip = -evskip;
-  if (  accByFile ) accmax = -accmax;
+  if ( !accnTotal ) accmax = -accmax;
 
   char* treeLine = new char[1000];
   char* treeLptr;
@@ -163,13 +163,15 @@ int TreeStandardAnalyzer::loop( TreeReader* tr, std::ifstream& treeListFile,
     *treeLptr = '\0';
     std::cout << "open file " << treeName << std::endl;
     tr->initRead( treeName );
-    int tmpmax = ( accByFile ? accmax + tr->acceptedEvents() : accmax );
+    int tmpmax = ( accmax && !accnTotal ?
+                   accmax + tr->acceptedEvents() : accmax );
     int evfile = 
     tr->loop( evtmax, evskip, tmpmax, anaexe );
     int evfana = evfile - evskip;
     if ( evfana <= 0 ) evfana = 0;
     if ( evfana > evtmax ) evcount += ( evtmax ? evtmax : evfana );
     else                   evcount += evfana;
+    if ( accnTotal && tr->acceptedEvents() >= accmax ) break;
     if ( nmaxTotal ) {
       evtmax -= evfana;
       if ( evtmax <= 0 ) break;
