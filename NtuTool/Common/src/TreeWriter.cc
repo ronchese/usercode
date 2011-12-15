@@ -18,7 +18,6 @@ void TreeWriter::initWrite() {
 
   const char* name = treeName.c_str();
   currentTree = new TTree( name, name );
-                           
 
   branch_iterator iter = treeBegin();
   branch_iterator iend = treeEnd();
