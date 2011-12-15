@@ -1,8 +1,8 @@
 /*
  *  See header file for a description of this class.
  *
- *  $Date: 2011/09/07 17:06:20 $
- *  $Revision: 1.8 $
+ *  $Date: 2011/11/13 09:47:31 $
+ *  $Revision: 1.10 $
  *  \author Paolo Ronchese INFN Padova
  *
  */
@@ -16,6 +16,7 @@
 // Collaborating Class Headers --
 //-------------------------------
 #include "NtuTool/Read/interface/TreeReader.h"
+#include "TChain.h"
 
 //---------------
 // C++ Headers --
@@ -162,11 +163,12 @@ int TreeStandardAnalyzer::loop( TreeReader* tr, std::ifstream& treeListFile,
             ( *treeLptr != '\0' ) ) treeLptr++;
     *treeLptr = '\0';
     std::cout << "open file " << treeName << std::endl;
-    tr->initRead( treeName );
+    TChain* c = tr->initRead( treeName );
     int tmpmax = ( accmax && !accnTotal ?
                    accmax + tr->acceptedEvents() : accmax );
     int evfile = 
     tr->loop( evtmax, evskip, tmpmax, anaexe );
+    delete c;
     int evfana = evfile - evskip;
     if ( evfana <= 0 ) evfana = 0;
     if ( evfana > evtmax ) evcount += ( evtmax ? evtmax : evfana );

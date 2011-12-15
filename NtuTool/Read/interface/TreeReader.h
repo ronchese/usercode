@@ -6,6 +6,7 @@
 #include <string>
 
 class TObject;
+class TChain;
 
 class TreeReader: public virtual TreeWrapper {
 
@@ -16,7 +17,7 @@ class TreeReader: public virtual TreeWrapper {
 
   static TreeReader* getInstance();
 
-  virtual void initRead( const std::string& file );
+  virtual TChain* initRead( const std::string& file );
   virtual int  loop( int evtmax = 0, int evskip = 0, int accmax = 0, 
                      bool anaexe = true );
   virtual void plot( int argc, char* argv[], char flag );

@@ -19,7 +19,7 @@ EDMTreeReader::~EDMTreeReader() {
 }
 
 
-void EDMTreeReader::initRead( const std::string& file ) {
+TChain* EDMTreeReader::initRead( const std::string& file ) {
 
   TChain* c = new TChain( treeName.c_str() );
   c->Add( file.c_str() );
@@ -43,7 +43,7 @@ void EDMTreeReader::initRead( const std::string& file ) {
                                                        bDesc->branchPtr );
   }
 
-  return;
+  return c;
 
 }
 

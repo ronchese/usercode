@@ -30,7 +30,7 @@ TreeReader* TreeReader::getInstance() {
 }
 
 
-void TreeReader::initRead( const std::string& file ) {
+TChain* TreeReader::initRead( const std::string& file ) {
 
   TChain* c = new TChain( treeName.c_str() );
   c->Add( file.c_str() );
@@ -54,7 +54,7 @@ void TreeReader::initRead( const std::string& file ) {
                                    bDesc->branchPtr );
   }
 
-  return;
+  return c;
 
 }
 

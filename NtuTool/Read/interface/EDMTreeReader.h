@@ -10,7 +10,7 @@ class EDMTreeReader: public TreeReader {
   EDMTreeReader();
   virtual ~EDMTreeReader();
 
-  virtual void initRead( const std::string& file );
+  virtual TChain* initRead( const std::string& file );
 
  protected:
 
