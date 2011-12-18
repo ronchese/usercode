@@ -14,10 +14,10 @@ cvs co UserCode/PaoloRonch
 mv UserCode/PaoloRonch/NtuTool .
 NtuTool/uty/export.sh
 
-copy the file NtuTool.tgz wherever you want to install the tool, then
+copy the file NtuTool_XX_YY_ZZ.tgz wherever you want to install the tool, then
 
-tar -xzf NtuTool.tgz
-cd NtuTool
+tar -xzf NtuTool_XX_YY_ZZ.tgz
+cd NtuTool_XX_YY_ZZ
 uty/install.sh
 . uty/envset.sh
 or
