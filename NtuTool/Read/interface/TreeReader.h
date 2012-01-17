@@ -32,6 +32,8 @@ class TreeReader: public virtual TreeWrapper {
 
  protected:
 
+  std::string currentFile;
+
   virtual void process( int ientry );
 
   class AutoSavedObject {

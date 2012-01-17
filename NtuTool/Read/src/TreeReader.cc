@@ -32,6 +32,8 @@ TreeReader* TreeReader::getInstance() {
 
 TChain* TreeReader::initRead( const std::string& file ) {
 
+  currentFile = file;
+
   TChain* c = new TChain( treeName.c_str() );
   c->Add( file.c_str() );
   currentTree = c;
