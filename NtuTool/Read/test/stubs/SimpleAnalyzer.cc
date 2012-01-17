@@ -42,6 +42,7 @@ void SimpleAnalyzer::reset() {
 bool SimpleAnalyzer::analyze( int entry, int event_file, int event_tot ) {
 
   std::cout << " +++++++++++++++++++++++++++ " << std::endl;
+  std::cout << currentFile << std::endl;
 
   std::cout << "run: "
             <<  i_run << std::endl;
