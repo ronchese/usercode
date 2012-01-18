@@ -27,6 +27,10 @@ class TreeWrapper {
   virtual void beginJob();
   // function to book histograms, called after "beginJob"
   virtual void book();
+  // function to do file-specific initialization
+  virtual void beginFile();
+  // function to do file-specific final operations
+  virtual void endFile();
   // function to do final operations
   virtual void endJob();
   // function to plot histograms, called after "endJob"

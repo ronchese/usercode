@@ -49,6 +49,18 @@ void TreeWrapper::book() {
 }
 
 
+void TreeWrapper::beginFile() {
+// default analysis - dummy
+  return;
+}
+
+
+void TreeWrapper::endFile() {
+// default analysis - dummy
+  return;
+}
+
+
 void TreeWrapper::endJob() {
 // default analysis - dummy
   return;
