@@ -22,13 +22,6 @@ EDMSimpleAnalyzer::~EDMSimpleAnalyzer() {
 }
 
 
-void EDMSimpleAnalyzer::setUserParameter( const std::string& key,
-                                          const std::string& val ) {
-  std::cout << "user parameter : " << key << " " << val << std::endl;
-  return;
-}
-
-
 void EDMSimpleAnalyzer::book() {
 
   hist = new TH1F( "hist", "hist", 10, -2.5, 2.5 );

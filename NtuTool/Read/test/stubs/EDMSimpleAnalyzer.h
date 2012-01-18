@@ -18,10 +18,6 @@ class EDMSimpleAnalyzer: private SimpleNtuple,
   EDMSimpleAnalyzer();
   virtual ~EDMSimpleAnalyzer();
 
-  // functions called at the begin of the event loop
-  virtual void setUserParameter( const std::string& key,
-                                 const std::string& val );
-
   // functions called for each event
   virtual void reset();
   virtual bool analyze( int entry, int event_file, int event_tot );
