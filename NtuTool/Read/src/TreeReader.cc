@@ -74,6 +74,7 @@ int TreeReader::loop( int evtmax, int evskip, int accmax, bool anaexe ) {
   if ( !anaexe ) return evtnum;
   if (   accmax == 0       ) accmax  = evtnum + acceptedEvts;
 
+  beginFile();
   int analyzedFile = 0;
   // loop over all events
   int ientry;
@@ -88,6 +89,7 @@ int TreeReader::loop( int evtmax, int evskip, int accmax, bool anaexe ) {
     if ( analyze( ientry, analyzedFile++, analyzedEvts++ ) )
                                           acceptedEvts++;
   }
+  endFile();
 
   return evtnum;
 
