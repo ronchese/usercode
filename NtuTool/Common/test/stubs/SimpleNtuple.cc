@@ -4,9 +4,10 @@
 
 SimpleNtuple::SimpleNtuple() {
 
-  // "treeName" must be assigned the name chosen by the user for the tree
-  // the TTree object is created by the tool
-  treeName = "simpleNtuple";
+  // "treeName" must be assigned the name chosen by the user for the tree,
+  // specifying the full path:
+  // the TTree object and all the subfolders are created by the tool
+  treeName = "ntuFolder/simpleNtuple";
 
   n_max =             // max array length
   n_arr = 10;         // array length set at maximum to allow auto reset

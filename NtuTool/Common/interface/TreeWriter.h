@@ -3,6 +3,9 @@
 
 #include "NtuTool/Common/interface/TreeWrapper.h"
 
+class TFile;
+class TDirectory;
+
 class TreeWriter: public virtual TreeWrapper {
 
  public:
@@ -10,7 +13,7 @@ class TreeWriter: public virtual TreeWrapper {
   TreeWriter();
   virtual ~TreeWriter();
 
-  virtual void initWrite();
+  virtual void initWrite( TFile* file );
   virtual void fill();
   virtual void close();
 
@@ -20,6 +23,8 @@ class TreeWriter: public virtual TreeWrapper {
 
   TreeWriter( const TreeWriter& t );
   TreeWriter& operator=( const TreeWriter& t );
+
+  TDirectory* treeDir;
 
 };
 
