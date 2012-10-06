@@ -109,7 +109,7 @@ exportExample.sh
 
 copy the file examples.tgz wherever you want
 
- ----- running examples - read in a CMSSW area -----
+ ----- running examples - read outside CMSSW -----
 
 tar -xzf examples.tgz
 compileExample.sh
