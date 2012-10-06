@@ -1,8 +1,8 @@
 /*
  *  See header file for a description of this class.
  *
- *  $Date: 2011/11/13 09:47:31 $
- *  $Revision: 1.10 $
+ *  $Date: 2011/12/15 12:11:55 $
+ *  $Revision: 1.11 $
  *  \author Paolo Ronchese INFN Padova
  *
  */
@@ -145,25 +145,25 @@ int TreeStandardAnalyzer::loop( TreeReader* tr, std::ifstream& treeListFile,
   if ( !skipTotal ) evskip = -evskip;
   if ( !accnTotal ) accmax = -accmax;
 
-  char* treeLine = new char[1000];
-  char* treeLptr;
-  char* treeName;
+  char* treeListLine = new char[1000];
+  char* treeListLptr;
+  char* treeFileName;
   int evcount = 0;
-  while ( treeListFile.getline( treeLine, 1000 ) ) {
-    treeLptr = treeLine;
-    while ( *treeLptr == ' ' ) treeLptr++;
-    if ( *treeLptr == 'b' ) break;
-    if ( *treeLptr == 'B' ) break;
-    if ( *treeLptr == 'Y' ) *treeLptr = 'y';
-    if ( *treeLptr != 'y' ) continue;
-    treeLptr++;
-    while ( *treeLptr == ' ' ) treeLptr++;
-    treeName = treeLptr;
-    while ( ( *treeLptr != ' ' ) &&
-            ( *treeLptr != '\0' ) ) treeLptr++;
-    *treeLptr = '\0';
-    std::cout << "open file " << treeName << std::endl;
-    TChain* c = tr->initRead( treeName );
+  while ( treeListFile.getline( treeListLine, 1000 ) ) {
+    treeListLptr = treeListLine;
+    while ( *treeListLptr == ' ' ) treeListLptr++;
+    if ( *treeListLptr == 'b' ) break;
+    if ( *treeListLptr == 'B' ) break;
+    if ( *treeListLptr == 'Y' ) *treeListLptr = 'y';
+    if ( *treeListLptr != 'y' ) continue;
+    treeListLptr++;
+    while ( *treeListLptr == ' ' ) treeListLptr++;
+    treeFileName = treeListLptr;
+    while ( ( *treeListLptr != ' ' ) &&
+            ( *treeListLptr != '\0' ) ) treeListLptr++;
+    *treeListLptr = '\0';
+    std::cout << "open file " << treeFileName << std::endl;
+    TChain* c = tr->initRead( treeFileName );
     int tmpmax = ( accmax && !accnTotal ?
                    accmax + tr->acceptedEvents() : accmax );
     int evfile = 
@@ -182,7 +182,7 @@ int TreeStandardAnalyzer::loop( TreeReader* tr, std::ifstream& treeListFile,
     if ( evskip <= 0 ) evskip = 0;
   }
 
-  delete[] treeLine;
+  delete[] treeListLine;
   return evcount;
 
 }

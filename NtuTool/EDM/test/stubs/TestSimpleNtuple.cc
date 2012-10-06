@@ -29,8 +29,6 @@ void TestSimpleNtuple::analyze( const edm::Event &evt,
   autoReset();
   // set variables
   setData( evt.id().run() );
-  //
-//  file->cd();
   // function provided by the tool to actually fill the tree
   fill();
   return;
@@ -38,7 +36,6 @@ void TestSimpleNtuple::analyze( const edm::Event &evt,
 
 void TestSimpleNtuple::endJob() {
   std::cout << "TestSimpleNtuple::endJob" << std::endl;
-//  file->cd();
   // function provided by the tool to close the tree
   close();
   // close the file
