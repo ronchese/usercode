@@ -9,6 +9,7 @@ class DataHandlerManager;
 class TFile;
 class TTree;
 class TBranch;
+class TObject;
 
 class TreeWrapper {
 
@@ -34,8 +35,10 @@ class TreeWrapper {
   // function to do final operations
   virtual void endJob();
   // function to plot histograms, called after "endJob"
+  virtual void plot( int argc, char* argv[], char flag );
   virtual void plot();
   // function to save histograms, called after "plot"
+  virtual void save( const std::string& name );
   virtual void save();
 
  protected:
@@ -87,6 +90,20 @@ class TreeWrapper {
   DataHandlerManager* handlerManager;
   void autoReset();
 
+
+  class AutoSavedObject {
+   public:
+    typedef std::vector<const TObject*> obj_list;
+    typedef obj_list::const_iterator    obj_iter;
+    obj_iter begin();
+    obj_iter end();
+    AutoSavedObject& operator=( const TObject* obj );
+   private:
+    obj_list objectList;
+  };
+  AutoSavedObject autoSavedObject;
+  void autoSave();
+
   struct branch_desc {
     std::string* branchName;
     void*        dataPtr;
@@ -110,6 +127,7 @@ class TreeWrapper {
   TreeWrapper& operator=( const TreeWrapper& t );
 
   std::map<std::string,std::string> userParameters;
+  bool histoPlotted;
 
   branch_list branchList;
 

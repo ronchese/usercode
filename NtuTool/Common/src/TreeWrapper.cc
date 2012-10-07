@@ -5,6 +5,8 @@
 
 #include "TFile.h"
 #include "TTree.h"
+#include "TApplication.h"
+#include "TRint.h"
 
 
 TreeWrapper::TreeWrapper() {
@@ -67,8 +69,39 @@ void TreeWrapper::endJob() {
 }
 
 
+void TreeWrapper::plot( int argc, char* argv[], char flag ) {
+  TApplication* app = 0;
+  std::string name( treeName + "_app" );
+  const char* cn = name.c_str();
+  switch ( flag ) {
+  case 'b':
+    return;
+  case 'i':
+  case 'j':
+    app = new TRint( cn, &argc, argv );
+    break;
+  default:
+    app = new TApplication( cn, &argc, argv );
+    break;
+  }
+  histoPlotted = true;
+  if ( flag != 'i' ) plot();
+  if ( histoPlotted || ( flag == 'j' ) ) app->Run( kTRUE );
+  else std::cout << "no plot to draw" << std::endl;
+  return;
+}
+
+
 void TreeWrapper::plot() {
 // default analysis - dummy
+  return;
+}
+
+
+void TreeWrapper::save( const std::string& name ) {
+  TFile file( name.c_str(), "CREATE" );
+  save();
+  file.Close();
   return;
 }
 
@@ -154,6 +187,31 @@ void TreeWrapper::autoReset() {
     if ( dataPtr == 0 ) continue;
     handler->reset( dataPtr );
   }
+  return;
+}
+
+
+TreeWrapper::AutoSavedObject&
+TreeWrapper::AutoSavedObject::operator=( const TObject* obj ) {
+  objectList.push_back( obj );
+  return *this;
+}
+
+
+TreeWrapper::AutoSavedObject::obj_iter TreeWrapper::AutoSavedObject::begin() {
+  return objectList.begin();
+}
+
+
+TreeWrapper::AutoSavedObject::obj_iter TreeWrapper::AutoSavedObject::end() {
+  return objectList.end();
+}
+
+
+void TreeWrapper::autoSave() {
+  AutoSavedObject::obj_iter iter = autoSavedObject.begin();
+  AutoSavedObject::obj_iter iend = autoSavedObject.end();
+  while ( iter != iend ) (*iter++)->Write();
   return;
 }
 

@@ -4,8 +4,6 @@
 #include "NtuTool/Common/interface/DataHandler.h"
 #include "NtuTool/Common/interface/TreeTypeManager.h"
 
-#include "TApplication.h"
-#include "TRint.h"
 #include "TFile.h"
 #include "TChain.h"
 
@@ -102,37 +100,6 @@ void TreeReader::process( int ientry ) {
 }
 
 
-void TreeReader::plot( int argc, char* argv[], char flag ) {
-  TApplication* app = 0;
-  std::string name( treeName + "_app" );
-  const char* cn = name.c_str();
-  switch ( flag ) {
-  case 'b':
-    return;
-  case 'i':
-  case 'j':
-    app = new TRint( cn, &argc, argv );
-    break;
-  default:
-    app = new TApplication( cn, &argc, argv );
-    break;
-  }
-  histoPlotted = true;
-  if ( flag != 'i' ) plot();
-  if ( histoPlotted || ( flag == 'j' ) ) app->Run( kTRUE );
-  else std::cout << "no plot to draw" << std::endl;
-  return;
-}
-
-
-void TreeReader::save( const std::string& name ) {
-  TFile file( name.c_str(), "CREATE" );
-  save();
-  file.Close();
-  return;
-}
-
-
 int TreeReader::analyzedEvents() {
   return analyzedEvts;
 }
@@ -140,44 +107,5 @@ int TreeReader::analyzedEvents() {
 
 int TreeReader::acceptedEvents() {
   return acceptedEvts;
-}
-
-
-void TreeReader::autoSave() {
-  AutoSavedObject::obj_iter iter = autoSavedObject.begin();
-  AutoSavedObject::obj_iter iend = autoSavedObject.end();
-  while ( iter != iend ) (*iter++)->Write();
-  return;
-}
-
-
-void TreeReader::plot() {
-// default analysis - dummy
-  histoPlotted = false;
-  return;
-}
-
-
-void TreeReader::save() {
-// default analysis - automatic save
-  autoSave();
-  return;
-}
-
-
-TreeReader::AutoSavedObject&
-TreeReader::AutoSavedObject::operator=( const TObject* obj ) {
-  objectList.push_back( obj );
-  return *this;
-}
-
-
-TreeReader::AutoSavedObject::obj_iter TreeReader::AutoSavedObject::begin() {
-  return objectList.begin();
-}
-
-
-TreeReader::AutoSavedObject::obj_iter TreeReader::AutoSavedObject::end() {
-  return objectList.end();
 }
 
