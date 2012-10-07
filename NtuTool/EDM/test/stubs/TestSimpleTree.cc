@@ -8,7 +8,8 @@
 #include <iostream>
 
 TestSimpleTree::TestSimpleTree( const edm::ParameterSet& cfg ) {
-  // open ROOT file
+
+  // open output ROOT file
   file = new TFile( "simple_tree.root", "CREATE" );
 
   // create tree
@@ -33,6 +34,8 @@ TestSimpleTree::~TestSimpleTree() {
 }
 
 void TestSimpleTree::beginJob() {
+  std::cout << "TestSimpleTree::beginJob" << std::endl;
+  return;
 }
 
 void TestSimpleTree::analyze( const edm::Event &evt,
