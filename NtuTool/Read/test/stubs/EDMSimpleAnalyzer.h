@@ -18,20 +18,32 @@ class EDMSimpleAnalyzer: private SimpleNtuple,
   EDMSimpleAnalyzer();
   virtual ~EDMSimpleAnalyzer();
 
+  // function to do initialization
+  virtual void beginJob();
+  // function to book histograms, called after "beginJob"
+  void book();
+
+  // function to do file-specific initialization
+  virtual void beginFile();
+
   // functions called for each event
   virtual void reset();
   virtual bool analyze( int entry, int event_file, int event_tot );
 
+  // function to do file-specific final operations
+  virtual void endFile();
+  // function to do final operations
+  virtual void endJob();
+
   // functions called at the end of the event loop
   virtual void plot();   // plot the histograms on the screen
-  virtual void save();   // save the histograms on a ROOT file
+  // "save" function not needed for auto-saved histos,
+  // see .cc for details
+//  virtual void save();   // save the histograms on a ROOT file
 
  private:
 
   TH1F* hist;
-
-  // functions to book the histograms
-  void book();
 
   // dummy copy and assignment constructors
   EDMSimpleAnalyzer( const EDMSimpleAnalyzer& );

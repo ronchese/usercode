@@ -22,17 +22,29 @@ EDMSimpleAnalyzer::~EDMSimpleAnalyzer() {
 }
 
 
-void EDMSimpleAnalyzer::book() {
-
-  hist = new TH1F( "hist", "hist", 10, -2.5, 2.5 );
-
+void EDMSimpleAnalyzer::beginJob() {
+  std::cout << "EDMSimpleAnalyzer::beginJob" << std::endl;
   return;
+}
 
+
+void EDMSimpleAnalyzer::book() {
+  // putting "autoSavedObject" in front of the histo creation 
+  // it's automatically marked for saving on file
+  autoSavedObject =
+  hist = new TH1F( "hist", "hist", 10, -2.5, 2.5 );
+  return;
 }
 
 
 void EDMSimpleAnalyzer::reset() {
   autoReset();
+  return;
+}
+
+
+void EDMSimpleAnalyzer::beginFile() {
+  std::cout << "open file " << currentFile << std::endl;
   return;
 }
 
@@ -75,8 +87,14 @@ bool EDMSimpleAnalyzer::analyze( int entry, int event_file, int event_tot ) {
 }
 
 
-void EDMSimpleAnalyzer::save() {
-  hist->Write();
+void EDMSimpleAnalyzer::endFile() {
+  std::cout << "close file " << currentFile << std::endl;
+  return;
+}
+
+
+void EDMSimpleAnalyzer::endJob() {
+  std::cout << "EDMSimpleAnalyzer::endJob" << std::endl;
   return;
 }
 
@@ -86,4 +104,12 @@ void EDMSimpleAnalyzer::plot() {
   return;
 }
 
+
+// "save" function not needed for auto-saved histos,
+// see book() function
+//void EDMSimpleAnalyzer::save() {
+//  std::cout << "save histos" << std::endl;
+//  hist->Write();
+//  return;
+//}
 

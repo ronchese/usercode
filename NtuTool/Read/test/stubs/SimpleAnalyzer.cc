@@ -17,12 +17,24 @@ SimpleAnalyzer::~SimpleAnalyzer() {
 }
 
 
-void SimpleAnalyzer::book() {
-
-  hist = new TH1F( "hist", "hist", 10, -2.5, 2.5 );
-
+void SimpleAnalyzer::beginJob() {
+  std::cout << "SimpleAnalyzer::beginJob" << std::endl;
   return;
+}
 
+
+void SimpleAnalyzer::book() {
+  // putting "autoSavedObject" in front of the histo creation 
+  // it's automatically marked for saving on file
+  autoSavedObject =
+  hist = new TH1F( "hist", "hist", 10, -2.5, 2.5 );
+  return;
+}
+
+
+void SimpleAnalyzer::beginFile() {
+  std::cout << "open file " << currentFile << std::endl;
+  return;
 }
 
 
@@ -70,8 +82,14 @@ bool SimpleAnalyzer::analyze( int entry, int event_file, int event_tot ) {
 }
 
 
-void SimpleAnalyzer::save() {
-  hist->Write();
+void SimpleAnalyzer::endFile() {
+  std::cout << "close file " << currentFile << std::endl;
+  return;
+}
+
+
+void SimpleAnalyzer::endJob() {
+  std::cout << "SimpleAnalyzer::endJob" << std::endl;
   return;
 }
 
@@ -81,4 +99,12 @@ void SimpleAnalyzer::plot() {
   return;
 }
 
+
+// "save" function not needed for auto-saved histos,
+// see book() function
+//void SimpleAnalyzer::save() {
+//  std::cout << "save histos" << std::endl;
+//  hist->Write();
+//  return;
+//}
 
