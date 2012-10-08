@@ -30,6 +30,7 @@ cd ${NTU_ROOT_DIR}
 rm -f ${NTU_TOOL_TMP}.tgz
 tar -czf ${NTU_TOOL_TMP}.tgz ${NTU_TOOL_TMP}
 rm -rf ${NTU_TOOL_TMP}
+rm -f ../${NTU_TOOL_TMP}.tgz
 mv ${NTU_TOOL_TMP}.tgz ..
 
 find ${CMSSW_BASE}/src | grep NtuTool | grep tgz

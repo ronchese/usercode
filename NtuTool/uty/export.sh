@@ -18,7 +18,7 @@ tar -czf export.tgz                \
          uty/go_compileNtuTool.*h  \
          uty/compile_CMSSW.*h
 
-setenv NTU_TOOL_TMP NtuTool_`head -1 ${NTU_ROOT_DIR}/VERSION | sed s/"\."/_/g`
+export NTU_TOOL_TMP=NtuTool_`head -1 ${NTU_ROOT_DIR}/VERSION | sed s/"\."/_/g`
 mkdir ${NTU_TOOL_TMP}
 
 mv export.tgz ${NTU_TOOL_TMP}
@@ -30,6 +30,7 @@ cd ${NTU_ROOT_DIR}
 rm -f ${NTU_TOOL_TMP}.tgz
 tar -czf ${NTU_TOOL_TMP}.tgz ${NTU_TOOL_TMP}
 rm -rf ${NTU_TOOL_TMP}
+rm -f ../${NTU_TOOL_TMP}.tgz
 mv ${NTU_TOOL_TMP}.tgz ..
 
 find ${CMSSW_BASE}/src | grep NtuTool | grep tgz
