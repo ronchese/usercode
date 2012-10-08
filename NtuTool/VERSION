@@ -1,1 +1,19 @@
+01.02.01
+
+histo handling moved from TreeReader to TreeWrapper
+
+comments added in test writers
+
+begin/end functions and autoSave added in test analyzers
+
+explicit deletion of old executables added in compile scripts
+
+tool development log added
+
+----------------------
+
 01.01.05
+
+subfolder handling added
+
+
