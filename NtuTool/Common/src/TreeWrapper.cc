@@ -107,7 +107,8 @@ void TreeWrapper::save( const std::string& name ) {
 
 
 void TreeWrapper::save() {
-// default analysis - dummy
+// default analysis - autosave
+  autoSave();
   return;
 }
 

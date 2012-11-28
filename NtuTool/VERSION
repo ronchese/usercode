@@ -1,3 +1,9 @@
+01.02.02
+
+explicit autoSave() added in default analysis
+
+----------------------
+
 01.02.01
 
 histo handling moved from TreeReader to TreeWrapper
