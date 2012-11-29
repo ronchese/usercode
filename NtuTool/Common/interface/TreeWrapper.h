@@ -10,6 +10,7 @@ class TFile;
 class TTree;
 class TBranch;
 class TObject;
+class TDirectory;
 
 class TreeWrapper {
 
@@ -90,19 +91,26 @@ class TreeWrapper {
   DataHandlerManager* handlerManager;
   void autoReset();
 
-
   class AutoSavedObject {
    public:
     typedef std::vector<const TObject*> obj_list;
     typedef obj_list::const_iterator    obj_iter;
-    obj_iter begin();
-    obj_iter end();
-    AutoSavedObject& operator=( const TObject* obj );
+    typedef std::map<const TObject*, TDirectory*> dir_map;
+    typedef dir_map::const_iterator               dir_iter;
+    void insert( const TObject* obj, TDirectory* dir );
+    obj_iter objBegin();
+    obj_iter objEnd();
+    dir_iter dirBegin();
+    dir_iter dirFind( const TObject* obj );
+    dir_iter dirEnd();
+    AutoSavedObject& operator=( TObject* obj );
    private:
     obj_list objectList;
+    dir_map directoryMap;
   };
   AutoSavedObject autoSavedObject;
   void autoSave();
+//  void autoSave( TDirectory* dir );
 
   struct branch_desc {
     std::string* branchName;
