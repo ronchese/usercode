@@ -44,6 +44,8 @@ class EDMSimpleAnalyzer: private SimpleNtuple,
  private:
 
   TH1F* hist;
+  TH1F* hisd;
+  TH1F* hisc;
 
   // dummy copy and assignment constructors
   EDMSimpleAnalyzer( const EDMSimpleAnalyzer& );
