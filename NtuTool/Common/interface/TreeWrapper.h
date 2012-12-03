@@ -19,6 +19,8 @@ class TreeWrapper {
   TreeWrapper();
   virtual ~TreeWrapper();
 
+  const std::string& name() const;
+
   virtual void setUserParameter( const std::string& key,
                                  const std::string& val );
   virtual std::string getUserParameter( const std::string& key );
@@ -42,12 +44,18 @@ class TreeWrapper {
   virtual void save( const std::string& name );
   virtual void save();
 
+  int analyzedEvents();
+  int acceptedEvents();
+
  protected:
 
   std::string treeName;
 
   // tree pointer
   TTree* currentTree;
+
+  int analyzedEvts;
+  int acceptedEvts;
 
   void setBranch( const char* branchName, void* dataPtr,
                   const char* branchData );

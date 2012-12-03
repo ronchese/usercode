@@ -10,11 +10,18 @@
 #include "TROOT.h"
 
 
-TreeWrapper::TreeWrapper() {
+TreeWrapper::TreeWrapper():
+ analyzedEvts( 0 ),
+ acceptedEvts( 0 )  {
 }
 
 
 TreeWrapper::~TreeWrapper() {
+}
+
+
+const std::string& TreeWrapper::name() const {
+  return treeName;
 }
 
 
@@ -116,6 +123,15 @@ void TreeWrapper::save() {
   return;
 }
 
+
+int TreeWrapper::analyzedEvents() {
+  return analyzedEvts;
+}
+
+
+int TreeWrapper::acceptedEvents() {
+  return acceptedEvts;
+}
 
 void TreeWrapper::setBranch( const char* branchName, void* dataPtr,
                              const char* branchData ) {
