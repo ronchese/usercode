@@ -1,5 +1,7 @@
 01.02.04
 
+LD_LIBRAY_PATH cleanup added
+
 event count moved from TreeReader to TreeWrapper
 
 inclusion of SimpleNtuple example moved to separate file
