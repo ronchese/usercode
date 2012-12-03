@@ -1,3 +1,17 @@
+01.02.04
+
+event count moved from TreeReader to TreeWrapper
+
+inclusion of SimpleNtuple example moved to separate file
+
+examples to read outside CMSSW moved to a separate directory
+
+preprocessor control of ntuple type added
+
+small fixes
+
+----------------------
+
 01.02.03
 
 automatic save of subdirectory structure added
