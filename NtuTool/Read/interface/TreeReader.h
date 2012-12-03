@@ -20,9 +20,6 @@ class TreeReader: public virtual TreeWrapper {
   virtual int  loop( int evtmax = 0, int evskip = 0, int accmax = 0, 
                      bool anaexe = true );
 
-  int analyzedEvents();
-  int acceptedEvents();
-
  protected:
 
   std::string currentFile;
@@ -32,8 +29,6 @@ class TreeReader: public virtual TreeWrapper {
  private:
 
   static TreeReader* readerInstance;
-  int analyzedEvts;
-  int acceptedEvts;
 
   TreeReader( const TreeReader& t );
   TreeReader& operator=( const TreeReader& t );
