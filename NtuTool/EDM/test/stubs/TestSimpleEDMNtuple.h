@@ -33,7 +33,8 @@ class TestSimpleEDMNtuple: public SimpleNtuple,
  private:
 
   // the user code contained in the "analyze" function when 
-  // writing standard trees is moved to a "fill" function
+  // writing standard trees in an EDAnalyzer is moved to 
+  // a "fill" function called by the library
   virtual void fill( edm::Event &, const edm::EventSetup & );
 
   // function (by the user) to encapsulate operations to set variables
