@@ -21,6 +21,7 @@ void HTTMacro( const std::string& dataset, double eqlumi ) {
   HTTAnalyzer* ntu = new HTTAnalyzer;
   ntu->beginJob();
   ntu->book();
+  ntu->eqlumi = eqlumi;
 
   vector<string> fileName;
   std::stringstream sstr;
