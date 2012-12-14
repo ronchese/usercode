@@ -1,0 +1,222 @@
+#include <iostream>
+
+//#include "HTTNtupleBranch.h"
+
+template <class T>
+HTTNtupleBranch<T>::HTTNtupleBranch() {
+}
+
+template <class T>
+void HTTNtupleBranch<T>::initTree() {
+
+  // define branches
+  // use local function "setBranch" (defined in the utility)
+  // in place of ROOT "Branch" & "SetBranchAddress"
+
+  // header
+  this->setBranch( "runNumber"      , &  runNumber      ,
+                   "runNumber/i"    , &b_runNumber       );
+  this->setBranch( "lumiSection"    , &  lumiSection    ,
+                   "lumiSection/i"  , &b_lumiSection     );
+  this->setBranch( "eventNumber"    , &  eventNumber    ,
+                   "eventNumber/i"  , &b_eventNumber     );
+
+  // mEt
+  this->setBranch( "mEt"            , &  mEt            ,
+                   "mEt/D"          , &b_mEt             );
+  this->setBranch( "mEx"            , &  mEx            ,
+                   "mEx/D"          , &b_mEx             );
+  this->setBranch( "mEy"            , &  mEy            ,
+                   "mEy/D"          , &b_mEy             );
+
+  // muons
+  this->setBranch( "nMuons"         , &  nMuons         ,
+                   "nMuons/I"       , &b_nMuons          );
+  this->setBranch( "muoPt"          , &  muoPt          ,
+                   1000, 99         , &b_muoPt           );
+  this->setBranch( "muoEta"         , &  muoEta         ,
+                   1000, 99         , &b_muoEta          );
+  this->setBranch( "muoPhi"         , &  muoPhi         ,
+                   1000, 99         , &b_muoPhi          );
+  this->setBranch( "muoPx"          , &  muoPx          ,
+                   1000, 99         , &b_muoPx           );
+  this->setBranch( "muoPy"          , &  muoPy          ,
+                   1000, 99         , &b_muoPy           );
+  this->setBranch( "muoPz"          , &  muoPz          ,
+                   1000, 99         , &b_muoPz           );
+  this->setBranch( "muoE"           , &  muoE           ,
+                   1000, 99         , &b_muoE            );
+  this->setBranch( "muoCharge"      , &  muoCharge      ,
+                   1000, 99         , &b_muoCharge       );
+  this->setBranch( "muoChaIso"      , &  muoChaIso      ,
+                   1000, 99         , &b_muoChaIso       );
+  this->setBranch( "muoNeuIso"      , &  muoNeuIso      ,
+                   1000, 99         , &b_muoNeuIso       );
+  this->setBranch( "muoPhoIso"      , &  muoPhoIso      ,
+                   1000, 99         , &b_muoPhoIso       );
+  this->setBranch( "muoSumCHpt"     , &  muoSumCHpt     ,
+                   1000, 99         , &b_muoSumCHpt      );
+  this->setBranch( "muoSumCPpt"     , &  muoSumCPpt     ,
+                   1000, 99         , &b_muoSumCPpt      );
+  this->setBranch( "muoSumNHet"     , &  muoSumNHet     ,
+                   1000, 99         , &b_muoSumNHet      );
+  this->setBranch( "muoSumPHet"     , &  muoSumPHet     ,
+                   1000, 99         , &b_muoSumPHet      );
+  this->setBranch( "muoSumPUpt"     , &  muoSumPUpt     ,
+                   1000, 99         , &b_muoSumPUpt      );
+  this->setBranch( "muoNumMatches"  , &  muoNumMatches  ,
+                   1000, 99         , &b_muoNumMatches   );
+  this->setBranch( "muoDb"          , &  muoDb          ,
+                   1000, 99         , &b_muoDb           );
+  this->setBranch( "muoNumValidHits", &  muoNumValidHits,
+                   1000, 99         , &b_muoNumValidHits );
+  this->setBranch( "muoNormChi2"    , &  muoNormChi2    ,
+                   1000, 99         , &b_muoNormChi2     );
+  this->setBranch( "muoNumMuHits"   , &  muoNumMuHits   ,
+                   1000, 99         , &b_muoNumMuHits    );
+  this->setBranch( "muoNumPixHits"  , &  muoNumPixHits  ,
+                   1000, 99         , &b_muoNumPixHits   );
+  this->setBranch( "muoNumTkHits"   , &  muoNumTkHits   ,
+                   1000, 99         , &b_muoNumTkHits    );
+//  this->setBranch( "muoIso"         , &  muoIso         ,
+//                   1000, 99         , &b_muoIso          );
+//  this->setBranch( "muoClass"       , &  muoClass       ,
+//                   1000, 99         , &b_muoClass        );
+
+  // electrons
+  this->setBranch( "nElectrons"     , &  nElectrons     ,
+                   "nElectrons/I"   , &b_nElectrons      );
+  this->setBranch( "elePt"          , &  elePt          ,
+                   1000, 99         , &b_elePt           );
+  this->setBranch( "eleEta"         , &  eleEta         ,
+                   1000, 99         , &b_eleEta          );
+  this->setBranch( "elePhi"         , &  elePhi         ,
+                   1000, 99         , &b_elePhi          );
+  this->setBranch( "elePx"          , &  elePx          ,
+                   1000, 99         , &b_elePx           );
+  this->setBranch( "elePy"          , &  elePy          ,
+                   1000, 99         , &b_elePy           );
+  this->setBranch( "elePz"          , &  elePz          ,
+                   1000, 99         , &b_elePz           );
+  this->setBranch( "eleE"           , &  eleE           ,
+                   1000, 99         , &b_eleE            );
+  this->setBranch( "eleCharge"      , &  eleCharge      ,
+                   1000, 99         , &b_eleCharge       );
+  this->setBranch( "eleChaIso"      , &  eleChaIso      ,
+                   1000, 99         , &b_eleChaIso       );
+  this->setBranch( "eleNeuIso"      , &  eleNeuIso      ,
+                   1000, 99         , &b_eleNeuIso       );
+  this->setBranch( "elePhoIso"      , &  elePhoIso      ,
+                   1000, 99         , &b_elePhoIso       );
+  this->setBranch( "eleAbsEta"      , &  eleAbsEta      ,
+                   1000, 99         , &b_eleAbsEta       );
+  this->setBranch( "eleAEff"        , &  eleAEff        ,
+                   1000, 99         , &b_eleAEff         );
+//  this->setBranch( "eleLPt"         , &  eleLPt         ,
+//                   1000, 99         , &b_eleLPt          );
+  this->setBranch( "eleID"          , &  eleID          ,
+                   1000, 99         , &b_eleID           );
+  this->setBranch( "eleConsCha"     , &  eleConsCha     ,
+                   1000, 99         , &b_eleConsCha      );
+  this->setBranch( "eleEBEEGap"     , &  eleEBEEGap     ,
+                   1000, 99         , &b_eleEBEEGap      );
+  this->setBranch( "eleDb"          , &  eleDb          ,
+                   1000, 99         , &b_eleDb           );
+//  this->setBranch( "eleIso"         , &  eleIso         ,
+//                   1000, 99         , &b_eleIso          );
+//  this->setBranch( "eleClass"       , &  eleClass       ,
+//                   1000, 99         , &b_eleClass        );
+
+  // taus
+  this->setBranch( "nTaus"          , &  nTaus          ,
+                   "nTaus/I"        , &b_nTaus           );
+  this->setBranch( "tauPt"          , &  tauPt          ,
+                   1000, 99         , &b_tauPt           );
+  this->setBranch( "tauEta"         , &  tauEta         ,
+                   1000, 99         , &b_tauEta          );
+  this->setBranch( "tauPhi"         , &  tauPhi         ,
+                   1000, 99         , &b_tauPhi          );
+  this->setBranch( "tauPx"          , &  tauPx          ,
+                   1000, 99         , &b_tauPx           );
+  this->setBranch( "tauPy"          , &  tauPy          ,
+                   1000, 99         , &b_tauPy           );
+  this->setBranch( "tauPz"          , &  tauPz          ,
+                   1000, 99         , &b_tauPz           );
+  this->setBranch( "tauE"           , &  tauE           ,
+                   1000, 99         , &b_tauE            );
+  this->setBranch( "tauCharge"      , &  tauCharge      ,
+                   1000, 99         , &b_tauCharge       );
+
+  // jets
+  this->setBranch( "nJets"          , &  nJets          ,
+                   "nJets/I"        , &b_nJets           );
+  this->setBranch( "jetPt"          , &  jetPt          ,
+                   1000, 99         , &b_jetPt           );
+  this->setBranch( "jetEta"         , &  jetEta         ,
+                   1000, 99         , &b_jetEta          );
+  this->setBranch( "jetPhi"         , &  jetPhi         ,
+                   1000, 99         , &b_jetPhi          );
+  this->setBranch( "jetPx"          , &  jetPx          ,
+                   1000, 99         , &b_jetPx           );
+  this->setBranch( "jetPy"          , &  jetPy          ,
+                   1000, 99         , &b_jetPy           );
+  this->setBranch( "jetPz"          , &  jetPz          ,
+                   1000, 99         , &b_jetPz           );
+  this->setBranch( "jetE"           , &  jetE           ,
+                   1000, 99         , &b_jetE            );
+  this->setBranch( "jetCSV"         , &  jetCSV         ,
+                   1000, 99         , &b_jetCSV          );
+  this->setBranch( "jetTCHE"        , &  jetTCHE        ,
+                   1000, 99         , &b_jetTCHE         );
+  this->setBranch( "jetPF"          , &  jetPF          ,
+                   1000, 99         , &b_jetPF           );
+  this->setBranch( "jetNDau"        , &  jetNDau        ,
+                   1000, 99         , &b_jetNDau         );
+  this->setBranch( "jetNHF"         , &  jetNHF         ,
+                   1000, 99         , &b_jetNHF          );
+  this->setBranch( "jetNEF"         , &  jetNEF         ,
+                   1000, 99         , &b_jetNEF          );
+  this->setBranch( "jetCHF"         , &  jetCHF         ,
+                   1000, 99         , &b_jetCHF          );
+  this->setBranch( "jetCEF"         , &  jetCEF         ,
+                   1000, 99         , &b_jetCEF          );
+  this->setBranch( "jetNCH"         , &  jetNCH         ,
+                   1000, 99         , &b_jetNCH          );
+
+  // gen particles
+  this->setBranch( "nGenP"          , &  nGenP          ,
+                   "nGenP/I"        , &b_nGenP           );
+  this->setBranch( "genId"          , &  genId          ,
+                   1000, 99         , &b_genId           );
+  this->setBranch( "genStatus"      , &  genStatus      ,
+                   1000, 99         , &b_genStatus       );
+  this->setBranch( "genMother"      , &  genMother      ,
+                   1000, 99         , &b_genMother       );
+  this->setBranch( "genPt"          , &  genPt          ,
+                   1000, 99         , &b_genPt           );
+  this->setBranch( "genEta"         , &  genEta         ,
+                   1000, 99         , &b_genEta          );
+  this->setBranch( "genPhi"         , &  genPhi         ,
+                   1000, 99         , &b_genPhi          );
+  this->setBranch( "genPx"          , &  genPx          ,
+                   1000, 99         , &b_genPx           );
+  this->setBranch( "genPy"          , &  genPy          ,
+                   1000, 99         , &b_genPy           );
+  this->setBranch( "genPz"          , &  genPz          ,
+                   1000, 99         , &b_genPz           );
+  this->setBranch( "genE"           , &  genE           ,
+                   1000, 99         , &b_genE            );
+  this->setBranch( "genCharge"      , &  genCharge      ,
+                   1000, 99         , &b_genCharge       );
+  this->setBranch( "genMass"        , &  genMass        ,
+                   1000, 99         , &b_genMass         );
+
+ return;
+
+}
+
+template <class T>
+HTTNtupleBranch<T>::~HTTNtupleBranch() {
+}
+
+
