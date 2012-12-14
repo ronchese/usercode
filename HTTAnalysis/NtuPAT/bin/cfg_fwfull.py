@@ -18,12 +18,7 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )
 filename = open('pat_files.list', 'r')
 fileList = cms.untracked.vstring( filename.readlines() )
     
-process.source = cms.Source("EmptySource",
-    numberEventsInRun = cms.untracked.uint32(1),
-    firstRun = cms.untracked.uint32(1)
-)
-
-#process.source = cms.Source ("PoolSource", fileNames=fileList)
+process.source = cms.Source ("PoolSource", fileNames=fileList)
 
 process.hTTAnalyzer = cms.EDAnalyzer('HTTPATAnalyzer',
     ## mandatory
