@@ -12,7 +12,6 @@
 // user parameters from command line
 // "HTTNtuple"  contains the tree definition
 // "TreeWrapper" is provided by the utility
-// "TreeReader" is provided by the utility
 #include "HTTAnalysis/NtuPAT/interface/HTTNtuple.h"
 #include "NtuTool/Common/interface/TreeWrapper.h"
 class HTTAnalyzer: public HTTNtuple,
