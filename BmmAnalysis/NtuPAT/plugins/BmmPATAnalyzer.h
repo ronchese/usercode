@@ -1,0 +1,40 @@
+#ifndef BmmPATAnalyzer_h
+#define BmmPATAnalyzer_h
+
+#include "BmmAnalysis/NtuPAT/interface/BmmPATToNtuple.h"
+
+#include "FWCore/Framework/interface/EDAnalyzer.h"
+#include "FWCore/Framework/interface/Event.h"
+
+#include "FWCore/Framework/interface/EventSetup.h"
+#include "FWCore/ParameterSet/interface/ParameterSet.h"
+
+#include <string>
+#include <iostream>
+#include <fstream>
+
+//
+// class declaration
+//
+
+class BmmPATAnalyzer: public edm::EDAnalyzer,
+                      public BmmPATToNtuple {
+
+ public:
+
+  explicit BmmPATAnalyzer( const edm::ParameterSet& ps );
+  ~BmmPATAnalyzer();
+
+  static void fillDescriptions( edm::ConfigurationDescriptions& descriptions );
+  void beginJob();
+  void endJob();
+
+ private:
+
+  int analyzedFile;
+
+  virtual void analyze( const edm::Event& ev, const edm::EventSetup& es );
+
+};
+
+#endif
