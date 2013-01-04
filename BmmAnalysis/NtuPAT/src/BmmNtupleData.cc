@@ -5,6 +5,7 @@
 BmmNtupleData::BmmNtupleData() {
 
   // muons
+  nMuons = 0;
   muoPt           = new std::vector<double>;
   muoEta          = new std::vector<double>;
   muoPhi          = new std::vector<double>;
@@ -31,6 +32,7 @@ BmmNtupleData::BmmNtupleData() {
 
 /*
   // electrons
+  nElectrons = 0;
   elePt           = new std::vector<double>;
   eleEta          = new std::vector<double>;
   elePhi          = new std::vector<double>;
@@ -53,6 +55,7 @@ BmmNtupleData::BmmNtupleData() {
   eleClass        = new std::vector<int   >;
 
   // taus
+  nTaus = 0;
   tauPt           = new std::vector<double>;
   tauEta          = new std::vector<double>;
   tauPhi          = new std::vector<double>;
@@ -64,6 +67,7 @@ BmmNtupleData::BmmNtupleData() {
 */
 
   // jets
+  nJets = 0;
   jetPt           = new std::vector<double>;
   jetEta          = new std::vector<double>;
   jetPhi          = new std::vector<double>;
@@ -82,6 +86,7 @@ BmmNtupleData::BmmNtupleData() {
   jetNCH          = new std::vector<double>;
 
   // gen particles
+  nGenP = 0;
   genId           = new std::vector<int   >;
   genStatus       = new std::vector<int   >;
   genMother       = new std::vector<int   >;
