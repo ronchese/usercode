@@ -92,12 +92,45 @@ void BmmPATToNtuple::read( const edm::EventBase& ev ) {
   autoReset();
 
   // store event id
+/*
+*/
   runNumber   = ev.id().run();
   lumiSection = ev.id().luminosityBlock();
   eventNumber = ev.id().event();
-
   // get handles
 
+  if ( use_mEt   ) {
+  ev.getByLabel( labelMets     , mets      );
+  if ( mets     .isValid() ) { fillMet         (); }
+  else                       { cout << "invalid mets"      << endl; return; }
+  }
+  if ( use_muons ) {
+  ev.getByLabel( labelMuons    , muons     );
+  if ( muons    .isValid() ) { fillMuons       (); }
+  else                       { cout << "invalid muons"     << endl; return; }
+  }
+//  if ( use_ele   ) {
+//  ev.getByLabel( labelElectrons, electrons );
+//  if ( electrons.isValid() ) { fillElectrons   (); }
+//  else                       { cout << "invalid electrons" << endl; return; }
+//  }
+//  if ( use_tau   ) {
+//  ev.getByLabel( labelTaus     , taus      );
+//  if ( taus     .isValid() ) { fillTaus        (); }
+//  else                       { cout << "invalid taus"      << endl; return; }
+//  }
+  if ( use_jets  ) {
+  ev.getByLabel( labelJets     , jets      );
+  if ( jets     .isValid() ) { fillJets        (); }
+  else                       { cout << "invalid jets"      << endl; return; }
+  }
+  if ( use_gen   ) {
+  ev.getByLabel( labelGen      , particles );
+  if ( particles.isValid() ) { fillGenParticles(); }
+//  else                       { cout << "invalid particles" << endl;         }
+  }
+
+/*
 //  ev.getByLabel( labelHLT      , hlt       );
   ev.getByLabel( labelMets     , mets      );
   ev.getByLabel( labelMuons    , muons     );
@@ -117,12 +150,10 @@ void BmmPATToNtuple::read( const edm::EventBase& ev ) {
   if ( muons    .isValid() ) { fillMuons       (); }
   else                       { cout << "invalid muons"     << endl; return; }
   }
-/*
-  if ( electrons.isValid() ) { fillElectrons   (); }
-  else                       { cout << "invalid electrons" << endl; return; }
-  if ( taus     .isValid() ) { fillTaus        (); }
-  else                       { cout << "invalid taus"      << endl; return; }
-*/
+//  if ( electrons.isValid() ) { fillElectrons   (); }
+//  else                       { cout << "invalid electrons" << endl; return; }
+//  if ( taus     .isValid() ) { fillTaus        (); }
+//  else                       { cout << "invalid taus"      << endl; return; }
   if ( use_jets ) {
   if ( jets     .isValid() ) { fillJets        (); }
   else                       { cout << "invalid jets"      << endl; return; }
@@ -131,6 +162,8 @@ void BmmPATToNtuple::read( const edm::EventBase& ev ) {
   if ( particles.isValid() ) { fillGenParticles(); }
 //  else                       { cout << "invalid particles" << endl;         }
   }
+*/
+
   // function provided by the tool to actually fill the tree
 //  cout << "fill" << endl;
   fill();
