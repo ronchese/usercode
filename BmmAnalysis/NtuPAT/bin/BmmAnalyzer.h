@@ -81,14 +81,7 @@ class BmmAnalyzer: public BmmLightNtuple {
   BmmAnalyzer( const BmmAnalyzer& );
   BmmAnalyzer& operator=( const BmmAnalyzer& );
 
-  TH1D* createHisto( const std::string& head,
-                     const std::string& tail, int n,
-                     int nBin, double xMin, double xMax );
   bool goodJet( int iJet );
-  void fillHistos( const std::string& name,
-                   int Ngoodjets , int JetIdx[],
-                   int Ngoodmuons, int  MuIdx[],
-                   int Ngoodeles , int EleIdx[] );
 
 };
 
