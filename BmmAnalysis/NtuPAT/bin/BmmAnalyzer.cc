@@ -18,6 +18,11 @@ BmmAnalyzer::BmmAnalyzer() {
   // user parameters are set as names associated to a string, 
   // default values can be set in the analyzer class contructor
 
+  setUserParameter( "use_mEt"  , "true" );
+  setUserParameter( "use_muons", "true" );
+  setUserParameter( "use_jets" , "true" );
+  setUserParameter( "use_gen"  , "false" );
+
   setUserParameter( "verbose", "f" );
 
   setUserParameter( "jetNDaumin",  "1" );
@@ -49,8 +54,15 @@ void BmmAnalyzer::beginJob() {
   // by passing the corresponding variable,
   // e.g. getUserParameter( "name", x )
 
-  const char* verbFlag = getUserParameter( "verbose" ).c_str();
-  verbose = ( ( *verbFlag == 't' ) || ( *verbFlag == 'T' ) );
+  getUserParameter( "use_mEt"  , use_mEt );
+  getUserParameter( "use_muons", use_muons );
+  getUserParameter( "use_jets" , use_jets );
+  getUserParameter( "use_gen"  , use_gen );
+  cout << "now init" << endl;
+  initTree();
+  cout << "init done" << endl;
+
+  getUserParameter( "verbose", verbose );
 
   getUserParameter( "jetNDaumin", jetNDaumin );
   getUserParameter( "jetNDaumax", jetNDaumax );

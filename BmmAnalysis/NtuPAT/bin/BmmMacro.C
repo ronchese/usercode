@@ -56,7 +56,7 @@ void BmmMacro( const std::string& dataset ) {
     TChain* c = new TChain( ntu->treeName.c_str() );
     c->Add( fileName[idFile].c_str() );
     TTree* tree = c;
-    ntu->initTree( tree );
+    ntu->openTree( tree );
     int nEvt = tree->GetEntries();
     cout << idFile << " " << fileName[idFile] << " " << ntu->treeName << " "
          << nEvt << endl;

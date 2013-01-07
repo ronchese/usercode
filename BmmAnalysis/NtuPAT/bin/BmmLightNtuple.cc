@@ -3,6 +3,7 @@
 #include "BmmLightNtuple.h"
 
 BmmLightNtuple::BmmLightNtuple() {
+  currentTree = 0;
   treeName = "Bmmtree";
 }
 
@@ -10,9 +11,15 @@ BmmLightNtuple::BmmLightNtuple() {
 BmmLightNtuple::~BmmLightNtuple() {
 }
 
-void BmmLightNtuple::initTree( TTree* tree ) {
+
+//void BmmLightNtuple::initTree() {
+//  BmmNtupleBranch<TreeLightReader>::initTree();
+//}
+
+
+void BmmLightNtuple::openTree( TTree* tree ) {
   currentTree = tree;
-  BmmNtupleBranch<TreeLightReader>::initTree();
+  initTree();
   return;
 }
 

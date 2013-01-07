@@ -13,6 +13,8 @@
 #include "DataFormats/MuonReco/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
 
+#include "DataFormats/PatCandidates/interface/PFParticle.h"
+
 /*
 #include "DataFormats/PatCandidates/interface/Photon.h"
 #include "DataFormats/PatCandidates/interface/Electron.h"
@@ -47,6 +49,11 @@ BmmPATToNtuple::BmmPATToNtuple( const edm::ParameterSet& ps ) {
 //  labelTaus      = ps.getParameter<std::string>( "labelTaus"      );
   labelJets      = ps.getParameter<std::string>( "labelJets"      );
   labelGen       = ps.getParameter<std::string>( "labelGen"       );
+  setUserParameter( "use_mEt"  , labelMets  == "" ? "f" : "t" );
+  setUserParameter( "use_muons", labelMuons == "" ? "f" : "t" );
+  setUserParameter( "use_jets" , labelJets  == "" ? "f" : "t" );
+  setUserParameter( "use_gen"  , labelGen   == "" ? "f" : "t" );
+
   setUserParameter( "verbose",
                     ps.getUntrackedParameter<std::string>( "verbose" ) );
 }
@@ -80,9 +87,8 @@ void BmmPATToNtuple::openNtuple( const std::string& name ) {
 
 void BmmPATToNtuple::read( const edm::EventBase& ev ) {
 
-  const char* verbFlag = getUserParameter( "verbose" ).c_str();
-  bool verbose = ( ( *verbFlag == 't' ) || ( *verbFlag == 'T' ) );
   if ( verbose ) {
+    cout << " =========================== " << endl;
     cout << "event "
          << ev.id().run() << " / "
          << ev.id().event() << endl;
@@ -92,12 +98,9 @@ void BmmPATToNtuple::read( const edm::EventBase& ev ) {
   autoReset();
 
   // store event id
-/*
-*/
   runNumber   = ev.id().run();
   lumiSection = ev.id().luminosityBlock();
   eventNumber = ev.id().event();
-  // get handles
 
   if ( use_mEt   ) {
   ev.getByLabel( labelMets     , mets      );
@@ -131,6 +134,7 @@ void BmmPATToNtuple::read( const edm::EventBase& ev ) {
   }
 
 /*
+  // get handles
 //  ev.getByLabel( labelHLT      , hlt       );
   ev.getByLabel( labelMets     , mets      );
   ev.getByLabel( labelMuons    , muons     );
@@ -272,17 +276,16 @@ void BmmPATToNtuple::fillMuons() {
 
     if ( !( muon. isGlobalMuon() ) ) continue;
     if ( !( muon.isTrackerMuon() ) ) continue;
-    const reco::TrackRef&  innerTrack = muon. innerTrack();
+//    const reco::TrackRef&  innerTrack = muon. innerTrack();
     const reco::TrackRef& globalTrack = muon.globalTrack();
     const reco::HitPattern& hitPattern = globalTrack->hitPattern();
     muoNumMatches  ->at( iObj ) = muon.numberOfMatchedStations();
     muoDb          ->at( iObj ) = muon.dB();
-    muoNumValidHits->at( iObj ) =  innerTrack->numberOfValidHits();
+//    muoNumValidHits->at( iObj ) =  innerTrack->numberOfValidHits();
     muoNormChi2    ->at( iObj ) = globalTrack->normalizedChi2();
     muoNumMuHits   ->at( iObj ) = hitPattern.numberOfValidMuonHits();
     muoNumPixHits  ->at( iObj ) = hitPattern.numberOfValidPixelHits();
     muoNumTkHits   ->at( iObj ) = hitPattern.numberOfValidTrackerHits();
-
   }
 
   return;

@@ -48,6 +48,13 @@ class TreeLightReader {
     return;
   }
 
+  void getUserParameter( const std::string& key, bool& val ) {
+    const char* flag = getUserParameter( key ).c_str();
+    val = (   ( *flag == 't' ) || ( *flag == 'T' ) ||
+            ( ( *flag >= '1' ) && ( *flag <= '9' ) ) );
+    return;
+  }
+
  protected:
 
   TObject* autoSavedObject;
@@ -60,6 +67,7 @@ class TreeLightReader {
 
   void setBranch( const char* branchName, void* dataPtr,
                   const char* branchData ) {
+    if ( currentTree == 0 ) return;
     currentTree->SetBranchAddress( branchName, dataPtr  );
     dummyString = branchData;
     return;
@@ -67,6 +75,7 @@ class TreeLightReader {
   void setBranch( const char* branchName, void* dataPtr,
                   const char* branchData,
                   TBranch** branchPtr ) {
+    if ( currentTree == 0 ) return;
     currentTree->SetBranchAddress( branchName, dataPtr, branchPtr );
     dummyString = branchData;
     return;
@@ -79,9 +88,10 @@ class TreeLightReader {
   void setBranch( const char* branchName, T* dataPtr,
                   int bufferSize = 32000,
                   int splitLevel = 99 ) {
+    if ( currentTree == 0 ) return;
+    currentTree->SetBranchAddress( branchName, dataPtr  );
     dummySize  = bufferSize;
     dummyLevel = splitLevel;
-    currentTree->SetBranchAddress( branchName, dataPtr  );
     return;
   }
   template<class T>
@@ -89,6 +99,7 @@ class TreeLightReader {
                   int bufferSize,
                   int splitLevel,
                   TBranch** branchPtr ) {
+    if ( currentTree == 0 ) return;
     currentTree->SetBranchAddress( branchName, dataPtr, branchPtr );
     dummySize  = bufferSize;
     dummyLevel = splitLevel;
@@ -101,6 +112,7 @@ class TreeLightReader {
   void setBranch( const char* branchName, T** dataPtr,
                   int bufferSize = 32000,
                   int splitLevel = 99 ) {
+    if ( currentTree == 0 ) return;
     currentTree->SetBranchAddress( branchName, dataPtr  );
     dummySize  = bufferSize;
     dummyLevel = splitLevel;
@@ -111,6 +123,7 @@ class TreeLightReader {
                   int bufferSize,
                   int splitLevel,
                   TBranch** branchPtr ) {
+    if ( currentTree == 0 ) return;
     currentTree->SetBranchAddress( branchName, dataPtr, branchPtr );
     dummySize  = bufferSize;
     dummyLevel = splitLevel;

@@ -16,7 +16,8 @@ class BmmLightNtuple: public virtual BmmNtupleBranch<TreeLightReader>,
   BmmLightNtuple();
   virtual ~BmmLightNtuple();
 
-  void initTree( TTree* tree );
+//  void initTree();
+  void openTree( TTree* tree );
 //  virtual void reset();
 
  private:
