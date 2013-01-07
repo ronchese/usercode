@@ -26,6 +26,7 @@ class TreeWrapper {
   virtual std::string getUserParameter( const std::string& key );
   template<class T>
   void getUserParameter( const std::string& key, T& val );
+  void getUserParameter( const std::string& key, bool& val );
 
   // function to do initialization
   virtual void beginJob();

@@ -47,6 +47,14 @@ std::string TreeWrapper::getUserParameter( const std::string& key ) {
 }
 
 
+void TreeWrapper::getUserParameter( const std::string& key, bool& val ) {
+  const char* flag = getUserParameter( key ).c_str();
+  val = (   ( *flag == 't' ) || ( *flag == 'T' ) ||
+          ( ( *flag >= '1' ) && ( *flag <= '9' ) ) );
+  return;
+}
+
+
 void TreeWrapper::beginJob() {
 // default analysis - dummy
   return;
