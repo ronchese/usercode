@@ -23,6 +23,7 @@
 
 BmmPATAnalyzer::BmmPATAnalyzer( const edm::ParameterSet& ps ):
   BmmPATToNtuple( ps ) {
+  histName = ps.getParameter<std::string>( "histName" );
 }
 
 BmmPATAnalyzer::~BmmPATAnalyzer() {
@@ -36,7 +37,7 @@ void BmmPATAnalyzer::beginJob() {
 
 void BmmPATAnalyzer::endJob()  {
   BmmPATToNtuple::endJob();
-  TreeWrapper::save( "hist.root" );
+  TreeWrapper::save( histName );
   return;
 }
 

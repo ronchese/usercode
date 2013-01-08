@@ -23,6 +23,8 @@ process.source = cms.Source ("PoolSource", fileNames=fileList)
 process.bmmAnalyzer = cms.EDAnalyzer('BmmPATAnalyzer',
     ## mandatory
     ntuName = cms.untracked.string('ntu.root'),
+    histName = cms.untracked.string('hist.root'),
+
     labelHLT       = cms.string('HLT'),
     labelMets      = cms.string('patMETsAK5PFNoPUTypeII'),
 # 8TeV

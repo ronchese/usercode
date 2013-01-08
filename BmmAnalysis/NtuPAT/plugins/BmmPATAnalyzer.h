@@ -32,6 +32,7 @@ class BmmPATAnalyzer: public edm::EDAnalyzer,
  private:
 
   int analyzedFile;
+  std::string histName;
 
   virtual void analyze( const edm::Event& ev, const edm::EventSetup& es );
 
