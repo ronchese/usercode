@@ -4,7 +4,10 @@
 
 BmmNtupleData::BmmNtupleData() {
 
+  use_mEt = false;
+
   // muons
+  use_muons = false;
   nMuons = 0;
   muoPt           = new std::vector<double>;
   muoEta          = new std::vector<double>;
@@ -24,14 +27,14 @@ BmmNtupleData::BmmNtupleData() {
   muoSumPUpt      = new std::vector<double>;
   muoNumMatches   = new std::vector<double>;
   muoDb           = new std::vector<double>;
-  muoNumValidHits = new std::vector<double>;
+  muoNumValidHits = new std::vector<int   >;
   muoNormChi2     = new std::vector<double>;
-  muoNumMuHits    = new std::vector<double>;
-  muoNumPixHits   = new std::vector<double>;
-  muoNumTkHits    = new std::vector<double>;
+  muoNumMuHits    = new std::vector<int   >;
+  muoNumPixHits   = new std::vector<int   >;
+  muoNumTkHits    = new std::vector<int   >;
 
-/*
   // electrons
+  use_electrons = false;
   nElectrons = 0;
   elePt           = new std::vector<double>;
   eleEta          = new std::vector<double>;
@@ -46,15 +49,13 @@ BmmNtupleData::BmmNtupleData() {
   elePhoIso       = new std::vector<double>;
   eleAbsEta       = new std::vector<double>;
   eleAEff         = new std::vector<double>;
-//  eleLPt          = new std::vector<double>;
   eleID           = new std::vector<int   >;
   eleConsCha      = new std::vector<bool  >;
   eleEBEEGap      = new std::vector<bool  >;
   eleDb           = new std::vector<double>;
-  eleIso          = new std::vector<double>;
-  eleClass        = new std::vector<int   >;
 
   // taus
+  use_taus = false;
   nTaus = 0;
   tauPt           = new std::vector<double>;
   tauEta          = new std::vector<double>;
@@ -64,9 +65,26 @@ BmmNtupleData::BmmNtupleData() {
   tauPz           = new std::vector<double>;
   tauE            = new std::vector<double>;
   tauCharge       = new std::vector<int   >;
-*/
+
+  // tracks
+  use_tracks = false;
+  nTracks = 0;
+  trkPt           = new std::vector<double>;
+  trkEta          = new std::vector<double>;
+  trkPhi          = new std::vector<double>;
+  trkPx           = new std::vector<double>;
+  trkPy           = new std::vector<double>;
+  trkPz           = new std::vector<double>;
+  trkE            = new std::vector<double>;
+  trkCharge       = new std::vector<int   >;
+  trkJet          = new std::vector<int   >;
+  trkQuality      = new std::vector<int   >;
+  trkNormChi2     = new std::vector<double>;
+  trkDxy          = new std::vector<double>;
+  trkDz           = new std::vector<double>;
 
   // jets
+  use_jets = false;
   nJets = 0;
   jetPt           = new std::vector<double>;
   jetEta          = new std::vector<double>;
@@ -86,6 +104,7 @@ BmmNtupleData::BmmNtupleData() {
   jetNCH          = new std::vector<double>;
 
   // gen particles
+  use_gen = false;
   nGenP = 0;
   genId           = new std::vector<int   >;
   genStatus       = new std::vector<int   >;

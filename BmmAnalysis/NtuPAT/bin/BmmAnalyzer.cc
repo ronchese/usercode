@@ -18,10 +18,13 @@ BmmAnalyzer::BmmAnalyzer() {
   // user parameters are set as names associated to a string, 
   // default values can be set in the analyzer class contructor
 
-  setUserParameter( "use_mEt"  , "true" );
-  setUserParameter( "use_muons", "true" );
-  setUserParameter( "use_jets" , "true" );
-  setUserParameter( "use_gen"  , "false" );
+  setUserParameter( "use_mEt"      , "true" );
+  setUserParameter( "use_muons"    , "true" );
+  setUserParameter( "use_electrons", "true" );
+  setUserParameter( "use_taus"     , "true" );
+  setUserParameter( "use_tracks"   , "true" );
+  setUserParameter( "use_jets"     , "true" );
+  setUserParameter( "use_gen"      , "false" );
 
   setUserParameter( "verbose", "f" );
 
@@ -54,13 +57,14 @@ void BmmAnalyzer::beginJob() {
   // by passing the corresponding variable,
   // e.g. getUserParameter( "name", x )
 
-  getUserParameter( "use_mEt"  , use_mEt );
-  getUserParameter( "use_muons", use_muons );
-  getUserParameter( "use_jets" , use_jets );
-  getUserParameter( "use_gen"  , use_gen );
-  cout << "now init" << endl;
+  getUserParameter( "use_mEt"      , use_mEt       );
+  getUserParameter( "use_muons"    , use_muons     );
+  getUserParameter( "use_electrons", use_electrons );
+  getUserParameter( "use_taus"     , use_taus      );
+  getUserParameter( "use_tracks"   , use_tracks    );
+  getUserParameter( "use_jets"     , use_jets      );
+  getUserParameter( "use_gen"      , use_gen       );
   initTree();
-  cout << "init done" << endl;
 
   getUserParameter( "verbose", verbose );
 
@@ -119,7 +123,7 @@ bool BmmAnalyzer::analyze( int entry, int event_file, int event_tot ) {
   }
   else {
 //    if ( !( event_file % 10000 ) || !( event_tot % 10000 ) )
-    if ( !( event_file % 10000 ) )
+    if ( !( event_file % 10000 ) && event_file )
       cout << event_file << " " << event_tot << endl;
   }
 

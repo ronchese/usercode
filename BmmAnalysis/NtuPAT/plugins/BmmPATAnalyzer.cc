@@ -60,7 +60,6 @@ void BmmPATAnalyzer::analyze( const edm::Event& ev,
   if ( BmmPATToNtuple::analyze( ientry, analyzedFile++, analyzedEvts++ ) ) 
                                                         acceptedEvts++;
   return;
-
 }
 
 //define this as a plug-in

@@ -17,12 +17,15 @@ namespace edm {
 namespace pat {
   class MET;
   class Muon;
-//  class Electron;
-//  class Tau;
+  class Electron;
+  class Tau;
+//  class PFParticle;
   class Jet;
 }
 
 namespace reco {
+  class PFCandidate;
+  class Track;
   class GenParticle;
 }
 
@@ -56,8 +59,10 @@ class BmmPATToNtuple: public BmmAnalyzer,
   std::string labelHLT;
   std::string labelMets;
   std::string labelMuons;
-//  std::string labelElectrons;
-//  std::string labelTaus;
+  std::string labelElectrons;
+  std::string labelTaus;
+//  std::string labelPFParticles;
+  std::string labelPFCandidates;
   std::string labelJets;
   std::string labelGen;
 
@@ -67,16 +72,22 @@ class BmmPATToNtuple: public BmmAnalyzer,
   edm::Handle< edm::TriggerResults          > hlt;
   edm::Handle< std::vector<pat::MET         > > mets;
   edm::Handle< std::vector<pat::Muon        > > muons;
-//  edm::Handle< std::vector<pat::Electron    > > electrons;
-//  edm::Handle< std::vector<pat::Tau         > > taus;
+  edm::Handle< std::vector<pat::Electron    > > electrons;
+  edm::Handle< std::vector<pat::Tau         > > taus;
   edm::Handle< std::vector<pat::Jet         > > jets;
+//  edm::Handle< std::vector<pat::PFParticle  > > pfParticles;
+  edm::Handle< std::vector<reco::PFCandidate> > pfCandidates;
   edm::Handle< std::vector<reco::GenParticle> > particles;
+
+//  std::map<const reco::Track*,int> trkMap;
+  std::map<const reco::PFCandidate*,int> pfcMap;
 
   void fillTrigger     ();
   void fillMet         ();
   void fillMuons       ();
-//  void fillElectrons   ();
-//  void fillTaus        ();
+  void fillElectrons   ();
+  void fillTaus        ();
+  void fillTracks      ();
   void fillJets        ();
   void fillGenParticles();
 
