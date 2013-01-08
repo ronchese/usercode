@@ -20,10 +20,14 @@ class BmmNtupleData {
   unsigned int lumiSection;
   unsigned int eventNumber;
 
-  // HLT
+  // hlt
+  bool use_hlt;
+  int nHLT;
+  std::vector<std::string>* hltPath;
+  std::vector<bool       >* hltAccept;
 
-  // mEt
-  bool use_mEt;
+  // met
+  bool use_met;
   double mEt;
   double mEx;
   double mEy;
@@ -127,6 +131,10 @@ class BmmNtupleData {
   std::vector<double>* jetCHF;  //.chargedHadronEnergyFraction()
   std::vector<double>* jetCEF;  //.chargedEmEnergyFraction()
   std::vector<double>* jetNCH;  //.chargedMultiplicity()
+
+  // jets
+  bool use_vertices;
+  int nVertices;
 
   // gen particles
   bool use_gen;

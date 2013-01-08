@@ -17,7 +17,8 @@ class BmmNtupleBranch: public virtual BmmNtupleData, public virtual T {
 
   void initTree();
 
-  void setBranches_mEt();
+  void setBranches_hlt();
+  void setBranches_met();
   void setBranches_muons();
   void setBranches_electrons();
   void setBranches_taus();
@@ -33,6 +34,11 @@ class BmmNtupleBranch: public virtual BmmNtupleData, public virtual T {
   TBranch* b_runNumber;
   TBranch* b_lumiSection;
   TBranch* b_eventNumber;
+
+  // hlt
+  TBranch* b_nHLT;
+  TBranch* b_hltPath;
+  TBranch* b_hltAccept;
 
   // mEt
   TBranch* b_mEt;

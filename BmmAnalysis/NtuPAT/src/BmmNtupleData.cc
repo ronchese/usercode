@@ -4,7 +4,12 @@
 
 BmmNtupleData::BmmNtupleData() {
 
-  use_mEt = false;
+  use_met = false;
+
+  // hlt
+  use_hlt = false;
+  hltPath   = new std::vector<std::string>;
+  hltAccept = new std::vector<bool       >;
 
   // muons
   use_muons = false;

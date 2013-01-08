@@ -18,7 +18,8 @@ BmmAnalyzer::BmmAnalyzer() {
   // user parameters are set as names associated to a string, 
   // default values can be set in the analyzer class contructor
 
-  setUserParameter( "use_mEt"      , "true" );
+  setUserParameter( "use_hlt"      , "true" );
+  setUserParameter( "use_met"      , "true" );
   setUserParameter( "use_muons"    , "true" );
   setUserParameter( "use_electrons", "true" );
   setUserParameter( "use_taus"     , "true" );
@@ -57,7 +58,8 @@ void BmmAnalyzer::beginJob() {
   // by passing the corresponding variable,
   // e.g. getUserParameter( "name", x )
 
-  getUserParameter( "use_mEt"      , use_mEt       );
+  getUserParameter( "use_hlt"      , use_hlt       );
+  getUserParameter( "use_met"      , use_met       );
   getUserParameter( "use_muons"    , use_muons     );
   getUserParameter( "use_electrons", use_electrons );
   getUserParameter( "use_taus"     , use_taus      );
@@ -146,6 +148,26 @@ bool BmmAnalyzer::analyze( int entry, int event_file, int event_tot ) {
   }
   hptmumax->Fill( ptmumax );
   hptmu2nd->Fill( ptmu2nd );	
+
+/*
+  int itrk;
+  int jtrk;
+  int ktrk = -1;
+  for ( itrk = 0; itrk < 8; ++itrk ) {
+    float dmin = 1.0e+37;
+    for ( jtrk = 0; jtrk < nTracks; ++jtrk ) {
+//      if ( trkJet->at( itrk ) != trkJet->at( jtrk ) ) continue;
+      float dist = sqrt( pow( trkPx->at( itrk ) - trkPx->at( jtrk ), 2 ) +
+                         pow( trkPy->at( itrk ) - trkPy->at( jtrk ), 2 ) +
+                         pow( trkPz->at( itrk ) - trkPz->at( jtrk ), 2 ) );
+      if ( dist < dmin ) {
+        dmin = dist;
+        ktrk = jtrk;
+      }
+    }
+//    if ( ktrk != itrk ) cout << itrk << " " << ktrk << " " << dmin << endl;
+  }
+*/
 
   return flag;
 

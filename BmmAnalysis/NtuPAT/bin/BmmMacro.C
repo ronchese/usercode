@@ -20,7 +20,7 @@
 void BmmMacro( const std::string& dataset ) {
 
   BmmAnalyzer* ntu = new BmmAnalyzer;
-//  ntu->setUserParameter( "verbose", "t" );
+  ntu->setUserParameter( "verbose", "t" );
   ntu->beginJob();
   ntu->book();
 //  ntu->eqlumi = eqlumi;

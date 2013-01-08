@@ -2,8 +2,8 @@
 #include "TFile.h"
 #include "TROOT.h"
 
-//#include "FWCore/Common/interface/TriggerNames.h"
-//#include "DataFormats/Common/interface/TriggerResults.h"
+#include "FWCore/Common/interface/TriggerNames.h"
+#include "DataFormats/Common/interface/TriggerResults.h"
 //#include "DataFormats/HLTReco/interface/TriggerObject.h"
 //#include "DataFormats/HLTReco/interface/TriggerEvent.h"
 //#include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
@@ -51,7 +51,8 @@ BmmPATToNtuple::BmmPATToNtuple( const edm::ParameterSet& ps ) {
   labelPFCandidates = ps.getParameter<std::string>( "labelPFCandidates" );
   labelJets         = ps.getParameter<std::string>( "labelJets"         );
   labelGen          = ps.getParameter<std::string>( "labelGen"          );
-  setUserParameter( "use_mEt"      , labelMets         == "" ? "f" : "t" );
+  setUserParameter( "use_hlt"      , labelHLT          == "" ? "f" : "t" );
+  setUserParameter( "use_met"      , labelMets         == "" ? "f" : "t" );
   setUserParameter( "use_muons"    , labelMuons        == "" ? "f" : "t" );
   setUserParameter( "use_electrons", labelElectrons    == "" ? "f" : "t" );
   setUserParameter( "use_taus"     , labelTaus         == "" ? "f" : "t" );
@@ -107,7 +108,12 @@ void BmmPATToNtuple::read( const edm::EventBase& ev ) {
   lumiSection = ev.id().luminosityBlock();
   eventNumber = ev.id().event();
 
-  if ( use_mEt       ) {
+  if ( use_hlt       ) {
+    ev.getByLabel( labelHLT      , hlt       );
+    if ( hlt.isValid() ) triggerNames = &( ev.triggerNames( *hlt ) );
+    fillTrigger     ();
+  }
+  if ( use_met       ) {
     ev.getByLabel( labelMets     , mets      );
     fillMet         ();
   }
@@ -160,7 +166,34 @@ void BmmPATToNtuple::endJob() {
 
 
 void BmmPATToNtuple::fillTrigger() {
+
+  nHLT = 0;
+  hltPath  ->clear();
+  hltAccept->clear();
+  if ( !hlt.isValid() ) {
+    std::cout << "invalid HLT" << std::endl;
+    return;
+  }
+
+  int nObj = triggerNames->size();
+  for ( int iObj = 0; iObj < nObj; ++iObj ) {
+    const std::string& hltPathName = triggerNames->triggerName( iObj );
+//    TString tmp = triggerNames.triggerName(iObj);
+//    if (!tmp.Contains("HLT_Mu12_eta2p1_DiCentral_40_20_DiBTagIP3D1stTrack_v")) continue;
+//    size_t hltPathIndex = triggerNames.triggerIndex(hltPathName);
+//    if ( hltPathIndex != iObj ) cout << iObj << " " << hltPathIndex << endl;
+
+    if ( hltPathName.find(
+      "HLT_Mu12_eta2p1_DiCentral_40_20_DiBTagIP3D1stTrack_v", 0 ) != 0 ) 
+      continue;
+    bool accept = hlt->accept( iObj );
+    ++nHLT;
+    hltPath  ->push_back( hltPathName );
+    hltAccept->push_back( accept );
+  }
+
   return;
+
 }
 
 
@@ -169,7 +202,10 @@ void BmmPATToNtuple::fillMet() {
   mEt = -999.999;
   mEx = 0.0;
   mEy = 0.0;
-  if ( !mets.isValid() ) return;
+  if ( !mets.isValid() ) {
+    std::cout << "invalid HLT" << std::endl;
+    return;
+  }
 
   // store mEt info
 
@@ -214,7 +250,10 @@ void BmmPATToNtuple::fillMuons() {
   muoNumMuHits   ->resize( nObj );
   muoNumPixHits  ->resize( nObj );
   muoNumTkHits   ->resize( nObj );
-  if ( !vMuons ) return;
+  if ( !vMuons ) {
+    std::cout << "invalid HLT" << std::endl;
+    return;
+  }
 
   std::vector<const Muon*> muonPtr;
   muonPtr.resize( nObj );
@@ -301,7 +340,10 @@ void BmmPATToNtuple::fillElectrons() {
   eleConsCha->resize( nObj );
   eleEBEEGap->resize( nObj );
   eleDb     ->resize( nObj );
-  if ( !vElectrons ) return;
+  if ( !vElectrons ) {
+    std::cout << "invalid HLT" << std::endl;
+    return;
+  }
 
   std::vector<const Electron*> electronPtr;
   electronPtr.resize( nObj );
@@ -366,7 +408,10 @@ void BmmPATToNtuple::fillTaus() {
   tauPz    ->resize( nObj );
   tauE     ->resize( nObj );
   tauCharge->resize( nObj );
-  if ( !vTaus ) return;
+  if ( !vTaus ) {
+    std::cout << "invalid HLT" << std::endl;
+    return;
+  }
 
   std::vector<const Tau*> tauPtr;
   tauPtr.resize( nObj );
@@ -420,7 +465,10 @@ void BmmPATToNtuple::fillTracks() {
   trkNormChi2->resize( nObj );
   trkDxy     ->resize( nObj );
   trkDz      ->resize( nObj );
-  if ( !vTracks ) return;
+  if ( !vTracks ) {
+    std::cout << "invalid HLT" << std::endl;
+    return;
+  }
 
   pfcMap.clear();
   nTracks = nObj;
@@ -485,7 +533,10 @@ void BmmPATToNtuple::fillJets() {
   jetCHF ->resize( nObj );
   jetCEF ->resize( nObj );
   jetNCH ->resize( nObj );
-  if ( !vJets ) return;
+  if ( !vJets ) {
+    std::cout << "invalid HLT" << std::endl;
+    return;
+  }
 
   std::vector<const Jet*> jetPtr;
   jetPtr.resize( nObj );
@@ -577,7 +628,10 @@ void BmmPATToNtuple::fillGenParticles() {
   genE     ->resize( nObj );
   genCharge->resize( nObj );
   genMass  ->resize( nObj );
-  if ( !vGen ) return;
+  if ( !vGen ) {
+    std::cout << "invalid HLT" << std::endl;
+    return;
+  }
 
   map<const reco::Candidate*,int> genMap;
   nGenP = nObj;

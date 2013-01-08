@@ -12,6 +12,7 @@ class TFile;
 
 namespace edm {
   class TriggerResults;
+  class TriggerNames;
 }
 
 namespace pat {
@@ -69,7 +70,7 @@ class BmmPATToNtuple: public BmmAnalyzer,
   std::string labelCSV;
   std::string labelTCHE;
 
-  edm::Handle< edm::TriggerResults          > hlt;
+  edm::Handle< edm::TriggerResults            > hlt;
   edm::Handle< std::vector<pat::MET         > > mets;
   edm::Handle< std::vector<pat::Muon        > > muons;
   edm::Handle< std::vector<pat::Electron    > > electrons;
@@ -78,6 +79,8 @@ class BmmPATToNtuple: public BmmAnalyzer,
 //  edm::Handle< std::vector<pat::PFParticle  > > pfParticles;
   edm::Handle< std::vector<reco::PFCandidate> > pfCandidates;
   edm::Handle< std::vector<reco::GenParticle> > particles;
+
+  const edm::TriggerNames* triggerNames;
 
 //  std::map<const reco::Track*,int> trkMap;
   std::map<const reco::PFCandidate*,int> pfcMap;
