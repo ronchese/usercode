@@ -23,7 +23,7 @@
 
 BmmPATAnalyzer::BmmPATAnalyzer( const edm::ParameterSet& ps ):
   BmmPATToNtuple( ps ) {
-  histName = ps.getParameter<std::string>( "histName" );
+  histName = ps.getUntrackedParameter<std::string>( "histName" );
 }
 
 BmmPATAnalyzer::~BmmPATAnalyzer() {
