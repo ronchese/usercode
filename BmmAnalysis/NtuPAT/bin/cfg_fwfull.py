@@ -24,6 +24,7 @@ process.bmmAnalyzer = cms.EDAnalyzer('BmmPATAnalyzer',
     ## mandatory
     ntuName = cms.untracked.string('ntu.root'),
     histName = cms.untracked.string('hist.root'),
+    verbose = cms.untracked.string('f'),
 
     labelHLT       = cms.string('HLT'),
     labelMets      = cms.string('patMETsAK5PFNoPUTypeII'),
@@ -36,8 +37,17 @@ process.bmmAnalyzer = cms.EDAnalyzer('BmmPATAnalyzer',
 # 8TeV ?
 #    labelJets      = cms.string('customPFJetsAK5PFNoPU'),
     labelGen       = cms.string('genParticles'),
-    ## optional
-    verbose = cms.untracked.string('f')
+
+    savedTriggers = cms.vstring(
+        'HLT_Mu12_eta2p1_DiCentral_40_20_DiBTagIP3D1stTrack_v',
+        'HLT_Mu12_eta2p1_DiCentral_20_v',
+        'HLT_Mu12_eta2p1_DiCentral_40_20_BTagIP3D1stTrack_v',
+        'HLT_Mu12_eta2p1_DiCentral_40_20_v',
+        'HLT_Mu12_eta2p1_L1Mu10erJetC12WdEtaPhi1DiJetsC_v',
+        'HLT_Mu12_DoubleCentralJet65_v',
+        'HLT_Mu12_v'
+    )
+
 )
 
 

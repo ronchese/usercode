@@ -20,6 +20,7 @@ process.fwliteOutput = cms.PSet(
 process.bmmAnalyzer = cms.PSet(
     ## mandatory
     ntuName = cms.untracked.string('ntu.root'),
+    verbose = cms.untracked.string('f'),
     labelHLT       = cms.string('HLT'),
     labelMets      = cms.string('patMETsAK5PFNoPUTypeII'),
 # 8TeV
@@ -31,8 +32,16 @@ process.bmmAnalyzer = cms.PSet(
 # 8TeV ?
 #    labelJets      = cms.string('customPFJetsAK5PFNoPU'),
     labelGen       = cms.string('genParticles'),
+    savedTriggers = cms.vstring(
+        'HLT_Mu12_eta2p1_DiCentral_40_20_DiBTagIP3D1stTrack_v',
+        'HLT_Mu12_eta2p1_DiCentral_20_v',
+        'HLT_Mu12_eta2p1_DiCentral_40_20_BTagIP3D1stTrack_v',
+        'HLT_Mu12_eta2p1_DiCentral_40_20_v',
+        'HLT_Mu12_eta2p1_L1Mu10erJetC12WdEtaPhi1DiJetsC_v',
+        'HLT_Mu12_DoubleCentralJet65_v',
+        'HLT_Mu12_v'
+    )
     ## optional
-    verbose = cms.untracked.string('f')
 )
 
 
