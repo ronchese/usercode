@@ -101,7 +101,7 @@ int main( int argc, char* argv[] ) {
         edm::EventBase const & event = ev;
         ntu->read( event );
 //        cout << "analyze..." << endl;
-        ntu->analyze( ientry++, analyzedFile++ );
+        if ( ntu->analyze( ientry++, analyzedFile++ ) ) ntu->writeNtuple();
         if ( ( endAna = ( ( maxEvents_ > 0 ) &&
                           ( ntu->analyzedEvents() >= maxEvents_ ) ) ) ) break;
       } //end event loop  
