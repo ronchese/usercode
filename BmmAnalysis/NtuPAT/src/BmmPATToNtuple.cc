@@ -203,7 +203,7 @@ void BmmPATToNtuple::fillMet() {
   mEx = 0.0;
   mEy = 0.0;
   if ( !mets.isValid() ) {
-    std::cout << "invalid HLT" << std::endl;
+    std::cout << "invalid mets" << std::endl;
     return;
   }
 
@@ -251,7 +251,7 @@ void BmmPATToNtuple::fillMuons() {
   muoNumPixHits  ->resize( nObj );
   muoNumTkHits   ->resize( nObj );
   if ( !vMuons ) {
-    std::cout << "invalid HLT" << std::endl;
+    std::cout << "invalid muons" << std::endl;
     return;
   }
 
@@ -341,7 +341,7 @@ void BmmPATToNtuple::fillElectrons() {
   eleEBEEGap->resize( nObj );
   eleDb     ->resize( nObj );
   if ( !vElectrons ) {
-    std::cout << "invalid HLT" << std::endl;
+    std::cout << "invalid electrons" << std::endl;
     return;
   }
 
@@ -409,7 +409,7 @@ void BmmPATToNtuple::fillTaus() {
   tauE     ->resize( nObj );
   tauCharge->resize( nObj );
   if ( !vTaus ) {
-    std::cout << "invalid HLT" << std::endl;
+    std::cout << "invalid taus" << std::endl;
     return;
   }
 
@@ -466,7 +466,7 @@ void BmmPATToNtuple::fillTracks() {
   trkDxy     ->resize( nObj );
   trkDz      ->resize( nObj );
   if ( !vTracks ) {
-    std::cout << "invalid HLT" << std::endl;
+    std::cout << "invalid tracks" << std::endl;
     return;
   }
 
@@ -534,7 +534,7 @@ void BmmPATToNtuple::fillJets() {
   jetCEF ->resize( nObj );
   jetNCH ->resize( nObj );
   if ( !vJets ) {
-    std::cout << "invalid HLT" << std::endl;
+    std::cout << "invalid jets" << std::endl;
     return;
   }
 
@@ -629,7 +629,7 @@ void BmmPATToNtuple::fillGenParticles() {
   genCharge->resize( nObj );
   genMass  ->resize( nObj );
   if ( !vGen ) {
-    std::cout << "invalid HLT" << std::endl;
+    std::cout << "invalid particles" << std::endl;
     return;
   }
 
