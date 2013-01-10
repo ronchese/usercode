@@ -1,7 +1,7 @@
 /*
  *  See header file for a description of this class.
  *
- *  $Date: 2011/03/01 18:08:37 $
+ *  $Date: 2010-11-08 13:01:04 $
  *  $Revision: 1.1 $
  *  \author Paolo Ronchese INFN Padova
  *
@@ -52,6 +52,6 @@ DataHandlerMap* TreeTypeManager::handlerMap() {
 void TreeTypeManager::registerHandler( const std::string& code,
                                        DataHandler* handler ) {
   if ( stmMap == 0 ) stmMap = new DataHandlerMap;
-  stmMap->insert( code, handler );
+  stmMap->insert( code,handler );
 }
 

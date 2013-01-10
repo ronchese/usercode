@@ -29,7 +29,7 @@ mkdir ${LIBDIR}
 fi
 
 rm -f ${LIBDIR}/libNtupleTool_${VERSION}.so
-c++ -I ${NTU_TOOL_DIR}/include `root-config --cflags` -fPIC \
+c++ -I.. `root-config --cflags` -fPIC \
     --shared -o ${LIBDIR}/libNtupleTool_${VERSION}.so \
     Common/src/*.cc  Read/src/*.cc
 

@@ -1,37 +1,18 @@
 #!/bin/sh
 
-export NTU_ROOT_DIR=`find ${CMSSW_BASE}/src | grep 'NtuTool$'`
+cd ${CMSSW_BASE}/src
+export NTU_ROOT_DIR=`find . | grep 'NtuTool$'`
 cd ${NTU_ROOT_DIR}
+cd ..
 
-rm -f export.tgz
-tar -czf export.tgz                \
-         INSTRUCTIONS              \
-         VERSION                   \
-         Common/interface          \
-         Common/src                \
-         Read/interface            \
-         Read/src                  \
-         Read/bin/treeAnalyze.cc   \
-         uty/install.*h            \
-         uty/envset*h              \
-         uty/compile.*h            \
-         uty/go_compileNtuTool.*h  \
-         uty/compile_CMSSW.*h
-
-export NTU_TOOL_TMP=NtuTool_`head -1 ${NTU_ROOT_DIR}/VERSION | sed s/"\."/_/g`
-mkdir ${NTU_TOOL_TMP}
-
-mv export.tgz ${NTU_TOOL_TMP}
-cd ${NTU_TOOL_TMP}
-tar -xzf export.tgz
-rm -f export.tgz
-
-cd ${NTU_ROOT_DIR}
-rm -f ${NTU_TOOL_TMP}.tgz
-tar -czf ${NTU_TOOL_TMP}.tgz ${NTU_TOOL_TMP}
-rm -rf ${NTU_TOOL_TMP}
-rm -f ../${NTU_TOOL_TMP}.tgz
-mv ${NTU_TOOL_TMP}.tgz ..
-
-find ${CMSSW_BASE}/src | grep NtuTool | grep tgz
-
+rm -f NtuTool.tgz
+tar -czf NtuTool.tgz                                   \
+         NtuTool/INSTRUCTIONS                          \
+         NtuTool/VERSION                               \
+         NtuTool/Common/interface NtuTool/Common/src   \
+         NtuTool/Read/interface NtuTool/Read/src       \
+         NtuTool/Read/test/treeAnalyze.cc              \
+         NtuTool/uty/install.*h NtuTool/uty/envset*h   \
+         NtuTool/uty/compile.*h                        \
+         NtuTool/uty/compile_CMSSW.*h                  \
+         NtuTool/uty/go_compileNtuTool.*h

@@ -1,6 +1,8 @@
 #ifndef TestBaseNtuple_h
 #define TestBaseNtuple_h
 
+#include "NtuTool/Common/interface/TreeWriter.h"
+
 #include "FWCore/Framework/interface/EDAnalyzer.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/EventSetup.h"
@@ -8,7 +10,6 @@
 
 class TFile;
 class TTree;
-class TBranch;
 
 class TestSimpleTree: public edm::EDAnalyzer {
 

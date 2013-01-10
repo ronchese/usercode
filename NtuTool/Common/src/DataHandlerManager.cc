@@ -16,9 +16,6 @@ DataHandlerManager::~DataHandlerManager() {
 DataHandler* DataHandlerManager::setHandler( const void* descPtr,
                                              const std::string* branchData ) {
 
-  data_iterator iter;
-  if ( ( iter = dataMap.find( descPtr ) ) != dataMap.end() )
-    return iter->second;
   DataHandler* dataHandler = getInstance( branchData );
   dataMap.insert( std::make_pair( descPtr, dataHandler ) );
   return dataHandler;

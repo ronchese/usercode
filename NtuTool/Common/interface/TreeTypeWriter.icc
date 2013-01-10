@@ -1,7 +1,7 @@
 /*
  *  See header file for a description of this class.
  *
- *  $Date: 2011/03/01 18:06:55 $
+ *  $Date: 2010-11-05 16:31:20 $
  *  $Revision: 1.1 $
  *  \author Paolo Ronchese INFN Padova
  *
@@ -84,7 +84,7 @@ void* TreeTypeWriter<T>::setAuxPtr( void* p, DataHandlerManager* hm ) {
   if ( convType == copyVector ) {
     bool fixedSize = DataConvert::fixedValue( dataSize );
     if ( fixedSize ) {
-      if ( auxPtr == 0 ) auxPtr = new int;
+      auxPtr = new int;
       std::stringstream ssize;
       ssize.str( dataSize );
       ssize >> *reinterpret_cast<int*>( auxPtr );

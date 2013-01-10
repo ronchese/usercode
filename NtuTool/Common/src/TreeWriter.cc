@@ -3,8 +3,6 @@
 #include "NtuTool/Common/interface/TreeTypeManager.h"
 
 #include "TTree.h"
-#include "TFile.h"
-#include "TDirectory.h"
 
 
 TreeWriter::TreeWriter() {
@@ -16,23 +14,11 @@ TreeWriter::~TreeWriter() {
 }
 
 
-void TreeWriter::initWrite( TFile* file ) {
+void TreeWriter::initWrite() {
 
-  TDirectory* currentDir = gDirectory;
-  file->cd();
-  std::string fullName = treeName;
-  int dirNameLength;
-  while ( ( dirNameLength = fullName.find( "/" ) ) >= 0 ) {
-    std::string nextName = fullName.substr( 0, dirNameLength ).c_str();
-    const char* n = nextName.c_str();
-    if ( gDirectory->Get( n ) == 0 ) gDirectory->mkdir( n );
-    gDirectory->cd( n );
-    fullName = fullName.substr( ++dirNameLength, fullName.length() );
-  }
-  const char* name = fullName.c_str();
-  treeDir = gDirectory;
+  const char* name = treeName.c_str();
   currentTree = new TTree( name, name );
-  currentDir->cd();
+                           
 
   branch_iterator iter = treeBegin();
   branch_iterator iend = treeEnd();
@@ -63,19 +49,14 @@ void TreeWriter::initWrite( TFile* file ) {
 
 
 void TreeWriter::fill() {
-  TDirectory* currentDir = gDirectory;
-  treeDir->cd();
   currentTree->Fill();
-  currentDir->cd();
   return;
 }
 
 
 void TreeWriter::close() {
-  TDirectory* currentDir = gDirectory;
-  treeDir->cd();
   currentTree->Write();
-  currentDir->cd();
   return;
 }
+
 

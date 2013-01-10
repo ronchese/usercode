@@ -2,6 +2,7 @@
 #define TestBaseNtuple_h
 
 #include "NtuTool/Common/test/stubs/SimpleNtuple.h"
+#include "NtuTool/Common/test/stubs/SimpleNtuple.cc"
 #include "NtuTool/Common/interface/TreeWriter.h"
 
 #include "FWCore/Framework/interface/EDAnalyzer.h"

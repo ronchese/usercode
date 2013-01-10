@@ -16,8 +16,6 @@ TestSimpleEDMNtuple::~TestSimpleEDMNtuple() {
 }
 
 void TestSimpleEDMNtuple::beginJob() {
-  std::cout << "TestSimpleEDMNtuple::beginJob" << std::endl;
-  return;
 }
 
 void TestSimpleEDMNtuple::fill( edm::Event &evt, const edm::EventSetup& es ) {

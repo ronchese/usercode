@@ -1,7 +1,7 @@
 /*
  *  See header file for a description of this class.
  *
- *  $Date: 2011/03/01 18:08:37 $
+ *  $Date: 2010-11-05 16:31:20 $
  *  $Revision: 1.1 $
  *  \author Paolo Ronchese INFN Padova
  *
@@ -34,26 +34,23 @@
 // Constructors --
 //----------------
 DataHandler::DataHandler():
- dataName( "" ),
- dataCode( "" ),
- dataType( "" ),
- dataSize( "" ),
- convType( null ),
- auxPtr( 0 ),
- dataReset( 0 ) {
+  dataName( "" ),
+  dataCode( "" ),
+  dataType( "" ),
+  dataSize( "" ),
+  convType( null ),
+  dataReset( 0 ) {
 }
 
 
 DataHandler::DataHandler( const std::string& name,
                           const std::string& code,
                           const std::string& type ):
- dataName( name ),
- dataCode( code ),
- dataType( type ),
- dataSize( ""   ),
- convType( null ),
- auxPtr( 0 ),
- dataReset( 0 ) {
+  dataName( name ),
+  dataCode( code ),
+  dataType( type ),
+  dataSize( ""   ),
+  convType( null ) {
   int bds = dataName.find( "[" );
   if ( bds < 0 ) return;
   convType = copyVector;

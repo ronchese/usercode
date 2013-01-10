@@ -14,10 +14,10 @@ cvs co UserCode/PaoloRonch
 mv UserCode/PaoloRonch/NtuTool .
 NtuTool/uty/export.sh
 
-copy the file NtuTool_XX_YY_ZZ.tgz wherever you want to install the tool, then
+copy the file NtuTool.tgz wherever you want to install the tool, then
 
-tar -xzf NtuTool_XX_YY_ZZ.tgz
-cd NtuTool_XX_YY_ZZ
+tar -xzf NtuTool.tgz
+cd NtuTool
 uty/install.sh
 . uty/envset.sh
 or
@@ -105,11 +105,11 @@ treeAnalyze_EDM edmList -n 6 -s 2 hs.root x
 complete the writing examples described above, then do the following
 
 cd ${CMSSW_BASE}/src/NtuTool/Read/test
-export/exportExample.sh
+exportExample.sh
 
 copy the file examples.tgz wherever you want
 
- ----- running examples - read outside CMSSW -----
+ ----- running examples - read in a CMSSW area -----
 
 tar -xzf examples.tgz
 compileExample.sh

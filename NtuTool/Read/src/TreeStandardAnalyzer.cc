@@ -1,8 +1,8 @@
 /*
  *  See header file for a description of this class.
  *
- *  $Date: 2011/12/15 12:11:55 $
- *  $Revision: 1.11 $
+ *  $Date: 2011/09/07 17:06:20 $
+ *  $Revision: 1.8 $
  *  \author Paolo Ronchese INFN Padova
  *
  */
@@ -16,7 +16,6 @@
 // Collaborating Class Headers --
 //-------------------------------
 #include "NtuTool/Read/interface/TreeReader.h"
-#include "TChain.h"
 
 //---------------
 // C++ Headers --
@@ -145,30 +144,29 @@ int TreeStandardAnalyzer::loop( TreeReader* tr, std::ifstream& treeListFile,
   if ( !skipTotal ) evskip = -evskip;
   if ( !accnTotal ) accmax = -accmax;
 
-  char* treeListLine = new char[1000];
-  char* treeListLptr;
-  char* treeFileName;
+  char* treeLine = new char[1000];
+  char* treeLptr;
+  char* treeName;
   int evcount = 0;
-  while ( treeListFile.getline( treeListLine, 1000 ) ) {
-    treeListLptr = treeListLine;
-    while ( *treeListLptr == ' ' ) treeListLptr++;
-    if ( *treeListLptr == 'b' ) break;
-    if ( *treeListLptr == 'B' ) break;
-    if ( *treeListLptr == 'Y' ) *treeListLptr = 'y';
-    if ( *treeListLptr != 'y' ) continue;
-    treeListLptr++;
-    while ( *treeListLptr == ' ' ) treeListLptr++;
-    treeFileName = treeListLptr;
-    while ( ( *treeListLptr != ' ' ) &&
-            ( *treeListLptr != '\0' ) ) treeListLptr++;
-    *treeListLptr = '\0';
-    std::cout << "open file " << treeFileName << std::endl;
-    TChain* c = tr->initRead( treeFileName );
+  while ( treeListFile.getline( treeLine, 1000 ) ) {
+    treeLptr = treeLine;
+    while ( *treeLptr == ' ' ) treeLptr++;
+    if ( *treeLptr == 'b' ) break;
+    if ( *treeLptr == 'B' ) break;
+    if ( *treeLptr == 'Y' ) *treeLptr = 'y';
+    if ( *treeLptr != 'y' ) continue;
+    treeLptr++;
+    while ( *treeLptr == ' ' ) treeLptr++;
+    treeName = treeLptr;
+    while ( ( *treeLptr != ' ' ) &&
+            ( *treeLptr != '\0' ) ) treeLptr++;
+    *treeLptr = '\0';
+    std::cout << "open file " << treeName << std::endl;
+    tr->initRead( treeName );
     int tmpmax = ( accmax && !accnTotal ?
                    accmax + tr->acceptedEvents() : accmax );
     int evfile = 
     tr->loop( evtmax, evskip, tmpmax, anaexe );
-    delete c;
     int evfana = evfile - evskip;
     if ( evfana <= 0 ) evfana = 0;
     if ( evfana > evtmax ) evcount += ( evtmax ? evtmax : evfana );
@@ -182,7 +180,7 @@ int TreeStandardAnalyzer::loop( TreeReader* tr, std::ifstream& treeListFile,
     if ( evskip <= 0 ) evskip = 0;
   }
 
-  delete[] treeListLine;
+  delete[] treeLine;
   return evcount;
 
 }

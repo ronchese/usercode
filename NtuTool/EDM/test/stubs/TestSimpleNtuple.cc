@@ -7,19 +7,17 @@
 #include <iostream>
 
 TestSimpleNtuple::TestSimpleNtuple( const edm::ParameterSet& cfg ) {
-  // open output ROOT file
+  // open ROOT file
   file = new TFile( "ntuple_base.root", "CREATE" );
   // use local function "initWrite" (defined in the tool)
   // to define the tree structure
-  initWrite( file );
+  initWrite();
 }
 
 TestSimpleNtuple::~TestSimpleNtuple() {
 }
 
 void TestSimpleNtuple::beginJob() {
-  std::cout << "TestSimpleNtuple::beginJob" << std::endl;
-  return;
 }
 
 void TestSimpleNtuple::analyze( const edm::Event &evt,
@@ -31,6 +29,8 @@ void TestSimpleNtuple::analyze( const edm::Event &evt,
   autoReset();
   // set variables
   setData( evt.id().run() );
+  //
+  file->cd();
   // function provided by the tool to actually fill the tree
   fill();
   return;
@@ -38,6 +38,7 @@ void TestSimpleNtuple::analyze( const edm::Event &evt,
 
 void TestSimpleNtuple::endJob() {
   std::cout << "TestSimpleNtuple::endJob" << std::endl;
+  file->cd();
   // function provided by the tool to close the tree
   close();
   // close the file
