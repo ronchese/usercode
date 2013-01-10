@@ -8,6 +8,7 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 
 #include <string>
+#include <vector>
 class TFile;
 
 namespace edm {
@@ -42,6 +43,7 @@ class BmmPATToNtuple: public BmmAnalyzer,
   virtual void beginJob();
   virtual void openNtuple( const std::string& ntuName );
   virtual void read( const edm::EventBase& ev );
+  virtual void writeNtuple();
   virtual void closeNtuple();
   virtual void endJob();
 
@@ -81,6 +83,7 @@ class BmmPATToNtuple: public BmmAnalyzer,
   edm::Handle< std::vector<reco::GenParticle> > particles;
 
   const edm::TriggerNames* triggerNames;
+  std::vector<std::string> savedTriggers;
 
 //  std::map<const reco::Track*,int> trkMap;
   std::map<const reco::PFCandidate*,int> pfcMap;

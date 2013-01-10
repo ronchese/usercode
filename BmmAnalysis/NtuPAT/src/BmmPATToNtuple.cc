@@ -51,6 +51,7 @@ BmmPATToNtuple::BmmPATToNtuple( const edm::ParameterSet& ps ) {
   labelPFCandidates = ps.getParameter<std::string>( "labelPFCandidates" );
   labelJets         = ps.getParameter<std::string>( "labelJets"         );
   labelGen          = ps.getParameter<std::string>( "labelGen"          );
+  savedTriggers     = ps.getParameter< std::vector<std::string> >( "savedTriggers" );
   setUserParameter( "use_hlt"      , labelHLT          == "" ? "f" : "t" );
   setUserParameter( "use_met"      , labelMets         == "" ? "f" : "t" );
   setUserParameter( "use_muons"    , labelMuons        == "" ? "f" : "t" );
@@ -142,6 +143,13 @@ void BmmPATToNtuple::read( const edm::EventBase& ev ) {
     fillGenParticles();
   }
 
+  return;
+
+}
+
+
+void BmmPATToNtuple::writeNtuple() {
+
   // function provided by the tool to actually fill the tree
 //  cout << "fill" << endl;
   fill();
@@ -176,20 +184,22 @@ void BmmPATToNtuple::fillTrigger() {
   }
 
   int nObj = triggerNames->size();
+  int iTrg;
+  int nTrg = savedTriggers.size();
   for ( int iObj = 0; iObj < nObj; ++iObj ) {
     const std::string& hltPathName = triggerNames->triggerName( iObj );
 //    TString tmp = triggerNames.triggerName(iObj);
 //    if (!tmp.Contains("HLT_Mu12_eta2p1_DiCentral_40_20_DiBTagIP3D1stTrack_v")) continue;
 //    size_t hltPathIndex = triggerNames.triggerIndex(hltPathName);
 //    if ( hltPathIndex != iObj ) cout << iObj << " " << hltPathIndex << endl;
-
-    if ( hltPathName.find(
-      "HLT_Mu12_eta2p1_DiCentral_40_20_DiBTagIP3D1stTrack_v", 0 ) != 0 ) 
-      continue;
-    bool accept = hlt->accept( iObj );
-    ++nHLT;
-    hltPath  ->push_back( hltPathName );
-    hltAccept->push_back( accept );
+    for ( iTrg = 0; iTrg < nTrg; ++iTrg ) {
+      const string& name = savedTriggers[iTrg];
+      if ( ( name != "*" ) &&
+           ( hltPathName.find( name, 0 ) != string::npos ) ) continue;
+      ++nHLT;
+      hltPath  ->push_back( name );
+      hltAccept->push_back( hlt->accept( iObj ) );
+    }
   }
 
   return;
@@ -574,17 +584,21 @@ void BmmPATToNtuple::fillJets() {
     const std::vector<reco::PFCandidatePtr>& jPFC = jet.getPFConstituents();
     int nPFC = jPFC.size();
     int iPFC;
-//    std::map<const reco::PFCandidate*,int>::const_iterator iter =
-//                                                           pfcMap.begin();
-//    std::map<const reco::PFCandidate*,int>::const_iterator iend =
-//                                                           pfcMap.end();
+    std::map<const reco::PFCandidate*,int>::const_iterator iter =
+                                                           pfcMap.begin();
+    std::map<const reco::PFCandidate*,int>::const_iterator iend =
+                                                           pfcMap.end();
     for ( iPFC = 0; iPFC < nPFC; ++iPFC ) {
       const reco::PFCandidatePtr& pfp = jPFC.at( iPFC );
-//      iter = pfcMap.find( &(*pfp) );
-//      if ( iter != iend ) std::cout << "pfc found for jet " << iObj << " "
-//                                    << iter->second << std::endl;
-//      else                std::cout << "pfc missing for jet " << iObj
-//                                    << std::endl;
+      iter = pfcMap.find( &(*pfp) );
+      if ( iter != iend ) trkJet->at( iter->second ) = iObj;
+/*
+      if ( iter != iend ) std::cout << "pfc found for jet " << iObj << " "
+                                    << iter->second << std::endl;
+      else                std::cout << "pfc missing for jet " << iObj
+                                    << std::endl;
+*/
+/*
       float dmin = 1.0e+37;
       int itk;
       int jtk = -1;
@@ -598,6 +612,7 @@ void BmmPATToNtuple::fillJets() {
         }
       }
       if ( jtk >= 0 ) trkJet->at( jtk ) = iObj;
+*/
     }
 
   }
