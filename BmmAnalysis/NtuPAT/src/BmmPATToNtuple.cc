@@ -37,21 +37,22 @@ using pat::Tau;
 using pat::Jet;
 //using pat::PFParticle;
 using reco::PFCandidate;
+using reco::PFCandidatePtr;
 using reco::GenParticle;
 
 using namespace std;
 
 BmmPATToNtuple::BmmPATToNtuple( const edm::ParameterSet& ps ) {
-  ntuName = ps.getUntrackedParameter<std::string>( "ntuName" );
-  labelHLT          = ps.getParameter<std::string>( "labelHLT"          );
-  labelMets         = ps.getParameter<std::string>( "labelMets"         );
-  labelMuons        = ps.getParameter<std::string>( "labelMuons"        );
-  labelElectrons    = ps.getParameter<std::string>( "labelElectrons"    );
-  labelTaus         = ps.getParameter<std::string>( "labelTaus"         );
-  labelPFCandidates = ps.getParameter<std::string>( "labelPFCandidates" );
-  labelJets         = ps.getParameter<std::string>( "labelJets"         );
-  labelGen          = ps.getParameter<std::string>( "labelGen"          );
-  savedTriggers     = ps.getParameter< std::vector<std::string> >( "savedTriggers" );
+  ntuName = ps.getUntrackedParameter<string>( "ntuName" );
+  labelHLT          = ps.getParameter<string>( "labelHLT"          );
+  labelMets         = ps.getParameter<string>( "labelMets"         );
+  labelMuons        = ps.getParameter<string>( "labelMuons"        );
+  labelElectrons    = ps.getParameter<string>( "labelElectrons"    );
+  labelTaus         = ps.getParameter<string>( "labelTaus"         );
+  labelPFCandidates = ps.getParameter<string>( "labelPFCandidates" );
+  labelJets         = ps.getParameter<string>( "labelJets"         );
+  labelGen          = ps.getParameter<string>( "labelGen"          );
+  savedTriggers     = ps.getParameter< vector<string> >( "savedTriggers" );
   setUserParameter( "use_hlt"      , labelHLT          == "" ? "f" : "t" );
   setUserParameter( "use_met"      , labelMets         == "" ? "f" : "t" );
   setUserParameter( "use_muons"    , labelMuons        == "" ? "f" : "t" );
@@ -62,7 +63,7 @@ BmmPATToNtuple::BmmPATToNtuple( const edm::ParameterSet& ps ) {
   setUserParameter( "use_gen"      , labelGen          == "" ? "f" : "t" );
 
   setUserParameter( "verbose",
-                    ps.getUntrackedParameter<std::string>( "verbose" ) );
+                    ps.getUntrackedParameter<string>( "verbose" ) );
 }
 
 
@@ -83,7 +84,7 @@ void BmmPATToNtuple::beginJob() {
 }
 
 
-void BmmPATToNtuple::openNtuple( const std::string& name ) {
+void BmmPATToNtuple::openNtuple( const string& name ) {
   TDirectory* current = gDirectory;
   file = new TFile( name.c_str(), "CREATE" );
   initWrite( file );
@@ -179,7 +180,7 @@ void BmmPATToNtuple::fillTrigger() {
   hltPath  ->clear();
   hltAccept->clear();
   if ( !hlt.isValid() ) {
-    std::cout << "invalid HLT" << std::endl;
+    cout << "invalid HLT" << endl;
     return;
   }
 
@@ -187,7 +188,7 @@ void BmmPATToNtuple::fillTrigger() {
   int iTrg;
   int nTrg = savedTriggers.size();
   for ( int iObj = 0; iObj < nObj; ++iObj ) {
-    const std::string& hltPathName = triggerNames->triggerName( iObj );
+    const string& hltPathName = triggerNames->triggerName( iObj );
 //    TString tmp = triggerNames.triggerName(iObj);
 //    if (!tmp.Contains("HLT_Mu12_eta2p1_DiCentral_40_20_DiBTagIP3D1stTrack_v")) continue;
 //    size_t hltPathIndex = triggerNames.triggerIndex(hltPathName);
@@ -213,7 +214,7 @@ void BmmPATToNtuple::fillMet() {
   mEx = 0.0;
   mEy = 0.0;
   if ( !mets.isValid() ) {
-    std::cout << "invalid mets" << std::endl;
+    cout << "invalid mets" << endl;
     return;
   }
 
@@ -261,11 +262,11 @@ void BmmPATToNtuple::fillMuons() {
   muoNumPixHits  ->resize( nObj );
   muoNumTkHits   ->resize( nObj );
   if ( !vMuons ) {
-    std::cout << "invalid muons" << std::endl;
+    cout << "invalid muons" << endl;
     return;
   }
 
-  std::vector<const Muon*> muonPtr;
+  vector<const Muon*> muonPtr;
   muonPtr.resize( nObj );
   for ( iObj = 0; iObj < nObj; ++iObj ) {
     muonPtr[iObj] = &( muons->at( iObj ) );
@@ -351,11 +352,11 @@ void BmmPATToNtuple::fillElectrons() {
   eleEBEEGap->resize( nObj );
   eleDb     ->resize( nObj );
   if ( !vElectrons ) {
-    std::cout << "invalid electrons" << std::endl;
+    cout << "invalid electrons" << endl;
     return;
   }
 
-  std::vector<const Electron*> electronPtr;
+  vector<const Electron*> electronPtr;
   electronPtr.resize( nObj );
   for ( iObj = 0; iObj < nObj; ++iObj ) {
     electronPtr[iObj] = &( electrons->at( iObj ) );
@@ -419,11 +420,11 @@ void BmmPATToNtuple::fillTaus() {
   tauE     ->resize( nObj );
   tauCharge->resize( nObj );
   if ( !vTaus ) {
-    std::cout << "invalid taus" << std::endl;
+    cout << "invalid taus" << endl;
     return;
   }
 
-  std::vector<const Tau*> tauPtr;
+  vector<const Tau*> tauPtr;
   tauPtr.resize( nObj );
   for ( iObj = 0; iObj < nObj; ++iObj ) {
     tauPtr[iObj] = &( taus->at( iObj ) );
@@ -476,7 +477,7 @@ void BmmPATToNtuple::fillTracks() {
   trkDxy     ->resize( nObj );
   trkDz      ->resize( nObj );
   if ( !vTracks ) {
-    std::cout << "invalid tracks" << std::endl;
+    cout << "invalid tracks" << endl;
     return;
   }
 
@@ -544,11 +545,11 @@ void BmmPATToNtuple::fillJets() {
   jetCEF ->resize( nObj );
   jetNCH ->resize( nObj );
   if ( !vJets ) {
-    std::cout << "invalid jets" << std::endl;
+    cout << "invalid jets" << endl;
     return;
   }
 
-  std::vector<const Jet*> jetPtr;
+  vector<const Jet*> jetPtr;
   jetPtr.resize( nObj );
   for ( iObj = 0; iObj < nObj; iObj++ ) {
     jetPtr[iObj] = &( jets->at( iObj ) );
@@ -581,22 +582,20 @@ void BmmPATToNtuple::fillJets() {
     jetCEF ->at( iObj ) = jet.chargedEmEnergyFraction();
     jetNCH ->at( iObj ) = jet.chargedMultiplicity();
 
-    const std::vector<reco::PFCandidatePtr>& jPFC = jet.getPFConstituents();
+    const vector<PFCandidatePtr>& jPFC = jet.getPFConstituents();
     int nPFC = jPFC.size();
     int iPFC;
-    std::map<const reco::PFCandidate*,int>::const_iterator iter =
-                                                           pfcMap.begin();
-    std::map<const reco::PFCandidate*,int>::const_iterator iend =
-                                                           pfcMap.end();
+    map<const PFCandidate*,int>::const_iterator iter = pfcMap.begin();
+    map<const PFCandidate*,int>::const_iterator iend = pfcMap.end();
     for ( iPFC = 0; iPFC < nPFC; ++iPFC ) {
-      const reco::PFCandidatePtr& pfp = jPFC.at( iPFC );
+      const PFCandidatePtr& pfp = jPFC.at( iPFC );
       iter = pfcMap.find( &(*pfp) );
       if ( iter != iend ) trkJet->at( iter->second ) = iObj;
 /*
-      if ( iter != iend ) std::cout << "pfc found for jet " << iObj << " "
-                                    << iter->second << std::endl;
-      else                std::cout << "pfc missing for jet " << iObj
-                                    << std::endl;
+      if ( iter != iend ) cout << "pfc found for jet " << iObj << " "
+                               << iter->second << endl;
+      else                cout << "pfc missing for jet " << iObj
+                               << endl;
 */
 /*
       float dmin = 1.0e+37;
@@ -644,7 +643,7 @@ void BmmPATToNtuple::fillGenParticles() {
   genCharge->resize( nObj );
   genMass  ->resize( nObj );
   if ( !vGen ) {
-    std::cout << "invalid particles" << std::endl;
+    cout << "invalid particles" << endl;
     return;
   }
 
