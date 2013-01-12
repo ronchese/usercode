@@ -106,11 +106,13 @@ class BmmNtupleData {
   std::vector<double>* trkPz;
   std::vector<double>* trkE;
   std::vector<int   >* trkCharge;
-  std::vector<int   >* trkJet;      // jet index
-  std::vector<int   >* trkQuality;  //.trackRef()->qualityMask()     EMPTY
-  std::vector<double>* trkNormChi2; //.trackRef()->normalizedChi2()  EMPTY
-  std::vector<double>* trkDxy;      //.trackRef()->dxy()             EMPTY
-  std::vector<double>* trkDz;       //.trackRef()->dz()              EMPTY
+  std::vector<int   >* trkJet;      //                 jet index     *
+  std::vector<int   >* trkPVtx;     //      primary vertex index     *
+  std::vector<int   >* trkSVtx;     //    secondary vertex index     *
+  std::vector<int   >* trkQuality;  //.trackRef()->qualityMask()     *
+  std::vector<double>* trkNormChi2; //.trackRef()->normalizedChi2()  *
+  std::vector<double>* trkDxy;      //.trackRef()->dxy()             *
+  std::vector<double>* trkDz;       //.trackRef()->dz()              *
 
   // jets
   bool use_jets;
@@ -132,9 +134,48 @@ class BmmNtupleData {
   std::vector<double>* jetCEF;  //.chargedEmEnergyFraction()
   std::vector<double>* jetNCH;  //.chargedMultiplicity()
 
-  // jets
-  bool use_vertices;
-  int nVertices;
+  // primary vertices
+  bool use_pvts;
+  int nPVertices;
+  std::vector<double>* pvtX;
+  std::vector<double>* pvtY;
+  std::vector<double>* pvtZ;
+  std::vector<double>* pvtSxx;
+  std::vector<double>* pvtSyy;
+  std::vector<double>* pvtSzz;
+  std::vector<double>* pvtSxy;
+  std::vector<double>* pvtSxz;
+  std::vector<double>* pvtSyz;
+//  std::vector<
+//  std::vector<double>
+//                    >* pvtCovariance;
+  std::vector<double>* pvtNormChi2;
+  std::vector<int   >* pvtBadQuality; // 0=good, 1=fake, 2=invalid
+
+  // secondary vertices
+  bool use_svts;
+  int nSVertices;
+  std::vector<double>* svtX;
+  std::vector<double>* svtY;
+  std::vector<double>* svtZ;
+  std::vector<double>* svtSxx;
+  std::vector<double>* svtSyy;
+  std::vector<double>* svtSzz;
+  std::vector<double>* svtSxy;
+  std::vector<double>* svtSxz;
+  std::vector<double>* svtSyz;
+  std::vector<double>* svtDirX;
+  std::vector<double>* svtDirY;
+  std::vector<double>* svtDirZ;
+  std::vector<double>* svtNormChi2;
+  std::vector<double>* svtMass;
+  std::vector<double>* svtDist2D;
+  std::vector<double>* svtSign2D;
+  std::vector<double>* svtDist3D;
+  std::vector<double>* svtSign3D;
+  std::vector<int   >* svtJet;
+  std::vector<int   >* svtNTracks;
+  std::vector<int   >* svtBadQuality; // 0=good, 1=fake, 2=invalid
 
   // gen particles
   bool use_gen;

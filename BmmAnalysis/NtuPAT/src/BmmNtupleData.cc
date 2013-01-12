@@ -83,6 +83,8 @@ BmmNtupleData::BmmNtupleData() {
   trkE            = new std::vector<double>;
   trkCharge       = new std::vector<int   >;
   trkJet          = new std::vector<int   >;
+  trkPVtx         = new std::vector<int   >;
+  trkSVtx         = new std::vector<int   >;
   trkQuality      = new std::vector<int   >;
   trkNormChi2     = new std::vector<double>;
   trkDxy          = new std::vector<double>;
@@ -107,6 +109,49 @@ BmmNtupleData::BmmNtupleData() {
   jetCHF          = new std::vector<double>;
   jetCEF          = new std::vector<double>;
   jetNCH          = new std::vector<double>;
+
+  // primary vertices
+  use_pvts =  false;
+  nPVertices = 0;
+  pvtX            = new std::vector<double>;
+  pvtY            = new std::vector<double>;
+  pvtZ            = new std::vector<double>;
+  pvtSxx          = new std::vector<double>;
+  pvtSyy          = new std::vector<double>;
+  pvtSzz          = new std::vector<double>;
+  pvtSxy          = new std::vector<double>;
+  pvtSxz          = new std::vector<double>;
+  pvtSyz          = new std::vector<double>;
+//  pvtCovariance   = new std::vector<
+//                        std::vector<double>
+//                                          >;
+  pvtNormChi2     = new std::vector<double>;
+  pvtBadQuality   = new std::vector<int   >;
+
+  // secondary vertices
+  use_svts = false;
+  nSVertices = 0;
+  svtX          = new std::vector<double>;
+  svtY          = new std::vector<double>;
+  svtZ          = new std::vector<double>;
+  svtSxx        = new std::vector<double>;
+  svtSyy        = new std::vector<double>;
+  svtSzz        = new std::vector<double>;
+  svtSxy        = new std::vector<double>;
+  svtSxz        = new std::vector<double>;
+  svtSyz        = new std::vector<double>;
+  svtDirX       = new std::vector<double>;
+  svtDirY       = new std::vector<double>;
+  svtDirZ       = new std::vector<double>;
+  svtNormChi2   = new std::vector<double>;
+  svtMass       = new std::vector<double>;
+  svtDist2D     = new std::vector<double>;
+  svtSign2D     = new std::vector<double>;
+  svtDist3D     = new std::vector<double>;
+  svtSign3D     = new std::vector<double>;
+  svtJet        = new std::vector<int   >;
+  svtNTracks    = new std::vector<int   >;
+  svtBadQuality = new std::vector<int   >;
 
   // gen particles
   use_gen = false;
