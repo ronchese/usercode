@@ -13,7 +13,7 @@ process.MessageLogger.cerr.threshold = 'ERROR'
 #process.MessageLogger.cerr.FwkReport.reportEvery = 10000
 
 #process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10000) )
 
 filename = open('pat_files.list', 'r')
 fileList = cms.untracked.vstring( filename.readlines() )
@@ -21,23 +21,33 @@ fileList = cms.untracked.vstring( filename.readlines() )
 process.source = cms.Source ("PoolSource", fileNames=fileList)
 
 process.bmmAnalyzer = cms.EDAnalyzer('BmmPATAnalyzer',
+
+    ## optional
+#    eventList = cms.string('evtlist'),
+    verbose = cms.untracked.string('t'),
+
     ## mandatory
+    ## ntuple file name: empty string to drop ntuple filling
     ntuName = cms.untracked.string('ntu.root'),
+    ## histogram file name
     histName = cms.untracked.string('hist.root'),
-    verbose = cms.untracked.string('f'),
 
-    labelHLT       = cms.string('HLT'),
-    labelMets      = cms.string('patMETsAK5PFNoPUTypeII'),
-# 8TeV
-#    labelMets      = cms.string('patMETsAK5PFNoPU'),
-    labelMuons     = cms.string('userDataSelectedPFMuonsAK5PFNoPU'),
-#    labelElectrons = cms.string('userDataSelectedPFElectronsAK5PFNoPU'),
-#    labelTaus      = cms.string('selectedPatTausAK5PFNoPU'),
-    labelJets      = cms.string('cleanPatJetsIsoPFLeptAK5PFNoPU'),
-# 8TeV ?
-#    labelJets      = cms.string('customPFJetsAK5PFNoPU'),
-    labelGen       = cms.string('genParticles'),
+    labelHLT          = cms.string('TriggerResults'),
+    labelMets         = cms.string('patMETsPFlow'),
+    labelMuons        = cms.string('selectedPatMuonsPFlow'),
+#    labelElectrons    = cms.string('userDataSelectedPFElectronsAK5PFNoPU'),
+#    labelTaus         = cms.string('selectedPatTausAK5PFNoPU'),
+    labelElectrons    = cms.string(''),
+    labelTaus         = cms.string(''),
+#    labelPFCandidates = cms.string('particleFlow'),
+    labelPFCandidates = cms.string('selectedPatJetsPFlow:pfCandidates:PAT'),
+    labelGeneralTracks = cms.string('generalTracks'),
+    labelJets         = cms.string('selectedPatJetsPFlow'),
+    labelPVertices    = cms.string('offlinePrimaryVerticesWithBS'),
+    labelSVertices    = cms.string('secondaryVertexTagInfosAODPFlow'),
+    labelGen          = cms.string(''),
 
+    ## trigger paths to save on ntuple: '*' to save all paths
     savedTriggers = cms.vstring(
         'HLT_Mu12_eta2p1_DiCentral_40_20_DiBTagIP3D1stTrack_v',
         'HLT_Mu12_eta2p1_DiCentral_20_v',

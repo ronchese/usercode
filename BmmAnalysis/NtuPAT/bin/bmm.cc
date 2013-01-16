@@ -48,7 +48,7 @@ int main( int argc, char* argv[] ) {
 
   std::vector<std::string> inputFiles_;
   int maxEvents_ = 0;
-  unsigned int outputEvery_ = 999999;
+//  unsigned int outputEvery_ = 999999;
   std::string outputFile_;
 
   const edm::ParameterSet* pps = 0;
@@ -68,7 +68,7 @@ int main( int argc, char* argv[] ) {
   }
   else {
     maxEvents_ = parser.integerValue( "maxEvents" );
-    outputEvery_ = parser.integerValue( "outputEvery" );
+//    outputEvery_ = parser.integerValue( "outputEvery" );
     outputFile_  = parser.stringValue ( "outputFile"  );
     inputFiles_.push_back( "dcap://t2-srm-02.lnl.infn.it/pnfs/lnl.infn.it/data/cms/store/user/tosi/HToZZTo2L2Q_M-125_PATtuple_v2/WH_ZH_TTH_HToTauTau_M-125_7TeV/h2l2qSkimMC_1_1_Dgd.root" );
     pps = new edm::ParameterSet;
@@ -99,12 +99,10 @@ int main( int argc, char* argv[] ) {
       int analyzedFile = 0;
       for ( ev.toBegin(); !ev.atEnd(); ++ev ) {
         edm::EventBase const & event = ev;
-        ntu->read( event );
-//        cout << "analyze..." << endl;
-        if ( ntu->analyze( ientry++, analyzedFile++ ) ) ntu->writeNtuple();
+        ntu->analyze( event, ientry++, analyzedFile++ );
         if ( ( endAna = ( ( maxEvents_ > 0 ) &&
                           ( ntu->analyzedEvents() >= maxEvents_ ) ) ) ) break;
-      } //end event loop  
+      } // end event loop  
       inFile->Close();
     }
     // break loop if maximal number of events is reached:

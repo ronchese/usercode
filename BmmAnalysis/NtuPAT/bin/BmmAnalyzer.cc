@@ -21,10 +21,12 @@ BmmAnalyzer::BmmAnalyzer() {
   setUserParameter( "use_hlt"      , "true" );
   setUserParameter( "use_met"      , "true" );
   setUserParameter( "use_muons"    , "true" );
-  setUserParameter( "use_electrons", "true" );
-  setUserParameter( "use_taus"     , "true" );
+  setUserParameter( "use_electrons", "false" );
+  setUserParameter( "use_taus"     , "false" );
   setUserParameter( "use_tracks"   , "true" );
   setUserParameter( "use_jets"     , "true" );
+  setUserParameter( "use_pvts"     , "true" );
+  setUserParameter( "use_svts"     , "true" );
   setUserParameter( "use_gen"      , "false" );
 
   setUserParameter( "verbose", "f" );
@@ -65,7 +67,10 @@ void BmmAnalyzer::beginJob() {
   getUserParameter( "use_taus"     , use_taus      );
   getUserParameter( "use_tracks"   , use_tracks    );
   getUserParameter( "use_jets"     , use_jets      );
+  getUserParameter( "use_pvts"     , use_pvts      );
+  getUserParameter( "use_svts"     , use_svts      );
   getUserParameter( "use_gen"      , use_gen       );
+  if ( !use_jets ) use_svts = false;
   initTree();
 
   getUserParameter( "verbose", verbose );
@@ -83,6 +88,8 @@ void BmmAnalyzer::beginJob() {
   getUserParameter( "jetNCHmin" , jetNCHmin );
   getUserParameter( "jetNCHmax" , jetNCHmax );
   getUserParameter( "jetEtaCut" , jetEtaCut );
+
+  read( getUserParameter( "eventList" ) );
 
   return;
 
@@ -136,38 +143,23 @@ bool BmmAnalyzer::analyze( int entry, int event_file, int event_tot ) {
 
   int iMuon;
   float ptmu;
-  float ptmumax = 0.0;
-  float ptmu2nd = 0.0;
+  float ptmumax = -1.0;
+  float ptmu2nd = -1.0;
   for ( iMuon = 0; iMuon < nMuons; ++iMuon ) {
-    ptmu = muoPt->at(iMuon);
+    ptmu = muoPt->at( iMuon );
     hptmu->Fill( ptmu );
-    if( ptmu > ptmumax ) {
-      ptmu2nd = ptmumax;
-      ptmumax = ptmu;
+    if( ptmu > ptmu2nd ) {
+      if( ptmu > ptmumax ) {
+        ptmu2nd = ptmumax;
+        ptmumax = ptmu;
+      }
+      else {
+        ptmu2nd = ptmu;
+      }
     }
   }
   hptmumax->Fill( ptmumax );
   hptmu2nd->Fill( ptmu2nd );	
-
-/*
-  int itrk;
-  int jtrk;
-  int ktrk = -1;
-  for ( itrk = 0; itrk < 8; ++itrk ) {
-    float dmin = 1.0e+37;
-    for ( jtrk = 0; jtrk < nTracks; ++jtrk ) {
-//      if ( trkJet->at( itrk ) != trkJet->at( jtrk ) ) continue;
-      float dist = sqrt( pow( trkPx->at( itrk ) - trkPx->at( jtrk ), 2 ) +
-                         pow( trkPy->at( itrk ) - trkPy->at( jtrk ), 2 ) +
-                         pow( trkPz->at( itrk ) - trkPz->at( jtrk ), 2 ) );
-      if ( dist < dmin ) {
-        dmin = dist;
-        ktrk = jtrk;
-      }
-    }
-//    if ( ktrk != itrk ) cout << itrk << " " << ktrk << " " << dmin << endl;
-  }
-*/
 
   return flag;
 

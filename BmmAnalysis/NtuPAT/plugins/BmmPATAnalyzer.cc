@@ -56,11 +56,10 @@ void BmmPATAnalyzer::fillDescriptions( edm::ConfigurationDescriptions&
 
 void BmmPATAnalyzer::analyze( const edm::Event& ev,
                               const edm::EventSetup& es ) {
-  read( ev );
+  currentEvent   = &ev;
+  currentEvSetup = &es;
   int ientry = 0;
-//  if ( BmmPATToNtuple::analyze( ientry, analyzedFile++, analyzedEvts++ ) ) 
-//                                                        acceptedEvts++;
-  if ( BmmPATToNtuple::analyze( ientry, analyzedFile++ ) ) writeNtuple();
+  BmmPATToNtuple::analyze( ev, ientry, analyzedFile++ );
   return;
 }
 

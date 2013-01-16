@@ -17,15 +17,6 @@ class BmmNtupleBranch: public virtual BmmNtupleData, public virtual T {
 
   void initTree();
 
-  void setBranches_hlt();
-  void setBranches_met();
-  void setBranches_muons();
-  void setBranches_electrons();
-  void setBranches_taus();
-  void setBranches_tracks();
-  void setBranches_jets();
-  void setBranches_gen();
-
  protected:
 
   // List of branches
@@ -36,16 +27,19 @@ class BmmNtupleBranch: public virtual BmmNtupleData, public virtual T {
   TBranch* b_eventNumber;
 
   // hlt
+  void setBranches_hlt();
   TBranch* b_nHLT;
   TBranch* b_hltPath;
   TBranch* b_hltAccept;
 
   // mEt
+  void setBranches_met();
   TBranch* b_mEt;
   TBranch* b_mEx;
   TBranch* b_mEy;
 
   // muons
+  void setBranches_muons();
   TBranch* b_nMuons;
   TBranch* b_muoPt;
   TBranch* b_muoEta;
@@ -72,6 +66,7 @@ class BmmNtupleBranch: public virtual BmmNtupleData, public virtual T {
   TBranch* b_muoNumTkHits;
 
   // electrons
+  void setBranches_electrons();
   TBranch* b_nElectrons;
   TBranch* b_elePt;
   TBranch* b_eleEta;
@@ -92,6 +87,7 @@ class BmmNtupleBranch: public virtual BmmNtupleData, public virtual T {
   TBranch* b_eleDb;
 
   // taus
+  void setBranches_taus();
   TBranch* b_nTaus;
   TBranch* b_tauPt;
   TBranch* b_tauEta;
@@ -103,6 +99,7 @@ class BmmNtupleBranch: public virtual BmmNtupleData, public virtual T {
   TBranch* b_tauCharge;
 
   // tracks
+  void setBranches_tracks();
   TBranch* b_nTracks;
   TBranch* b_trkPt;
   TBranch* b_trkEta;
@@ -113,12 +110,15 @@ class BmmNtupleBranch: public virtual BmmNtupleData, public virtual T {
   TBranch* b_trkE;
   TBranch* b_trkCharge;
   TBranch* b_trkJet;
+  TBranch* b_trkPVtx;
+  TBranch* b_trkSVtx;
   TBranch* b_trkQuality;
   TBranch* b_trkNormChi2;
   TBranch* b_trkDxy;
   TBranch* b_trkDz;
 
   // jets
+  void setBranches_jets();
   TBranch* b_nJets;
   TBranch* b_jetPt;
   TBranch* b_jetEta;
@@ -137,7 +137,49 @@ class BmmNtupleBranch: public virtual BmmNtupleData, public virtual T {
   TBranch* b_jetCEF;
   TBranch* b_jetNCH;
 
+  // primary vertices
+  void setBranches_pVertices();
+  TBranch* b_nPVertices;
+  TBranch* b_pvtX;
+  TBranch* b_pvtY;
+  TBranch* b_pvtZ;
+  TBranch* b_pvtSxx;
+  TBranch* b_pvtSyy;
+  TBranch* b_pvtSzz;
+  TBranch* b_pvtSxy;
+  TBranch* b_pvtSxz;
+  TBranch* b_pvtSyz;
+//  TBranch* b_pvtCovariance;
+  TBranch* b_pvtNormChi2;
+  TBranch* b_pvtBadQuality;
+
+  // secondary vertices
+  void setBranches_sVertices();
+  TBranch* b_nSVertices;
+  TBranch* b_svtX;
+  TBranch* b_svtY;
+  TBranch* b_svtZ;
+  TBranch* b_svtSxx;
+  TBranch* b_svtSyy;
+  TBranch* b_svtSzz;
+  TBranch* b_svtSxy;
+  TBranch* b_svtSxz;
+  TBranch* b_svtSyz;
+  TBranch* b_svtDirX;
+  TBranch* b_svtDirY;
+  TBranch* b_svtDirZ;
+  TBranch* b_svtNormChi2;
+  TBranch* b_svtMass;
+  TBranch* b_svtDist2D;
+  TBranch* b_svtSign2D;
+  TBranch* b_svtDist3D;
+  TBranch* b_svtSign3D;
+  TBranch* b_svtJet;
+  TBranch* b_svtNTracks;
+  TBranch* b_svtBadQuality;
+
   // gen particles
+  void setBranches_gen();
   TBranch* b_nGenP;
   TBranch* b_genId;
   TBranch* b_genStatus;

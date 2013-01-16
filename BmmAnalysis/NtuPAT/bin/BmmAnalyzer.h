@@ -4,7 +4,14 @@
 #define FULL 2
 #define BARE 3
 
+namespace edm {
+  class Event;
+  class EventBase;
+  class EventSetup;
+}
+
 #include "TH1.h"
+#include "BmmAnalysis/NtuPAT/interface/BmmEventSelect.h"
 
 #  if UTIL_USE == FULL
 
@@ -15,6 +22,7 @@
 #include "BmmAnalysis/NtuPAT/interface/BmmNtuple.h"
 #include "NtuTool/Common/interface/TreeWrapper.h"
 class BmmAnalyzer: public BmmNtuple,
+                   public BmmEventSelect,
                    public virtual TreeWrapper {
 
 #elif UTIL_USE == BARE
@@ -24,7 +32,8 @@ class BmmAnalyzer: public BmmNtuple,
 // "BmmLightNtuple" simply forward calls directly to ROOT with no 
 // additional operation
 #include "BmmLightNtuple.h"
-class BmmAnalyzer: public BmmLightNtuple {
+class BmmAnalyzer: public BmmLightNtuple,
+                   public BmmEventSelect {
 
 #else
 #error use -D UTIL_USE=FULL or -D UTIL_USE=BARE
@@ -55,6 +64,12 @@ class BmmAnalyzer: public BmmLightNtuple {
   bool verbose;
 
   double eqlumi;
+
+ protected:
+
+  const edm::EventBase * currentEvBase;
+  const edm::Event     * currentEvent;
+  const edm::EventSetup* currentEvSetup;
 
  private:
 
