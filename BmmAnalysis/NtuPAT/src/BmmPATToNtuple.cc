@@ -161,7 +161,6 @@ void BmmPATToNtuple::read( const edm::EventBase& ev ) {
     ev.getByLabel( labelMuons    , muons     );
     fillMuons       ();
   }
-  if ( nMuons < 2 ) return;
   if ( use_electrons ) {
     ev.getByLabel( labelElectrons, electrons );
     fillElectrons   ();
