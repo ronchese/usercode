@@ -3,8 +3,6 @@
 
 #include "NtuTool/Read/test/stubs/SimpleAnalyzer.h"
 #include "NtuTool/Common/interface/Math.h"
-#include "TDirectory.h"
-#include "TROOT.h"
 
 
 static SimpleAnalyzer ta;
@@ -26,26 +24,11 @@ void SimpleAnalyzer::beginJob() {
 
 
 void SimpleAnalyzer::book() {
-
   // putting "autoSavedObject" in front of the histo creation 
   // it's automatically marked for saving on file
-  // doing the same with directories they are replicated in the file
-
   autoSavedObject =
   hist = new TH1F( "hist", "hist", 10, -2.5, 2.5 );
-
-  autoSavedObject =
-  gDirectory->mkdir( "subd" );
-  autoSavedObject =
-  hisd = new TH1F( "hisd", "hisd", 25, -12.5, 12.5 );
-
-  autoSavedObject =
-  gDirectory->GetDirectory( ".." );
-  autoSavedObject =
-  hisc = new TH1F( "hisc", "hisc", 25, -5.0, 5.0 );
-
   return;
-
 }
 
 
@@ -91,8 +74,6 @@ bool SimpleAnalyzer::analyze( int entry, int event_file, int event_tot ) {
   std::cout << std::endl;
 
   hist->Fill( ( ( i_run % 10 ) / 2.0 ) - 2.5 );
-  hisd->Fill( ( ( i_run % 10 ) / 2.0 ) - 5.5 );
-  hisc->Fill( ( ( i_run % 10 ) / 2.0 ) - 3.5 );
 
   std::cout << " --------------------------- " << std::endl;
 
@@ -114,7 +95,6 @@ void SimpleAnalyzer::endJob() {
 
 
 void SimpleAnalyzer::plot() {
-  gROOT->cd();
   hist->Draw();
   return;
 }

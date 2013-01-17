@@ -10,7 +10,6 @@ class TFile;
 class TTree;
 class TBranch;
 class TObject;
-class TDirectory;
 
 class TreeWrapper {
 
@@ -19,14 +18,11 @@ class TreeWrapper {
   TreeWrapper();
   virtual ~TreeWrapper();
 
-  const std::string& name() const;
-
   virtual void setUserParameter( const std::string& key,
                                  const std::string& val );
   virtual std::string getUserParameter( const std::string& key );
   template<class T>
   void getUserParameter( const std::string& key, T& val );
-  void getUserParameter( const std::string& key, bool& val );
 
   // function to do initialization
   virtual void beginJob();
@@ -45,18 +41,12 @@ class TreeWrapper {
   virtual void save( const std::string& name );
   virtual void save();
 
-  int analyzedEvents();
-  int acceptedEvents();
-
  protected:
 
   std::string treeName;
 
   // tree pointer
   TTree* currentTree;
-
-  int analyzedEvts;
-  int acceptedEvts;
 
   void setBranch( const char* branchName, void* dataPtr,
                   const char* branchData );
@@ -100,26 +90,19 @@ class TreeWrapper {
   DataHandlerManager* handlerManager;
   void autoReset();
 
+
   class AutoSavedObject {
    public:
     typedef std::vector<const TObject*> obj_list;
     typedef obj_list::const_iterator    obj_iter;
-    typedef std::map<const TObject*, TDirectory*> dir_map;
-    typedef dir_map::const_iterator               dir_iter;
-    void insert( const TObject* obj, TDirectory* dir );
-    obj_iter objBegin();
-    obj_iter objEnd();
-    dir_iter dirBegin();
-    dir_iter dirFind( const TObject* obj );
-    dir_iter dirEnd();
-    AutoSavedObject& operator=( TObject* obj );
+    obj_iter begin();
+    obj_iter end();
+    AutoSavedObject& operator=( const TObject* obj );
    private:
     obj_list objectList;
-    dir_map directoryMap;
   };
   AutoSavedObject autoSavedObject;
   void autoSave();
-//  void autoSave( TDirectory* dir );
 
   struct branch_desc {
     std::string* branchName;

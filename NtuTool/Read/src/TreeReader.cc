@@ -11,7 +11,9 @@
 TreeReader* TreeReader::readerInstance = 0;
 
 
-TreeReader::TreeReader() {
+TreeReader::TreeReader():
+ analyzedEvts( 0 ),
+ acceptedEvts( 0 ) {
   handlerManager = new TreeTypeManager;
   if ( readerInstance == 0 ) readerInstance = this;
 }
@@ -95,5 +97,15 @@ int TreeReader::loop( int evtmax, int evskip, int accmax, bool anaexe ) {
 void TreeReader::process( int ientry ) {
 // default preliminary process - dummy
   return;
+}
+
+
+int TreeReader::analyzedEvents() {
+  return analyzedEvts;
+}
+
+
+int TreeReader::acceptedEvents() {
+  return acceptedEvts;
 }
 

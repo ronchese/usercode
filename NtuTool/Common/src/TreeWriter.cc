@@ -19,24 +19,19 @@ TreeWriter::~TreeWriter() {
 void TreeWriter::initWrite( TFile* file ) {
 
   TDirectory* currentDir = gDirectory;
-  if ( file != 0 ) {
-    file->cd();
-    std::string fullName = treeName;
-    int dirNameLength;
-    while ( ( dirNameLength = fullName.find( "/" ) ) >= 0 ) {
-      std::string nextName = fullName.substr( 0, dirNameLength ).c_str();
-      const char* n = nextName.c_str();
-      if ( gDirectory->Get( n ) == 0 ) gDirectory->mkdir( n );
-      gDirectory->cd( n );
-      fullName = fullName.substr( ++dirNameLength, fullName.length() );
-    }
-    const char* name = fullName.c_str();
-    treeDir = gDirectory;
-    currentTree = new TTree( name, name );
+  file->cd();
+  std::string fullName = treeName;
+  int dirNameLength;
+  while ( ( dirNameLength = fullName.find( "/" ) ) >= 0 ) {
+    std::string nextName = fullName.substr( 0, dirNameLength ).c_str();
+    const char* n = nextName.c_str();
+    if ( gDirectory->Get( n ) == 0 ) gDirectory->mkdir( n );
+    gDirectory->cd( n );
+    fullName = fullName.substr( ++dirNameLength, fullName.length() );
   }
-  else {
-    currentTree = 0;
-  }
+  const char* name = fullName.c_str();
+  treeDir = gDirectory;
+  currentTree = new TTree( name, name );
   currentDir->cd();
 
   branch_iterator iter = treeBegin();
@@ -52,15 +47,14 @@ void TreeWriter::initWrite( TFile* file ) {
                                                      handlerManager );
     if ( bDesc->ppRef ) dataPtr =  reinterpret_cast<void**>( bDesc->dataPtr );
     else                dataPtr = &bDesc->dataPtr;
-    if ( file != 0 ) {
-      if ( bDesc->splitLevel < 0 )
-           b = currentTree->Branch( bDesc->branchName->c_str(),
-                                    bDesc->dataPtr,
-                                    bDesc->branchData->c_str() );
-      else b = handler->branch( currentTree, bDesc->branchName, dataPtr,
-                                bDesc->bufferSize, bDesc->splitLevel );
-      if ( bDesc->branchPtr != 0 ) *bDesc->branchPtr = b;
-    }
+    if ( bDesc->splitLevel < 0 )
+         b = currentTree->Branch( bDesc->branchName->c_str(),
+                                  bDesc->dataPtr,
+                                  bDesc->branchData->c_str() );
+    else b = handler->branch( currentTree, bDesc->branchName, dataPtr,
+                              bDesc->bufferSize, bDesc->splitLevel );
+    if ( bDesc->branchPtr != 0 ) *bDesc->branchPtr = b;
+
   }
 
   return;
@@ -69,7 +63,6 @@ void TreeWriter::initWrite( TFile* file ) {
 
 
 void TreeWriter::fill() {
-  if ( currentTree == 0 ) return;
   TDirectory* currentDir = gDirectory;
   treeDir->cd();
   currentTree->Fill();
@@ -79,7 +72,6 @@ void TreeWriter::fill() {
 
 
 void TreeWriter::close() {
-  if ( currentTree == 0 ) return;
   TDirectory* currentDir = gDirectory;
   treeDir->cd();
   currentTree->Write();

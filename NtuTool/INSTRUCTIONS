@@ -105,7 +105,7 @@ treeAnalyze_EDM edmList -n 6 -s 2 hs.root x
 complete the writing examples described above, then do the following
 
 cd ${CMSSW_BASE}/src/NtuTool/Read/test
-export/exportExample.sh
+exportExample.sh
 
 copy the file examples.tgz wherever you want
 

@@ -11,7 +11,7 @@ tar -czf export.tgz                \
          Common/src                \
          Read/interface            \
          Read/src                  \
-         Read/bin/treeAnalyze.cc   \
+         Read/test/treeAnalyze.cc  \
          uty/install.*h            \
          uty/envset*h              \
          uty/compile.*h            \
