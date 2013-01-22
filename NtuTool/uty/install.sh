@@ -7,6 +7,7 @@
 #rm -f uty/envset.csh
 #sed s/INSTALLDIR/${INSTALLDIR}/ uty/envsetTemplate.csh > uty/envset.csh
 
+cd `dirname $0`/..
 export INSTALLDIR=`/bin/pwd`
 
 rm -f uty/envset.sh
