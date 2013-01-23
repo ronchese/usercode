@@ -22,7 +22,7 @@
 
 #include "DataFormats/PatCandidates/interface/Photon.h"
 #include "DataFormats/PatCandidates/interface/Electron.h"
-#include "EGamma/EGammaAnalysisTools/interface/ElectronEffectiveArea.h"
+//#include "EGamma/EGammaAnalysisTools/interface/ElectronEffectiveArea.h"
 
 #include "DataFormats/PatCandidates/interface/Tau.h"
 
@@ -578,12 +578,13 @@ void BmmPATToNtuple::fillElectrons() {
     eleChaIso ->at( iObj ) = electron.chargedHadronIso();
     eleNeuIso ->at( iObj ) = electron.neutralHadronIso();
     elePhoIso ->at( iObj ) = electron.photonIso();
-    double absEta =
+//    double absEta =
     eleAbsEta ->at( iObj ) = fabs( electron.superCluster()->eta() );
-    eleAEff   ->at( iObj ) = 
-      ElectronEffectiveArea::GetElectronEffectiveArea(
-      ElectronEffectiveArea::kEleGammaAndNeutralHadronIso03, absEta,
-      ElectronEffectiveArea::kEleEAData2011 );
+    eleAEff   ->at( iObj ) = -999.999;
+//    eleAEff   ->at( iObj ) =
+//      ElectronEffectiveArea::GetElectronEffectiveArea(
+//      ElectronEffectiveArea::kEleGammaAndNeutralHadronIso03, absEta,
+//      ElectronEffectiveArea::kEleEAData2011 );
 
     eleID     ->at( iObj ) = electron.electronID( "eidMediumMC" );
     eleConsCha->at( iObj ) = electron.isGsfCtfScPixChargeConsistent();
