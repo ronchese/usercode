@@ -1,6 +1,7 @@
 #!/bin/sh
 
-export NTU_ROOT_DIR=`find ${CMSSW_BASE}/src | grep 'NtuTool$'`
+cd `dirname $0`/..
+export NTU_ROOT_DIR=`/bin/pwd`
 cd ${NTU_ROOT_DIR}
 
 rm -f export.tgz
@@ -33,5 +34,6 @@ rm -rf ${NTU_TOOL_TMP}
 rm -f ../${NTU_TOOL_TMP}.tgz
 mv ${NTU_TOOL_TMP}.tgz ..
 
-find ${CMSSW_BASE}/src | grep NtuTool | grep tgz
+cd ..
+echo `/bin/pwd`/${NTU_TOOL_TMP}.tgz
 
