@@ -23,11 +23,14 @@ void BmmNtupleBranch<T>::initTree() {
   this->setBranch( "eventNumber"    , &  eventNumber    ,
                    "eventNumber/i"  , &b_eventNumber     );
 
-  if ( use_hlt       ) setBranches_hlt      ();
+  if ( use_hlts      ) setBranches_hlts     ();
+  if ( use_hlto      ) setBranches_hlto     ();
+  if ( use_bspot     ) setBranches_bspot    ();
   if ( use_met       ) setBranches_met      ();
   if ( use_muons     ) setBranches_muons    ();
   if ( use_electrons ) setBranches_electrons();
   if ( use_taus      ) setBranches_taus     ();
+  if ( use_pflow     ) setBranches_pflow    ();
   if ( use_tracks    ) setBranches_tracks   ();
   if ( use_jets      ) setBranches_jets     ();
   if ( use_pvts      ) setBranches_pVertices();
@@ -39,19 +42,78 @@ void BmmNtupleBranch<T>::initTree() {
 }
 
 template <class T>
-void BmmNtupleBranch<T>::setBranches_hlt() {
-  this->setBranch( "nHLT"           , &  nHLT           ,
-                   "nHLT/I"         , &b_nHLT            );
+void BmmNtupleBranch<T>::setBranches_hlts() {
+  this->setBranch( "nHLTStatus"     , &  nHLTStatus     ,
+                   "nHLTStatus/I"   , &b_nHLTStatus      );
   this->setBranch( "hltPath"        , &  hltPath        ,
                    1000, 99         , &b_hltPath         );
+  this->setBranch( "hltRun"         , &  hltRun         ,
+                   1000, 99         , &b_hltRun          );
   this->setBranch( "hltAccept"      , &  hltAccept      ,
                    1000, 99         , &b_hltAccept       );
   return;
 }
 
 template <class T>
+void BmmNtupleBranch<T>::setBranches_hlto() {
+  this->setBranch( "nHLTObjects"    , &  nHLTObjects    ,
+                   "nHLTObjects/I"  , &b_nHLTObjects     );
+  this->setBranch( "hltObjType"     , &  hltObjType     ,
+                   1000, 99         , &b_hltObjType      );
+  this->setBranch( "hltPt"          , &  hltPt          ,
+                   1000, 99         , &b_hltPt           );
+  this->setBranch( "hltEta"         , &  hltEta         ,
+                   1000, 99         , &b_hltEta          );
+  this->setBranch( "hltPhi"         , &  hltPhi         ,
+                   1000, 99         , &b_hltPhi          );
+  this->setBranch( "hltPx"          , &  hltPx          ,
+                   1000, 99         , &b_hltPx           );
+  this->setBranch( "hltPy"          , &  hltPy          ,
+                   1000, 99         , &b_hltPy           );
+  this->setBranch( "hltPz"          , &  hltPz          ,
+                   1000, 99         , &b_hltPz           );
+  this->setBranch( "hltE"           , &  hltE           ,
+                   1000, 99         , &b_hltE            );
+  return;
+}
+
+template <class T>
+void BmmNtupleBranch<T>::setBranches_bspot() {
+  // beam spot
+  this->setBranch( "bwX"            , &  bwX            ,
+                   "bwX/D"          , &b_bwX             );
+  this->setBranch( "bwY"            , &  bwY            ,
+                   "bwY/D"          , &b_bwY             );
+  this->setBranch( "bwXError"       , &  bwXError       ,
+                   "bwXError/D"     , &b_bwXError        );
+  this->setBranch( "bwYError"       , &  bwYError       ,
+                   "bwYError/D"     , &b_bwYError        );
+  this->setBranch( "bsX"            , &  bsX            ,
+                   "bsX/D"          , &b_bsX             );
+  this->setBranch( "bsY"            , &  bsY            ,
+                   "bsY/D"          , &b_bsY             );
+  this->setBranch( "bsZ"            , &  bsZ            ,
+                   "bsZ/D"          , &b_bsZ             );
+  this->setBranch( "bsXError"       , &  bsXError       ,
+                   "bsXError/D"     , &b_bsXError        );
+  this->setBranch( "bsYError"       , &  bsYError       ,
+                   "bsYError/D"     , &b_bsYError        );
+  this->setBranch( "bsZError"       , &  bsZError       ,
+                   "bsZError/D"     , &b_bsZError        );
+  this->setBranch( "bsdXdZ"         , &  bsdXdZ         ,
+                   "bsdXdZ/D"       , &b_bsdXdZ          );
+  this->setBranch( "bsdYdZ"         , &  bsdYdZ         ,
+                   "bsdYdZ/D"       , &b_bsdYdZ          );
+  this->setBranch( "bsdXdZError"    , &  bsdXdZError    ,
+                   "bsdXdZError/D"  , &b_bsdXdZError     );
+  this->setBranch( "bsdYdZError"    , &  bsdYdZError    ,
+                   "bsdYdZError/D"  , &b_bsdYdZError     );
+  return;
+}
+
+template <class T>
 void BmmNtupleBranch<T>::setBranches_met() {
-  // mEt
+  // met
   this->setBranch( "mEt"            , &  mEt            ,
                    "mEt/D"          , &b_mEt             );
   this->setBranch( "mEx"            , &  mEx            ,
@@ -80,6 +142,8 @@ void BmmNtupleBranch<T>::setBranches_muons() {
                    1000, 99         , &b_muoPz           );
   this->setBranch( "muoE"           , &  muoE           ,
                    1000, 99         , &b_muoE            );
+  this->setBranch( "muoTrk"         , &  muoTrk         ,
+                   1000, 99         , &b_muoTrk          );
   this->setBranch( "muoCharge"      , &  muoCharge      ,
                    1000, 99         , &b_muoCharge       );
   this->setBranch( "muoChaIso"      , &  muoChaIso      ,
@@ -135,6 +199,8 @@ void BmmNtupleBranch<T>::setBranches_electrons() {
                    1000, 99         , &b_elePz           );
   this->setBranch( "eleE"           , &  eleE           ,
                    1000, 99         , &b_eleE            );
+  this->setBranch( "eleTrk"         , &  eleTrk         ,
+                   1000, 99         , &b_eleTrk          );
   this->setBranch( "eleCharge"      , &  eleCharge      ,
                    1000, 99         , &b_eleCharge       );
   this->setBranch( "eleChaIso"      , &  eleChaIso      ,
@@ -185,6 +251,35 @@ void BmmNtupleBranch<T>::setBranches_taus() {
 
 
 template <class T>
+void BmmNtupleBranch<T>::setBranches_pflow() {
+  // particle flow
+  this->setBranch( "nPF"            , &  nPF            ,
+                   "nPF/I"          , &b_nPF             );
+  this->setBranch( "pfcPt"          , &  pfcPt          ,
+                   1000, 99         , &b_pfcPt           );
+  this->setBranch( "pfcEta"         , &  pfcEta         ,
+                   1000, 99         , &b_pfcEta          );
+  this->setBranch( "pfcPhi"         , &  pfcPhi         ,
+                   1000, 99         , &b_pfcPhi          );
+  this->setBranch( "pfcPx"          , &  pfcPx          ,
+                   1000, 99         , &b_pfcPx           );
+  this->setBranch( "pfcPy"          , &  pfcPy          ,
+                   1000, 99         , &b_pfcPy           );
+  this->setBranch( "pfcPz"          , &  pfcPz          ,
+                   1000, 99         , &b_pfcPz           );
+  this->setBranch( "pfcE"           , &  pfcE           ,
+                   1000, 99         , &b_pfcE            );
+  this->setBranch( "pfcCharge"      , &  pfcCharge      ,
+                   1000, 99         , &b_pfcCharge       );
+  this->setBranch( "pfcJet"         , &  pfcJet         ,
+                   1000, 99         , &b_pfcJet          );
+  this->setBranch( "pfcTrk"         , &  pfcTrk         ,
+                   1000, 99         , &b_pfcTrk          );
+  return;
+}
+
+
+template <class T>
 void BmmNtupleBranch<T>::setBranches_tracks() {
   // tracks
   this->setBranch( "nTracks"     , &  nTracks     ,
@@ -201,16 +296,14 @@ void BmmNtupleBranch<T>::setBranches_tracks() {
                    1000, 99         , &b_trkPy           );
   this->setBranch( "trkPz"          , &  trkPz          ,
                    1000, 99         , &b_trkPz           );
-  this->setBranch( "trkE"           , &  trkE           ,
-                   1000, 99         , &b_trkE            );
   this->setBranch( "trkCharge"      , &  trkCharge      ,
                    1000, 99         , &b_trkCharge       );
-  this->setBranch( "trkJet"         , &  trkJet         ,
-                   1000, 99         , &b_trkJet          );
-  this->setBranch( "trkPVtx"        , &  trkPVtx         ,
-                   1000, 99         , &b_trkPVtx          );
-  this->setBranch( "trkSVtx"        , &  trkSVtx         ,
-                   1000, 99         , &b_trkSVtx          );
+  this->setBranch( "trkPFC"         , &  trkPFC         ,
+                   1000, 99         , &b_trkPFC          );
+  this->setBranch( "trkPVtx"        , &  trkPVtx        ,
+                   1000, 99         , &b_trkPVtx         );
+  this->setBranch( "trkSVtx"        , &  trkSVtx        ,
+                   1000, 99         , &b_trkSVtx         );
   this->setBranch( "trkQuality"     , &  trkQuality     ,
                    1000, 99         , &b_trkQuality      );
   this->setBranch( "trkNormChi2"    , &  trkNormChi2    ,

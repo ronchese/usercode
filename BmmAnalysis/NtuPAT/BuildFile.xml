@@ -15,6 +15,10 @@
 <use   name="DataFormats/PatCandidates"/>
 <use   name="PhysicsTools/CandUtils"/>
 <use   name="PhysicsTools/FWLite"/>
+<use   name="CommonTools/CandUtils"/>
+<use   name="PhysicsTools/UtilAlgos"/>
+<use   name="PhysicsTools/PatUtils"/>
+<use   name="RecoVertex/KalmanVertexFit"/>
 <use   name="NtuTool/Common"/>
 <use   name="NtuTool/Read"/>
 <export>

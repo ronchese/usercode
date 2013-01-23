@@ -8,7 +8,7 @@ filelist = cms.vstring( filename.readlines() )
 
 process.fwliteInput = cms.PSet(
     fileNames   = filelist,               ## mandatory
-    maxEvents   = cms.int32(200),        ## optional, use maxEvents<=0
+    maxEvents   = cms.int32(500),        ## optional, use maxEvents<=0
                                           ##           to read all events
     outputEvery = cms.uint32(10),         ## optional (usage not clear...)
 )
@@ -29,7 +29,9 @@ process.bmmAnalyzer = cms.PSet(
     ## histogram file name
     histName = cms.untracked.string('hist.root'),
 
-    labelHLT          = cms.string('TriggerResults'),
+    labelTrigResults  = cms.string('TriggerResults'),
+    labelTrigEvent    = cms.string('patTriggerEvent'),
+    labelBeamSpot     = cms.string('offlineBeamSpot'),
     labelMets         = cms.string('patMETsPFlow'),
     labelMuons        = cms.string('selectedPatMuonsPFlow'),
 #    labelElectrons    = cms.string('userDataSelectedPFElectronsAK5PFNoPU'),
@@ -38,6 +40,7 @@ process.bmmAnalyzer = cms.PSet(
     labelTaus         = cms.string(''),
 #    labelPFCandidates = cms.string('particleFlow'),
     labelPFCandidates = cms.string('selectedPatJetsPFlow:pfCandidates:PAT'),
+#    labelPFCandidates = cms.string(''),
     labelGeneralTracks = cms.string('generalTracks'),
     labelJets         = cms.string('selectedPatJetsPFlow'),
     labelPVertices    = cms.string('offlinePrimaryVerticesWithBS'),
@@ -45,7 +48,7 @@ process.bmmAnalyzer = cms.PSet(
     labelGen          = cms.string(''),
 
     ## trigger paths to save on ntuple: '*' to save all paths
-    savedTriggers = cms.vstring(
+    savedTriggerPaths = cms.vstring(
         'HLT_Mu12_eta2p1_DiCentral_40_20_DiBTagIP3D1stTrack_v',
         'HLT_Mu12_eta2p1_DiCentral_20_v',
         'HLT_Mu12_eta2p1_DiCentral_40_20_BTagIP3D1stTrack_v',
@@ -53,6 +56,12 @@ process.bmmAnalyzer = cms.PSet(
         'HLT_Mu12_eta2p1_L1Mu10erJetC12WdEtaPhi1DiJetsC_v',
         'HLT_Mu12_DoubleCentralJet65_v',
         'HLT_Mu12_v'
+    ),
+
+    ## trigger objects to save on ntuple:
+    savedTriggerObjects = cms.vstring(
+        'muon',
+        'jet'
     )
 
 )

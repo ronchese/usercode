@@ -32,11 +32,14 @@ process.bmmAnalyzer = cms.EDAnalyzer('BmmPATAnalyzer',
     ## histogram file name
     histName = cms.untracked.string('hist.root'),
 
-    labelHLT          = cms.string('TriggerResults'),
+    labelTrigResults  = cms.string('TriggerResults'),
+    labelTrigEvent    = cms.string('patTriggerEvent'),
+    labelBeamSpot     = cms.string('offlineBeamSpot'),
     labelMets         = cms.string('patMETsPFlow'),
     labelMuons        = cms.string('selectedPatMuonsPFlow'),
 #    labelElectrons    = cms.string('userDataSelectedPFElectronsAK5PFNoPU'),
 #    labelTaus         = cms.string('selectedPatTausAK5PFNoPU'),
+#    labelTaus         = cms.string('selectedPatTausPFlow'),
     labelElectrons    = cms.string(''),
     labelTaus         = cms.string(''),
 #    labelPFCandidates = cms.string('particleFlow'),
@@ -48,7 +51,7 @@ process.bmmAnalyzer = cms.EDAnalyzer('BmmPATAnalyzer',
     labelGen          = cms.string(''),
 
     ## trigger paths to save on ntuple: '*' to save all paths
-    savedTriggers = cms.vstring(
+    savedTriggerPaths = cms.vstring(
         'HLT_Mu12_eta2p1_DiCentral_40_20_DiBTagIP3D1stTrack_v',
         'HLT_Mu12_eta2p1_DiCentral_20_v',
         'HLT_Mu12_eta2p1_DiCentral_40_20_BTagIP3D1stTrack_v',
@@ -56,6 +59,12 @@ process.bmmAnalyzer = cms.EDAnalyzer('BmmPATAnalyzer',
         'HLT_Mu12_eta2p1_L1Mu10erJetC12WdEtaPhi1DiJetsC_v',
         'HLT_Mu12_DoubleCentralJet65_v',
         'HLT_Mu12_v'
+    ),
+
+    ## trigger objects to save on ntuple:
+    savedTriggerObjects = cms.vstring(
+        'muon',
+        'jet'
     )
 
 )

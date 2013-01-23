@@ -10,6 +10,7 @@
 
 #define UTIL_USE BARE
 #include "BmmAnalysis/NtuPAT/src/BmmNtupleData.cc"
+#include "BmmAnalysis/NtuPAT/src/BmmEventSelect.cc"
 #include "BmmLightNtuple.cc"
 #include "BmmAnalyzer.cc"
 #include "TFile.h"

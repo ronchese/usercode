@@ -17,6 +17,7 @@ namespace edm {
 }
 
 namespace pat {
+  class TriggerEvent;
   class MET;
   class Muon;
   class Electron;
@@ -26,6 +27,7 @@ namespace pat {
 }
 
 namespace reco {
+  class BeamSpot;
   class PFCandidate;
   class Track;
   class Vertex;
@@ -63,23 +65,9 @@ class BmmPATToNtuple: public BmmAnalyzer,
     }
   };
 
-  std::string labelHLT;
-  std::string labelMets;
-  std::string labelMuons;
-  std::string labelElectrons;
-  std::string labelTaus;
-//  std::string labelPFParticles;
-  std::string labelPFCandidates;
-  std::string labelGeneralTracks;
-  std::string labelJets;
-  std::string labelPVertices;
-  std::string labelSVertices;
-  std::string labelGen;
-
-  std::string labelCSV;
-  std::string labelTCHE;
-
-  edm::Handle< edm::TriggerResults                       > hlt;
+  edm::Handle< edm::TriggerResults                       > trigResults;
+  edm::Handle< pat::TriggerEvent                         > trigEvent;
+  edm::Handle< reco::BeamSpot                            > beamSpot;
   edm::Handle< std::vector<pat::MET                    > > mets;
   edm::Handle< std::vector<pat::Muon                   > > muons;
   edm::Handle< std::vector<pat::Electron               > > electrons;
@@ -93,22 +81,33 @@ class BmmPATToNtuple: public BmmAnalyzer,
   edm::Handle< std::vector<reco::GenParticle           > > particles;
 
   const edm::TriggerNames* triggerNames;
-  std::vector<std::string> savedTriggers;
+  std::vector<std::string> savedTriggerPaths;
+  std::vector<std::string> savedTriggerObjects;
 
-  std::map<const reco::Track*,int> trkMap;
   std::map<const reco::PFCandidate*,int> pfcMap;
+//  std::map<const reco::Track      *,int> pftMap;
+  std::map<const reco::Track      *,int> trkMap;
+  std::map<const pat::Muon        *,int> muoMap;
+  std::map<const pat::Jet         *,int> jetMap;
 
   bool dumpNtuple;
-  void fillTrigger     ();
+  void fillHLTStatus   ();
+  void fillHLTObjects  ();
+  void fillBeamSpot    ();
   void fillMet         ();
   void fillMuons       ();
   void fillElectrons   ();
   void fillTaus        ();
+  void fillPFCandidates();
   void fillTracks      ();
   void fillJets        ();
   void fillPVertices   ();
   void fillSVertices   ();
   void fillGenParticles();
+
+  void linkMuTracks();
+  void linkPFJets  ();
+  void linkPFTracks();
 
 };
 

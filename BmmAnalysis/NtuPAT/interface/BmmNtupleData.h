@@ -20,11 +20,41 @@ class BmmNtupleData {
   unsigned int lumiSection;
   unsigned int eventNumber;
 
-  // hlt
-  bool use_hlt;
-  int nHLT;
+  // hlt status
+  bool use_hlts;
+  int nHLTStatus;
   std::vector<std::string>* hltPath;
+  std::vector<bool       >* hltRun;
   std::vector<bool       >* hltAccept;
+
+  // hlt objects
+  bool use_hlto;
+  int nHLTObjects;
+  std::vector<std::string>* hltObjType;
+  std::vector<double     >* hltPt;
+  std::vector<double     >* hltEta;
+  std::vector<double     >* hltPhi;
+  std::vector<double     >* hltPx;
+  std::vector<double     >* hltPy;
+  std::vector<double     >* hltPz;
+  std::vector<double     >* hltE;
+
+  // beam spot
+  bool use_bspot;
+  double bwX;         // beam width
+  double bwY;
+  double bwXError;
+  double bwYError;
+  double bsX;         // beam spot
+  double bsY;
+  double bsZ;
+  double bsXError;
+  double bsYError;
+  double bsZError;
+  double bsdXdZ;      // beam slope
+  double bsdYdZ;
+  double bsdXdZError;
+  double bsdYdZError;
 
   // met
   bool use_met;
@@ -43,6 +73,7 @@ class BmmNtupleData {
   std::vector<double>* muoPz;
   std::vector<double>* muoE;
   std::vector<int   >* muoCharge;
+  std::vector<int   >* muoTrk;        // track index
   std::vector<double>* muoChaIso;     //.chargedHadronIso()
   std::vector<double>* muoNeuIso;     //.neutralHadronIso()
   std::vector<double>* muoPhoIso;     //.photonIso()
@@ -53,7 +84,7 @@ class BmmNtupleData {
   std::vector<double>* muoSumPUpt;    //.pfIsolationR04().sumPUPt
   std::vector<double>* muoNumMatches; //.numberOfMatchedStations()
   std::vector<double>* muoDb;         //.dB()
-  std::vector<int   >* muoNumValidHits; //. innerTrack()->numberOfValidHits() EMPTY
+  std::vector<int   >* muoNumValidHits; //. innerTrack()->numberOfValidHits()
   std::vector<double>* muoNormChi2;     //.globalTrack()->normalizedChi2()
   std::vector<int   >* muoNumMuHits;    //.globalTrack()->hitPattern().numberOfValidMuonHits()
   std::vector<int   >* muoNumPixHits;   //.globalTrack()->hitPattern().numberOfValidPixelHits()
@@ -70,6 +101,7 @@ class BmmNtupleData {
   std::vector<double>* elePz;
   std::vector<double>* eleE;
   std::vector<int   >* eleCharge;
+  std::vector<int   >* eleTrk;        // track index
   std::vector<double>* eleChaIso; //.chargedHadronIso()
   std::vector<double>* eleNeuIso; //.neutralHadronIso()
   std::vector<double>* elePhoIso; //.photonIso()
@@ -95,6 +127,20 @@ class BmmNtupleData {
   std::vector<double>* tauE;
   std::vector<int   >* tauCharge;
 
+  // particle flow
+  bool use_pflow;
+  int nPF;
+  std::vector<double>* pfcPt;
+  std::vector<double>* pfcEta;
+  std::vector<double>* pfcPhi;
+  std::vector<double>* pfcPx;
+  std::vector<double>* pfcPy;
+  std::vector<double>* pfcPz;
+  std::vector<double>* pfcE;
+  std::vector<int   >* pfcCharge;
+  std::vector<int   >* pfcJet;      //   jet index
+  std::vector<int   >* pfcTrk;      // track index
+
   // tracks
   bool use_tracks;
   int nTracks;
@@ -104,15 +150,14 @@ class BmmNtupleData {
   std::vector<double>* trkPx;
   std::vector<double>* trkPy;
   std::vector<double>* trkPz;
-  std::vector<double>* trkE;
   std::vector<int   >* trkCharge;
-  std::vector<int   >* trkJet;      //                 jet index     *
-  std::vector<int   >* trkPVtx;     //      primary vertex index     *
-  std::vector<int   >* trkSVtx;     //    secondary vertex index     *
-  std::vector<int   >* trkQuality;  //.trackRef()->qualityMask()     *
-  std::vector<double>* trkNormChi2; //.trackRef()->normalizedChi2()  *
-  std::vector<double>* trkDxy;      //.trackRef()->dxy()             *
-  std::vector<double>* trkDz;       //.trackRef()->dz()              *
+  std::vector<int   >* trkPFC;      // PFCandidate index
+  std::vector<int   >* trkPVtx;     //   primary vertex index
+  std::vector<int   >* trkSVtx;     // secondary vertex index
+  std::vector<int   >* trkQuality;  // qualityMask()
+  std::vector<double>* trkNormChi2; // normalizedChi2()
+  std::vector<double>* trkDxy;      // dxy()
+  std::vector<double>* trkDz;       // dz()
 
   // jets
   bool use_jets;

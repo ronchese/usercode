@@ -18,15 +18,18 @@ BmmAnalyzer::BmmAnalyzer() {
   // user parameters are set as names associated to a string, 
   // default values can be set in the analyzer class contructor
 
-  setUserParameter( "use_hlt"      , "true" );
-  setUserParameter( "use_met"      , "true" );
-  setUserParameter( "use_muons"    , "true" );
+  setUserParameter( "use_hlts"     , "true"  );
+  setUserParameter( "use_hlto"     , "true"  );
+  setUserParameter( "use_bspot"    , "true"  );
+  setUserParameter( "use_met"      , "true"  );
+  setUserParameter( "use_muons"    , "true"  );
   setUserParameter( "use_electrons", "false" );
   setUserParameter( "use_taus"     , "false" );
-  setUserParameter( "use_tracks"   , "true" );
-  setUserParameter( "use_jets"     , "true" );
-  setUserParameter( "use_pvts"     , "true" );
-  setUserParameter( "use_svts"     , "true" );
+  setUserParameter( "use_pflow"    , "true"  );
+  setUserParameter( "use_tracks"   , "true"  );
+  setUserParameter( "use_jets"     , "true"  );
+  setUserParameter( "use_pvts"     , "true"  );
+  setUserParameter( "use_svts"     , "true"  );
   setUserParameter( "use_gen"      , "false" );
 
   setUserParameter( "verbose", "f" );
@@ -60,11 +63,14 @@ void BmmAnalyzer::beginJob() {
   // by passing the corresponding variable,
   // e.g. getUserParameter( "name", x )
 
-  getUserParameter( "use_hlt"      , use_hlt       );
+  getUserParameter( "use_hlts"     , use_hlts      );
+  getUserParameter( "use_hlto"     , use_hlto      );
+  getUserParameter( "use_bspot"    , use_bspot     );
   getUserParameter( "use_met"      , use_met       );
   getUserParameter( "use_muons"    , use_muons     );
   getUserParameter( "use_electrons", use_electrons );
   getUserParameter( "use_taus"     , use_taus      );
+  getUserParameter( "use_pflow"    , use_pflow    );
   getUserParameter( "use_tracks"   , use_tracks    );
   getUserParameter( "use_jets"     , use_jets      );
   getUserParameter( "use_pvts"     , use_pvts      );

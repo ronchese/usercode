@@ -26,13 +26,43 @@ class BmmNtupleBranch: public virtual BmmNtupleData, public virtual T {
   TBranch* b_lumiSection;
   TBranch* b_eventNumber;
 
-  // hlt
-  void setBranches_hlt();
-  TBranch* b_nHLT;
+  // hlt status
+  void setBranches_hlts();
+  TBranch* b_nHLTStatus;
   TBranch* b_hltPath;
+  TBranch* b_hltRun;
   TBranch* b_hltAccept;
 
-  // mEt
+  // hlt objects
+  void setBranches_hlto();
+  TBranch* b_nHLTObjects;
+  TBranch* b_hltObjType;
+  TBranch* b_hltPt;
+  TBranch* b_hltEta;
+  TBranch* b_hltPhi;
+  TBranch* b_hltPx;
+  TBranch* b_hltPy;
+  TBranch* b_hltPz;
+  TBranch* b_hltE;
+
+  // beam spot
+  void setBranches_bspot();
+  TBranch* b_bwX;         // beam width
+  TBranch* b_bwY;
+  TBranch* b_bwXError;
+  TBranch* b_bwYError;
+  TBranch* b_bsX;         // beam spot
+  TBranch* b_bsY;
+  TBranch* b_bsZ;
+  TBranch* b_bsXError;
+  TBranch* b_bsYError;
+  TBranch* b_bsZError;
+  TBranch* b_bsdXdZ;      // beam slope
+  TBranch* b_bsdYdZ;
+  TBranch* b_bsdXdZError;
+  TBranch* b_bsdYdZError;
+
+  // met
   void setBranches_met();
   TBranch* b_mEt;
   TBranch* b_mEx;
@@ -49,6 +79,7 @@ class BmmNtupleBranch: public virtual BmmNtupleData, public virtual T {
   TBranch* b_muoPz;
   TBranch* b_muoE;
   TBranch* b_muoCharge;
+  TBranch* b_muoTrk;
   TBranch* b_muoChaIso;
   TBranch* b_muoNeuIso;
   TBranch* b_muoPhoIso;
@@ -76,6 +107,7 @@ class BmmNtupleBranch: public virtual BmmNtupleData, public virtual T {
   TBranch* b_elePz;
   TBranch* b_eleE;
   TBranch* b_eleCharge;
+  TBranch* b_eleTrk;
   TBranch* b_eleChaIso;
   TBranch* b_eleNeuIso;
   TBranch* b_elePhoIso;
@@ -99,6 +131,20 @@ class BmmNtupleBranch: public virtual BmmNtupleData, public virtual T {
   TBranch* b_tauCharge;
 
   // tracks
+  void setBranches_pflow();
+  TBranch* b_nPF;
+  TBranch* b_pfcPt;
+  TBranch* b_pfcEta;
+  TBranch* b_pfcPhi;
+  TBranch* b_pfcPx;
+  TBranch* b_pfcPy;
+  TBranch* b_pfcPz;
+  TBranch* b_pfcE;
+  TBranch* b_pfcCharge;
+  TBranch* b_pfcJet;
+  TBranch* b_pfcTrk;
+
+  // tracks
   void setBranches_tracks();
   TBranch* b_nTracks;
   TBranch* b_trkPt;
@@ -107,9 +153,8 @@ class BmmNtupleBranch: public virtual BmmNtupleData, public virtual T {
   TBranch* b_trkPx;
   TBranch* b_trkPy;
   TBranch* b_trkPz;
-  TBranch* b_trkE;
   TBranch* b_trkCharge;
-  TBranch* b_trkJet;
+  TBranch* b_trkPFC;
   TBranch* b_trkPVtx;
   TBranch* b_trkSVtx;
   TBranch* b_trkQuality;

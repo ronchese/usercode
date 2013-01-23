@@ -4,12 +4,28 @@
 
 BmmNtupleData::BmmNtupleData() {
 
-  use_met = false;
+  // hlt status
+  use_hlts = false;
+  hltPath         = new std::vector<std::string>;
+  hltRun          = new std::vector<bool       >;
+  hltAccept       = new std::vector<bool       >;
 
-  // hlt
-  use_hlt = false;
-  hltPath   = new std::vector<std::string>;
-  hltAccept = new std::vector<bool       >;
+  // hlt objects
+  use_hlto = false;
+  hltObjType      = new std::vector<std::string>;
+  hltPt           = new std::vector<double     >;
+  hltEta          = new std::vector<double     >;
+  hltPhi          = new std::vector<double     >;
+  hltPx           = new std::vector<double     >;
+  hltPy           = new std::vector<double     >;
+  hltPz           = new std::vector<double     >;
+  hltE            = new std::vector<double     >;
+
+  // beam spot
+  use_bspot = false;
+
+  // met
+  use_met = false;
 
   // muons
   use_muons = false;
@@ -22,6 +38,7 @@ BmmNtupleData::BmmNtupleData() {
   muoPz           = new std::vector<double>;
   muoE            = new std::vector<double>;
   muoCharge       = new std::vector<int   >;
+  muoTrk          = new std::vector<int   >;
   muoChaIso       = new std::vector<double>;
   muoNeuIso       = new std::vector<double>;
   muoPhoIso       = new std::vector<double>;
@@ -49,6 +66,7 @@ BmmNtupleData::BmmNtupleData() {
   elePz           = new std::vector<double>;
   eleE            = new std::vector<double>;
   eleCharge       = new std::vector<int   >;
+  eleTrk          = new std::vector<int   >;
   eleChaIso       = new std::vector<double>;
   eleNeuIso       = new std::vector<double>;
   elePhoIso       = new std::vector<double>;
@@ -72,6 +90,20 @@ BmmNtupleData::BmmNtupleData() {
   tauCharge       = new std::vector<int   >;
 
   // tracks
+  use_pflow = false;
+  nPF = 0;
+  pfcPt           = new std::vector<double>;
+  pfcEta          = new std::vector<double>;
+  pfcPhi          = new std::vector<double>;
+  pfcPx           = new std::vector<double>;
+  pfcPy           = new std::vector<double>;
+  pfcPz           = new std::vector<double>;
+  pfcE            = new std::vector<double>;
+  pfcCharge       = new std::vector<int   >;
+  pfcJet          = new std::vector<int   >;
+  pfcTrk          = new std::vector<int   >;
+
+  // tracks
   use_tracks = false;
   nTracks = 0;
   trkPt           = new std::vector<double>;
@@ -80,9 +112,8 @@ BmmNtupleData::BmmNtupleData() {
   trkPx           = new std::vector<double>;
   trkPy           = new std::vector<double>;
   trkPz           = new std::vector<double>;
-  trkE            = new std::vector<double>;
   trkCharge       = new std::vector<int   >;
-  trkJet          = new std::vector<int   >;
+  trkPFC          = new std::vector<int   >;
   trkPVtx         = new std::vector<int   >;
   trkSVtx         = new std::vector<int   >;
   trkQuality      = new std::vector<int   >;
