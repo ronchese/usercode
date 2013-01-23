@@ -30,9 +30,9 @@ void BmmNtupleBranch<T>::initTree() {
   if ( use_muons     ) setBranches_muons    ();
   if ( use_electrons ) setBranches_electrons();
   if ( use_taus      ) setBranches_taus     ();
+  if ( use_jets      ) setBranches_jets     ();
   if ( use_pflow     ) setBranches_pflow    ();
   if ( use_tracks    ) setBranches_tracks   ();
-  if ( use_jets      ) setBranches_jets     ();
   if ( use_pvts      ) setBranches_pVertices();
   if ( use_svts      ) setBranches_sVertices();
   if ( use_gen       ) setBranches_gen      ();
@@ -251,6 +251,47 @@ void BmmNtupleBranch<T>::setBranches_taus() {
 
 
 template <class T>
+void BmmNtupleBranch<T>::setBranches_jets() {
+  // jets
+  this->setBranch( "nJets"          , &  nJets          ,
+                   "nJets/I"        , &b_nJets           );
+  this->setBranch( "jetPt"          , &  jetPt          ,
+                   1000, 99         , &b_jetPt           );
+  this->setBranch( "jetEta"         , &  jetEta         ,
+                   1000, 99         , &b_jetEta          );
+  this->setBranch( "jetPhi"         , &  jetPhi         ,
+                   1000, 99         , &b_jetPhi          );
+  this->setBranch( "jetPx"          , &  jetPx          ,
+                   1000, 99         , &b_jetPx           );
+  this->setBranch( "jetPy"          , &  jetPy          ,
+                   1000, 99         , &b_jetPy           );
+  this->setBranch( "jetPz"          , &  jetPz          ,
+                   1000, 99         , &b_jetPz           );
+  this->setBranch( "jetE"           , &  jetE           ,
+                   1000, 99         , &b_jetE            );
+  this->setBranch( "jetCSV"         , &  jetCSV         ,
+                   1000, 99         , &b_jetCSV          );
+  this->setBranch( "jetTCHE"        , &  jetTCHE        ,
+                   1000, 99         , &b_jetTCHE         );
+  this->setBranch( "jetPF"          , &  jetPF          ,
+                   1000, 99         , &b_jetPF           );
+  this->setBranch( "jetNDau"        , &  jetNDau        ,
+                   1000, 99         , &b_jetNDau         );
+  this->setBranch( "jetNHF"         , &  jetNHF         ,
+                   1000, 99         , &b_jetNHF          );
+  this->setBranch( "jetNEF"         , &  jetNEF         ,
+                   1000, 99         , &b_jetNEF          );
+  this->setBranch( "jetCHF"         , &  jetCHF         ,
+                   1000, 99         , &b_jetCHF          );
+  this->setBranch( "jetCEF"         , &  jetCEF         ,
+                   1000, 99         , &b_jetCEF          );
+  this->setBranch( "jetNCH"         , &  jetNCH         ,
+                   1000, 99         , &b_jetNCH          );
+  return;
+}
+
+
+template <class T>
 void BmmNtupleBranch<T>::setBranches_pflow() {
   // particle flow
   this->setBranch( "nPF"            , &  nPF            ,
@@ -315,46 +356,6 @@ void BmmNtupleBranch<T>::setBranches_tracks() {
   return;
 }
 
-
-template <class T>
-void BmmNtupleBranch<T>::setBranches_jets() {
-  // jets
-  this->setBranch( "nJets"          , &  nJets          ,
-                   "nJets/I"        , &b_nJets           );
-  this->setBranch( "jetPt"          , &  jetPt          ,
-                   1000, 99         , &b_jetPt           );
-  this->setBranch( "jetEta"         , &  jetEta         ,
-                   1000, 99         , &b_jetEta          );
-  this->setBranch( "jetPhi"         , &  jetPhi         ,
-                   1000, 99         , &b_jetPhi          );
-  this->setBranch( "jetPx"          , &  jetPx          ,
-                   1000, 99         , &b_jetPx           );
-  this->setBranch( "jetPy"          , &  jetPy          ,
-                   1000, 99         , &b_jetPy           );
-  this->setBranch( "jetPz"          , &  jetPz          ,
-                   1000, 99         , &b_jetPz           );
-  this->setBranch( "jetE"           , &  jetE           ,
-                   1000, 99         , &b_jetE            );
-  this->setBranch( "jetCSV"         , &  jetCSV         ,
-                   1000, 99         , &b_jetCSV          );
-  this->setBranch( "jetTCHE"        , &  jetTCHE        ,
-                   1000, 99         , &b_jetTCHE         );
-  this->setBranch( "jetPF"          , &  jetPF          ,
-                   1000, 99         , &b_jetPF           );
-  this->setBranch( "jetNDau"        , &  jetNDau        ,
-                   1000, 99         , &b_jetNDau         );
-  this->setBranch( "jetNHF"         , &  jetNHF         ,
-                   1000, 99         , &b_jetNHF          );
-  this->setBranch( "jetNEF"         , &  jetNEF         ,
-                   1000, 99         , &b_jetNEF          );
-  this->setBranch( "jetCHF"         , &  jetCHF         ,
-                   1000, 99         , &b_jetCHF          );
-  this->setBranch( "jetCEF"         , &  jetCEF         ,
-                   1000, 99         , &b_jetCEF          );
-  this->setBranch( "jetNCH"         , &  jetNCH         ,
-                   1000, 99         , &b_jetNCH          );
-  return;
-}
 
 template <class T>
 void BmmNtupleBranch<T>::setBranches_pVertices() {

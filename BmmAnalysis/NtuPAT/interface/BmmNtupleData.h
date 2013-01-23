@@ -127,6 +127,26 @@ class BmmNtupleData {
   std::vector<double>* tauE;
   std::vector<int   >* tauCharge;
 
+  // jets
+  bool use_jets;
+  int nJets;
+  std::vector<double>* jetPt;
+  std::vector<double>* jetEta;
+  std::vector<double>* jetPhi;
+  std::vector<double>* jetPx;
+  std::vector<double>* jetPy;
+  std::vector<double>* jetPz;
+  std::vector<double>* jetE;
+  std::vector<double>* jetCSV;  //.bDiscriminator( "combinedSecondaryVertexBJetTags" )
+  std::vector<double>* jetTCHE; //.bDiscriminator( "trackCountingHighEffBJetTags" )
+  std::vector<bool  >* jetPF;   //.isPFJet()
+  std::vector<int   >* jetNDau; //.numberOfDaughters()
+  std::vector<double>* jetNHF;  //.neutralHadronEnergyFraction()
+  std::vector<double>* jetNEF;  //.neutralEmEnergyFraction()
+  std::vector<double>* jetCHF;  //.chargedHadronEnergyFraction()
+  std::vector<double>* jetCEF;  //.chargedEmEnergyFraction()
+  std::vector<double>* jetNCH;  //.chargedMultiplicity()
+
   // particle flow
   bool use_pflow;
   int nPF;
@@ -158,26 +178,6 @@ class BmmNtupleData {
   std::vector<double>* trkNormChi2; // normalizedChi2()
   std::vector<double>* trkDxy;      // dxy()
   std::vector<double>* trkDz;       // dz()
-
-  // jets
-  bool use_jets;
-  int nJets;
-  std::vector<double>* jetPt;
-  std::vector<double>* jetEta;
-  std::vector<double>* jetPhi;
-  std::vector<double>* jetPx;
-  std::vector<double>* jetPy;
-  std::vector<double>* jetPz;
-  std::vector<double>* jetE;
-  std::vector<double>* jetCSV;  //.bDiscriminator( "combinedSecondaryVertexBJetTags" )
-  std::vector<double>* jetTCHE; //.bDiscriminator( "trackCountingHighEffBJetTags" )
-  std::vector<bool  >* jetPF;   //.isPFJet()
-  std::vector<int   >* jetNDau; //.numberOfDaughters()
-  std::vector<double>* jetNHF;  //.neutralHadronEnergyFraction()
-  std::vector<double>* jetNEF;  //.neutralEmEnergyFraction()
-  std::vector<double>* jetCHF;  //.chargedHadronEnergyFraction()
-  std::vector<double>* jetCEF;  //.chargedEmEnergyFraction()
-  std::vector<double>* jetNCH;  //.chargedMultiplicity()
 
   // primary vertices
   bool use_pvts;

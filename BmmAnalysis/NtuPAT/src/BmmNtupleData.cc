@@ -89,7 +89,27 @@ BmmNtupleData::BmmNtupleData() {
   tauE            = new std::vector<double>;
   tauCharge       = new std::vector<int   >;
 
-  // tracks
+  // jets
+  use_jets = false;
+  nJets = 0;
+  jetPt           = new std::vector<double>;
+  jetEta          = new std::vector<double>;
+  jetPhi          = new std::vector<double>;
+  jetPx           = new std::vector<double>;
+  jetPy           = new std::vector<double>;
+  jetPz           = new std::vector<double>;
+  jetE            = new std::vector<double>;
+  jetCSV          = new std::vector<double>;
+  jetTCHE         = new std::vector<double>;
+  jetPF           = new std::vector<bool  >;
+  jetNDau         = new std::vector<int   >;
+  jetNHF          = new std::vector<double>;
+  jetNEF          = new std::vector<double>;
+  jetCHF          = new std::vector<double>;
+  jetCEF          = new std::vector<double>;
+  jetNCH          = new std::vector<double>;
+
+  // particle flow
   use_pflow = false;
   nPF = 0;
   pfcPt           = new std::vector<double>;
@@ -120,26 +140,6 @@ BmmNtupleData::BmmNtupleData() {
   trkNormChi2     = new std::vector<double>;
   trkDxy          = new std::vector<double>;
   trkDz           = new std::vector<double>;
-
-  // jets
-  use_jets = false;
-  nJets = 0;
-  jetPt           = new std::vector<double>;
-  jetEta          = new std::vector<double>;
-  jetPhi          = new std::vector<double>;
-  jetPx           = new std::vector<double>;
-  jetPy           = new std::vector<double>;
-  jetPz           = new std::vector<double>;
-  jetE            = new std::vector<double>;
-  jetCSV          = new std::vector<double>;
-  jetTCHE         = new std::vector<double>;
-  jetPF           = new std::vector<bool  >;
-  jetNDau         = new std::vector<int   >;
-  jetNHF          = new std::vector<double>;
-  jetNEF          = new std::vector<double>;
-  jetCHF          = new std::vector<double>;
-  jetCEF          = new std::vector<double>;
-  jetNCH          = new std::vector<double>;
 
   // primary vertices
   use_pvts =  false;

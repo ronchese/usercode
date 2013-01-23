@@ -13,6 +13,11 @@ using namespace std;
 
 BmmAnalyzer::BmmAnalyzer() {
 
+  parameterSet = 0;
+  currentEvBase  = 0;
+  currentEvent   = 0;
+  currentEvSetup = 0;
+
   std::cout << "new BmmAnalyzer" << std::endl;
 
   // user parameters are set as names associated to a string, 
@@ -25,9 +30,9 @@ BmmAnalyzer::BmmAnalyzer() {
   setUserParameter( "use_muons"    , "true"  );
   setUserParameter( "use_electrons", "false" );
   setUserParameter( "use_taus"     , "false" );
+  setUserParameter( "use_jets"     , "true"  );
   setUserParameter( "use_pflow"    , "true"  );
   setUserParameter( "use_tracks"   , "true"  );
-  setUserParameter( "use_jets"     , "true"  );
   setUserParameter( "use_pvts"     , "true"  );
   setUserParameter( "use_svts"     , "true"  );
   setUserParameter( "use_gen"      , "false" );
@@ -70,9 +75,9 @@ void BmmAnalyzer::beginJob() {
   getUserParameter( "use_muons"    , use_muons     );
   getUserParameter( "use_electrons", use_electrons );
   getUserParameter( "use_taus"     , use_taus      );
+  getUserParameter( "use_jets"     , use_jets      );
   getUserParameter( "use_pflow"    , use_pflow    );
   getUserParameter( "use_tracks"   , use_tracks    );
-  getUserParameter( "use_jets"     , use_jets      );
   getUserParameter( "use_pvts"     , use_pvts      );
   getUserParameter( "use_svts"     , use_svts      );
   getUserParameter( "use_gen"      , use_gen       );

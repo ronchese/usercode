@@ -58,6 +58,7 @@ using namespace std;
 
 BmmPATToNtuple::BmmPATToNtuple( const edm::ParameterSet& ps ) {
 
+  parameterSet = &ps;
   ntuName = ps.getUntrackedParameter<string>( "ntuName" );
   dumpNtuple = ( ntuName != "" );
 
@@ -96,6 +97,11 @@ BmmPATToNtuple::BmmPATToNtuple( const edm::ParameterSet& ps ) {
   setUserParameter( "use_taus"     , 
   getUserParameter( "labelTaus" )          == "" ? "f" : "t" );
 
+  setUserParameter( "labelJets"          , ps.getParameter<string>(
+                    "labelJets"           ) );
+  setUserParameter( "use_jets"     , 
+  getUserParameter( "labelJets" )          == "" ? "f" : "t" );
+
   setUserParameter( "labelPFCandidates"  , ps.getParameter<string>(
                     "labelPFCandidates"   ) );
   setUserParameter( "use_pflow"    , 
@@ -105,11 +111,6 @@ BmmPATToNtuple::BmmPATToNtuple( const edm::ParameterSet& ps ) {
                     "labelGeneralTracks"  ) );
   setUserParameter( "use_tracks"   , 
   getUserParameter( "labelGeneralTracks" ) == "" ? "f" : "t" );
-
-  setUserParameter( "labelJets"          , ps.getParameter<string>(
-                    "labelJets"           ) );
-  setUserParameter( "use_jets"     , 
-  getUserParameter( "labelJets" )          == "" ? "f" : "t" );
 
   setUserParameter( "labelPVertices"     , ps.getParameter<string>(
                     "labelPVertices"      ) );
@@ -210,9 +211,9 @@ void BmmPATToNtuple::read( const edm::EventBase& ev ) {
   if ( use_muons     ) fillMuons       ();
   if ( use_electrons ) fillElectrons   ();
   if ( use_taus      ) fillTaus        ();
+  if ( use_jets      ) fillJets        ();
   if ( use_pflow     ) fillPFCandidates();
   if ( use_tracks    ) fillTracks      ();
-  if ( use_jets      ) fillJets        ();
   if ( use_pvts      ) fillPVertices   ();
   if ( use_svts      ) fillSVertices   ();
   if ( use_gen       ) fillGenParticles();
@@ -419,7 +420,7 @@ void BmmPATToNtuple::fillMuons() {
   // store muons info
 
   int iObj;
-  int nObj = ( vMuons ? muons->size() : 0 );
+  int nObj = nMuons = ( vMuons ? muons->size() : 0 );
   muoPt          ->resize( nObj );
   muoEta         ->resize( nObj );
   muoPhi         ->resize( nObj );
@@ -459,7 +460,6 @@ void BmmPATToNtuple::fillMuons() {
   sort( muonPtr.begin(), muonPtr.end(), muoComp );
 
   muoMap.clear();
-  nMuons = nObj;
   for ( iObj = 0; iObj < nObj; ++iObj ) {
 
     const Muon& muon = *muonPtr[iObj];
@@ -526,7 +526,7 @@ void BmmPATToNtuple::fillElectrons() {
   // store electrons info
 
   int iObj;
-  int nObj = ( vElectrons ? electrons->size() : 0 );
+  int nObj = nElectrons = ( vElectrons ? electrons->size() : 0 );
   elePt     ->resize( nObj );
   eleEta    ->resize( nObj );
   elePhi    ->resize( nObj );
@@ -559,10 +559,10 @@ void BmmPATToNtuple::fillElectrons() {
   compareByPt<Electron> eleComp;
   sort( electronPtr.begin(), electronPtr.end(), eleComp );
 
-  nElectrons = nObj;
   for ( iObj = 0; iObj < nObj; ++iObj ) {
 
     const Electron& electron = *electronPtr[iObj];
+    eleMap.insert( make_pair( &electron, iObj ) );
 
     const Candidate::LorentzVector p4 = electron.p4();
     elePt     ->at( iObj ) = p4.pt    ();
@@ -608,7 +608,7 @@ void BmmPATToNtuple::fillTaus() {
   // store taus info
 
   int iObj;
-  int nObj = ( vTaus ? taus->size() : 0 );
+  int nObj = nTaus = ( vTaus ? taus->size() : 0 );
   tauPt    ->resize( nObj );
   tauEta   ->resize( nObj );
   tauPhi   ->resize( nObj );
@@ -631,10 +631,10 @@ void BmmPATToNtuple::fillTaus() {
   compareByPt<Tau> tauComp;
   sort( tauPtr.begin(), tauPtr.end(), tauComp );
 
-  nTaus = nObj;
   for ( iObj = 0; iObj < nObj; ++iObj ) {
 
     const Tau& tau = *tauPtr[iObj];
+    tauMap.insert( make_pair( &tau, iObj ) );
 
     const Candidate::LorentzVector p4 = tau.p4();
     tauPt    ->at( iObj ) = p4.pt    ();
@@ -645,6 +645,79 @@ void BmmPATToNtuple::fillTaus() {
     tauPz    ->at( iObj ) = p4.pz    ();
     tauE     ->at( iObj ) = p4.energy();
     tauCharge->at( iObj ) = tau.charge();
+
+  }
+
+  return;
+
+}
+
+
+void BmmPATToNtuple::fillJets() {
+
+  currentEvBase->getByLabel( getUserParameter( "labelJets" ),
+                             jets );
+  bool vJets = jets.isValid();
+
+  // store jets info
+
+  int iObj;
+  int nObj = ( vJets ? jets->size() : 0 );
+  jetPt  ->resize( nObj );
+  jetEta ->resize( nObj );
+  jetPhi ->resize( nObj );
+  jetPx  ->resize( nObj );
+  jetPy  ->resize( nObj );
+  jetPz  ->resize( nObj );
+  jetE   ->resize( nObj );
+  jetCSV ->resize( nObj );
+  jetTCHE->resize( nObj );
+  jetPF  ->resize( nObj );
+  jetNDau->resize( nObj );
+  jetNHF ->resize( nObj );
+  jetNEF ->resize( nObj );
+  jetCHF ->resize( nObj );
+  jetCEF ->resize( nObj );
+  jetNCH ->resize( nObj );
+  if ( !vJets ) {
+    cout << "invalid jets" << endl;
+    return;
+  }
+
+  vector<const Jet*> jetPtr;
+  jetPtr.resize( nObj );
+  for ( iObj = 0; iObj < nObj; ++iObj ) {
+    jetPtr[iObj] = &( jets->at( iObj ) );
+  }
+
+  compareByPt<Jet> jetComp;
+  sort( jetPtr.begin(), jetPtr.end(), jetComp );
+
+  string labelCSV  = "combinedSecondaryVertexBJetTags";
+  string labelTCHE = "trackCountingHighEffBJetTags";
+  jetMap.clear();
+  nJets = nObj;
+  for ( iObj = 0; iObj < nObj; ++iObj ) {
+
+    const Jet& jet = *jetPtr[iObj];
+    jetMap.insert( make_pair( &jet, iObj ) );
+
+    jetPt  ->at( iObj ) = jet.pt    ();
+    jetEta ->at( iObj ) = jet.eta   ();
+    jetPhi ->at( iObj ) = jet.phi   ();
+    jetPx  ->at( iObj ) = jet.px    ();
+    jetPy  ->at( iObj ) = jet.py    ();
+    jetPz  ->at( iObj ) = jet.pz    ();
+    jetE   ->at( iObj ) = jet.energy();
+    jetCSV ->at( iObj ) = jet.bDiscriminator( labelCSV  );
+    jetTCHE->at( iObj ) = jet.bDiscriminator( labelTCHE );
+    jetPF  ->at( iObj ) = jet.isPFJet();
+    jetNDau->at( iObj ) = jet.numberOfDaughters();
+    jetNHF ->at( iObj ) = jet.neutralHadronEnergyFraction();
+    jetNEF ->at( iObj ) = jet.neutralEmEnergyFraction();
+    jetCHF ->at( iObj ) = jet.chargedHadronEnergyFraction();
+    jetCEF ->at( iObj ) = jet.chargedEmEnergyFraction();
+    jetNCH ->at( iObj ) = jet.chargedMultiplicity();
 
   }
 
@@ -756,79 +829,6 @@ void BmmPATToNtuple::fillTracks() {
     trkNormChi2->at( iObj ) = trk.normalizedChi2();
     trkDxy     ->at( iObj ) = trk.dxy();
     trkDz      ->at( iObj ) = trk.dz();
-
-  }
-
-  return;
-
-}
-
-
-void BmmPATToNtuple::fillJets() {
-
-  currentEvBase->getByLabel( getUserParameter( "labelJets" ),
-                             jets );
-  bool vJets = jets.isValid();
-
-  // store jets info
-
-  int iObj;
-  int nObj = ( vJets ? jets->size() : 0 );
-  jetPt  ->resize( nObj );
-  jetEta ->resize( nObj );
-  jetPhi ->resize( nObj );
-  jetPx  ->resize( nObj );
-  jetPy  ->resize( nObj );
-  jetPz  ->resize( nObj );
-  jetE   ->resize( nObj );
-  jetCSV ->resize( nObj );
-  jetTCHE->resize( nObj );
-  jetPF  ->resize( nObj );
-  jetNDau->resize( nObj );
-  jetNHF ->resize( nObj );
-  jetNEF ->resize( nObj );
-  jetCHF ->resize( nObj );
-  jetCEF ->resize( nObj );
-  jetNCH ->resize( nObj );
-  if ( !vJets ) {
-    cout << "invalid jets" << endl;
-    return;
-  }
-
-  vector<const Jet*> jetPtr;
-  jetPtr.resize( nObj );
-  for ( iObj = 0; iObj < nObj; ++iObj ) {
-    jetPtr[iObj] = &( jets->at( iObj ) );
-  }
-
-  compareByPt<Jet> jetComp;
-  sort( jetPtr.begin(), jetPtr.end(), jetComp );
-
-  string labelCSV  = "combinedSecondaryVertexBJetTags";
-  string labelTCHE = "trackCountingHighEffBJetTags";
-  jetMap.clear();
-  nJets = nObj;
-  for ( iObj = 0; iObj < nObj; ++iObj ) {
-
-    const Jet& jet = *jetPtr[iObj];
-    jetMap.insert( make_pair( &jet, iObj ) );
-
-    jetPt  ->at( iObj ) = jet.pt    ();
-    jetEta ->at( iObj ) = jet.eta   ();
-    jetPhi ->at( iObj ) = jet.phi   ();
-    jetPx  ->at( iObj ) = jet.px    ();
-    jetPy  ->at( iObj ) = jet.py    ();
-    jetPz  ->at( iObj ) = jet.pz    ();
-    jetE   ->at( iObj ) = jet.energy();
-    jetCSV ->at( iObj ) = jet.bDiscriminator( labelCSV  );
-    jetTCHE->at( iObj ) = jet.bDiscriminator( labelTCHE );
-    jetPF  ->at( iObj ) = jet.isPFJet();
-    jetNDau->at( iObj ) = jet.numberOfDaughters();
-    jetNHF ->at( iObj ) = jet.neutralHadronEnergyFraction();
-    jetNEF ->at( iObj ) = jet.neutralEmEnergyFraction();
-    jetCHF ->at( iObj ) = jet.chargedHadronEnergyFraction();
-    jetCEF ->at( iObj ) = jet.chargedEmEnergyFraction();
-    jetNCH ->at( iObj ) = jet.chargedMultiplicity();
 
   }
 

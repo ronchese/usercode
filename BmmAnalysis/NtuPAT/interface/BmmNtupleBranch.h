@@ -130,7 +130,27 @@ class BmmNtupleBranch: public virtual BmmNtupleData, public virtual T {
   TBranch* b_tauE;
   TBranch* b_tauCharge;
 
-  // tracks
+  // jets
+  void setBranches_jets();
+  TBranch* b_nJets;
+  TBranch* b_jetPt;
+  TBranch* b_jetEta;
+  TBranch* b_jetPhi;
+  TBranch* b_jetPx;
+  TBranch* b_jetPy;
+  TBranch* b_jetPz;
+  TBranch* b_jetE;
+  TBranch* b_jetCSV;
+  TBranch* b_jetTCHE;
+  TBranch* b_jetPF;
+  TBranch* b_jetNDau;
+  TBranch* b_jetNHF;
+  TBranch* b_jetNEF;
+  TBranch* b_jetCHF;
+  TBranch* b_jetCEF;
+  TBranch* b_jetNCH;
+
+  // particle flow
   void setBranches_pflow();
   TBranch* b_nPF;
   TBranch* b_pfcPt;
@@ -161,26 +181,6 @@ class BmmNtupleBranch: public virtual BmmNtupleData, public virtual T {
   TBranch* b_trkNormChi2;
   TBranch* b_trkDxy;
   TBranch* b_trkDz;
-
-  // jets
-  void setBranches_jets();
-  TBranch* b_nJets;
-  TBranch* b_jetPt;
-  TBranch* b_jetEta;
-  TBranch* b_jetPhi;
-  TBranch* b_jetPx;
-  TBranch* b_jetPy;
-  TBranch* b_jetPz;
-  TBranch* b_jetE;
-  TBranch* b_jetCSV;
-  TBranch* b_jetTCHE;
-  TBranch* b_jetPF;
-  TBranch* b_jetNDau;
-  TBranch* b_jetNHF;
-  TBranch* b_jetNEF;
-  TBranch* b_jetCHF;
-  TBranch* b_jetCEF;
-  TBranch* b_jetNCH;
 
   // primary vertices
   void setBranches_pVertices();

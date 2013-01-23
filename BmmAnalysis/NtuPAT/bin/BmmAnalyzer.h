@@ -5,6 +5,7 @@
 #define BARE 3
 
 namespace edm {
+  class ParameterSet;
   class Event;
   class EventBase;
   class EventSetup;
@@ -67,9 +68,10 @@ class BmmAnalyzer: public BmmLightNtuple,
 
  protected:
 
-  const edm::EventBase * currentEvBase;
-  const edm::Event     * currentEvent;
-  const edm::EventSetup* currentEvSetup;
+  const edm::ParameterSet* parameterSet ;
+  const edm::EventBase   * currentEvBase;
+  const edm::Event       * currentEvent;
+  const edm::EventSetup  * currentEvSetup;
 
  private:
 
