@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 
 #include "NtuTool/Common/interface/TreeWrapper.h"
 #include "NtuTool/Common/interface/DataHandler.h"
@@ -22,6 +23,36 @@ TreeWrapper::~TreeWrapper() {
 
 const std::string& TreeWrapper::name() const {
   return treeName;
+}
+
+
+void TreeWrapper::setConfiguration( const std::string& file ) {
+  std::ifstream cfg( file.c_str() );
+  int length;
+  int lenMax = 1000;
+  char* line = new char[lenMax];
+  char* lptr;
+  while ( cfg.getline( line, lenMax ) ) {
+    lptr = line;
+    while ( *lptr == ' ' ) ++lptr;
+    if    ( *lptr == '#' ) continue;
+    std::string key( lptr );
+    length = key.find( " " );
+    if ( length < 0 ) {
+      std::cout << "invalid configuration input: " << line << std::endl;
+      continue;
+    }
+    key = key.substr( 0, length );
+    lptr += length;
+    while ( *lptr == ' ' ) ++lptr;
+    std::string val( lptr );
+    length = val.find( " " );
+    if ( length >= 0 )
+    val = val.substr( 0, length );
+    setUserParameter( key, val );
+  }
+  delete[] line;
+  return;
 }
 
 

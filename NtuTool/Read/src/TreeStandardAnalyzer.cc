@@ -1,8 +1,8 @@
 /*
  *  See header file for a description of this class.
  *
- *  $Date: 2011/12/15 12:11:55 $
- *  $Revision: 1.11 $
+ *  $Date: 2012/10/06 03:31:57 $
+ *  $Revision: 1.12 $
  *  \author Paolo Ronchese INFN Padova
  *
  */
@@ -86,6 +86,10 @@ int TreeStandardAnalyzer::run( int argc, char* argv[] ) {
     }
     if ( args == "-a" ) {
       amaxString.str( *argp++ );
+      continue;
+    }
+    if ( args == "-c" ) {
+      tr->setConfiguration( *argp++ );
       continue;
     }
     if ( args == "-v" ) {

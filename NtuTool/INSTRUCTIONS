@@ -76,16 +76,18 @@ read "ntuple_base.root"
 
 treeAnalyze_Base ntuList -n 6 -s 2 -a 5 hs.root x
 
-ntuList is a text file with the list of the files to read
-hs.root is the ouptut histogram file
--n      set the max number of events to read, if negative its applied 
-        to each input file
--s      set the number of events to skip, if negative its applied 
-        to each input file
--a      set the max number of events to accept, if negative its applied 
-        to each input file
-x       a flag to draw the histograms at the end (as coded in plot() )
-        at the end of the execution
+ntuList    : is a text file with the list of the files to read
+hs.root    : is the ouptut histogram file
+-n         : set the max number of events to read, if negative its applied 
+           : to each input file
+-s         : set the number of events to skip, if negative its applied 
+           : to each input file
+-a         : set the max number of events to accept, if negative its applied 
+           : to each input file
+x          : a flag to draw the histograms at the end (as coded in plot() )
+           : at the end of the execution
+-v key val : to set user parameter "key" as "val"
+-c cfgFile : to read all parameters from cfgFile
 
 alternatives:
 

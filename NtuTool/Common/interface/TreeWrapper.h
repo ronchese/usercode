@@ -21,6 +21,7 @@ class TreeWrapper {
 
   const std::string& name() const;
 
+  virtual void setConfiguration( const std::string& file );
   virtual void setUserParameter( const std::string& key,
                                  const std::string& val );
   virtual std::string getUserParameter( const std::string& key );
