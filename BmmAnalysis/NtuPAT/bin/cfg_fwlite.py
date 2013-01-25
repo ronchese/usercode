@@ -47,6 +47,9 @@ process.bmmAnalyzer = cms.PSet(
     labelSVertices    = cms.string('secondaryVertexTagInfosAODPFlow'),
     labelGen          = cms.string(''),
 
+    jetPtMin  = cms.double( 10.0 ),
+    jetEtaMax = cms.double(  2.5 ),
+
     ## trigger paths to save on ntuple: '*' to save all paths
     savedTriggerPaths = cms.vstring(
         'HLT_Mu12_eta2p1_DiCentral_40_20_DiBTagIP3D1stTrack_v',
