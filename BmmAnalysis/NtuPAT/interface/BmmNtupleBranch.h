@@ -195,6 +195,7 @@ class BmmNtupleBranch: public virtual BmmNtupleData, public virtual T {
   TBranch* b_pvtSxz;
   TBranch* b_pvtSyz;
 //  TBranch* b_pvtCovariance;
+  TBranch* b_pvtNTracks;
   TBranch* b_pvtNormChi2;
   TBranch* b_pvtBadQuality;
 
@@ -213,6 +214,8 @@ class BmmNtupleBranch: public virtual BmmNtupleData, public virtual T {
   TBranch* b_svtDirX;
   TBranch* b_svtDirY;
   TBranch* b_svtDirZ;
+  TBranch* b_svtType;
+  TBranch* b_svtNTracks;
   TBranch* b_svtNormChi2;
   TBranch* b_svtMass;
   TBranch* b_svtDist2D;
@@ -220,7 +223,6 @@ class BmmNtupleBranch: public virtual BmmNtupleData, public virtual T {
   TBranch* b_svtDist3D;
   TBranch* b_svtSign3D;
   TBranch* b_svtJet;
-  TBranch* b_svtNTracks;
   TBranch* b_svtBadQuality;
 
   // gen particles

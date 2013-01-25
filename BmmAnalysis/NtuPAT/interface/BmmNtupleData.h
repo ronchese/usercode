@@ -194,6 +194,7 @@ class BmmNtupleData {
 //  std::vector<
 //  std::vector<double>
 //                    >* pvtCovariance;
+  std::vector<int   >* pvtNTracks;
   std::vector<double>* pvtNormChi2;
   std::vector<int   >* pvtBadQuality; // 0=good, 1=fake, 2=invalid
 
@@ -212,6 +213,8 @@ class BmmNtupleData {
   std::vector<double>* svtDirX;
   std::vector<double>* svtDirY;
   std::vector<double>* svtDirZ;
+  std::vector<std::string>* svtType;
+  std::vector<int   >* svtNTracks;
   std::vector<double>* svtNormChi2;
   std::vector<double>* svtMass;
   std::vector<double>* svtDist2D;
@@ -219,7 +222,6 @@ class BmmNtupleData {
   std::vector<double>* svtDist3D;
   std::vector<double>* svtSign3D;
   std::vector<int   >* svtJet;
-  std::vector<int   >* svtNTracks;
   std::vector<int   >* svtBadQuality; // 0=good, 1=fake, 2=invalid
 
   // gen particles

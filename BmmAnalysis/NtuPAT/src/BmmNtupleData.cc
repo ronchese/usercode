@@ -156,6 +156,7 @@ BmmNtupleData::BmmNtupleData() {
 //  pvtCovariance   = new std::vector<
 //                        std::vector<double>
 //                                          >;
+  pvtNTracks      = new std::vector<int   >;
   pvtNormChi2     = new std::vector<double>;
   pvtBadQuality   = new std::vector<int   >;
 
@@ -174,6 +175,8 @@ BmmNtupleData::BmmNtupleData() {
   svtDirX       = new std::vector<double>;
   svtDirY       = new std::vector<double>;
   svtDirZ       = new std::vector<double>;
+  svtType       = new std::vector<std::string>;
+  svtNTracks    = new std::vector<int   >;
   svtNormChi2   = new std::vector<double>;
   svtMass       = new std::vector<double>;
   svtDist2D     = new std::vector<double>;
@@ -181,7 +184,6 @@ BmmNtupleData::BmmNtupleData() {
   svtDist3D     = new std::vector<double>;
   svtSign3D     = new std::vector<double>;
   svtJet        = new std::vector<int   >;
-  svtNTracks    = new std::vector<int   >;
   svtBadQuality = new std::vector<int   >;
 
   // gen particles

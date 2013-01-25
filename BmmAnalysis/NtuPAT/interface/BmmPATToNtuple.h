@@ -84,12 +84,18 @@ class BmmPATToNtuple: public BmmAnalyzer,
   std::vector<std::string> savedTriggerPaths;
   std::vector<std::string> savedTriggerObjects;
 
+  float jetPtMin;
+  float jetEtaMax;
+
   std::map<const pat::Muon        *,int> muoMap;
   std::map<const pat::Electron    *,int> eleMap;
   std::map<const pat::Tau         *,int> tauMap;
   std::map<const pat::Jet         *,int> jetMap;
+  std::map<const reco::Track      *,int> tkmMap;
+  std::map<const reco::Track      *,int> tkeMap;
+  std::map<const reco::Track      *,int> tkpMap;
+  std::map<const reco::PFCandidate*,int> pcjMap;
   std::map<const reco::PFCandidate*,int> pfcMap;
-//  std::map<const reco::Track      *,int> pftMap;
   std::map<const reco::Track      *,int> trkMap;
 
   bool dumpNtuple;
@@ -107,9 +113,9 @@ class BmmPATToNtuple: public BmmAnalyzer,
   void fillSVertices   ();
   void fillGenParticles();
 
-  void linkMuTracks();
-  void linkPFJets  ();
-  void linkPFTracks();
+  void linkMTracks();
+//  void linkPFJets ();
+  void linkPTracks();
 
 };
 

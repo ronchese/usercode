@@ -382,6 +382,8 @@ void BmmNtupleBranch<T>::setBranches_pVertices() {
                    1000, 99         , &b_pvtSyz          );
 //  this->setBranch( "pvtCovariance"  , &  pvtCovariance  ,
 //                   1000, 99         , &b_pvtCovariance   );
+  this->setBranch( "pvtNTracks"     , &  pvtNTracks     ,
+                   1000, 99         , &b_pvtNTracks      );
   this->setBranch( "pvtNormChi2"    , &  pvtNormChi2    ,
                    1000, 99         , &b_pvtNormChi2     );
   this->setBranch( "pvtBadQuality"  , &  pvtBadQuality  ,
@@ -418,6 +420,10 @@ void BmmNtupleBranch<T>::setBranches_sVertices() {
                    1000, 99         , &b_svtDirY         );
   this->setBranch( "svtDirZ"        , &  svtDirZ        ,
                    1000, 99         , &b_svtDirZ         );
+  this->setBranch( "svtType"        , &  svtType        ,
+                   1000, 99         , &b_svtType         );
+  this->setBranch( "svtNTracks"     , &  svtNTracks     ,
+                   1000, 99         , &b_svtNTracks      );
   this->setBranch( "svtNormChi2"    , &  svtNormChi2    ,
                    1000, 99         , &b_svtNormChi2     );
   this->setBranch( "svtMass"        , &  svtMass        ,
@@ -432,8 +438,6 @@ void BmmNtupleBranch<T>::setBranches_sVertices() {
                    1000, 99         , &b_svtSign3D       );
   this->setBranch( "svtJet"         , &  svtJet         ,
                    1000, 99         , &b_svtJet          );
-  this->setBranch( "svtNTracks"     , & svtNTracks      ,
-                   1000, 99         , &b_svtNTracks      );
   this->setBranch( "svtBadQuality"  , &  svtBadQuality  ,
                    1000, 99         , &b_svtBadQuality   );
   return;
