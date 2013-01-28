@@ -144,6 +144,8 @@ void BmmNtupleBranch<T>::setBranches_muons() {
                    1000, 99         , &b_muoE            );
   this->setBranch( "muoTrk"         , &  muoTrk         ,
                    1000, 99         , &b_muoTrk          );
+  this->setBranch( "muoTrg"         , &  muoTrg         ,
+                   1000, 99         , &b_muoTrg          );
   this->setBranch( "muoCharge"      , &  muoCharge      ,
                    1000, 99         , &b_muoCharge       );
   this->setBranch( "muoChaIso"      , &  muoChaIso      ,
@@ -201,6 +203,8 @@ void BmmNtupleBranch<T>::setBranches_electrons() {
                    1000, 99         , &b_eleE            );
   this->setBranch( "eleTrk"         , &  eleTrk         ,
                    1000, 99         , &b_eleTrk          );
+  this->setBranch( "eleTrg"         , &  eleTrg         ,
+                   1000, 99         , &b_eleTrg          );
   this->setBranch( "eleCharge"      , &  eleCharge      ,
                    1000, 99         , &b_eleCharge       );
   this->setBranch( "eleChaIso"      , &  eleChaIso      ,
@@ -246,6 +250,8 @@ void BmmNtupleBranch<T>::setBranches_taus() {
                    1000, 99         , &b_tauE            );
   this->setBranch( "tauCharge"      , &  tauCharge      ,
                    1000, 99         , &b_tauCharge       );
+  this->setBranch( "tauTrg"         , &  tauTrg         ,
+                   1000, 99         , &b_tauTrg          );
   return;
 }
 
@@ -273,6 +279,8 @@ void BmmNtupleBranch<T>::setBranches_jets() {
                    1000, 99         , &b_jetCSV          );
   this->setBranch( "jetTCHE"        , &  jetTCHE        ,
                    1000, 99         , &b_jetTCHE         );
+  this->setBranch( "jetTrg"         , &  jetTrg         ,
+                   1000, 99         , &b_jetTrg          );
   this->setBranch( "jetPF"          , &  jetPF          ,
                    1000, 99         , &b_jetPF           );
   this->setBranch( "jetNDau"        , &  jetNDau        ,

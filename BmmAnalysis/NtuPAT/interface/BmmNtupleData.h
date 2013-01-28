@@ -74,6 +74,7 @@ class BmmNtupleData {
   std::vector<double>* muoE;
   std::vector<int   >* muoCharge;
   std::vector<int   >* muoTrk;        // track index
+  std::vector<int   >* muoTrg;        // trigger object index
   std::vector<double>* muoChaIso;     //.chargedHadronIso()
   std::vector<double>* muoNeuIso;     //.neutralHadronIso()
   std::vector<double>* muoPhoIso;     //.photonIso()
@@ -101,11 +102,12 @@ class BmmNtupleData {
   std::vector<double>* elePz;
   std::vector<double>* eleE;
   std::vector<int   >* eleCharge;
-  std::vector<int   >* eleTrk;        // track index
-  std::vector<double>* eleChaIso; //.chargedHadronIso()
-  std::vector<double>* eleNeuIso; //.neutralHadronIso()
-  std::vector<double>* elePhoIso; //.photonIso()
-  std::vector<double>* eleAbsEta; //fabs(.superCluster()->eta())
+  std::vector<int   >* eleTrk;     // track index
+  std::vector<int   >* eleTrg;     // trigger object index
+  std::vector<double>* eleChaIso;  //.chargedHadronIso()
+  std::vector<double>* eleNeuIso;  //.neutralHadronIso()
+  std::vector<double>* elePhoIso;  //.photonIso()
+  std::vector<double>* eleAbsEta;  //fabs(.superCluster()->eta())
   std::vector<double>* eleAEff;
     //ElectronEffectiveArea::GetElectronEffectiveArea(
     //ElectronEffectiveArea::kEleGammaAndNeutralHadronIso03, absEta,
@@ -126,6 +128,7 @@ class BmmNtupleData {
   std::vector<double>* tauPz;
   std::vector<double>* tauE;
   std::vector<int   >* tauCharge;
+  std::vector<int   >* tauTrg;     // trigger object index
 
   // jets
   bool use_jets;
@@ -139,6 +142,7 @@ class BmmNtupleData {
   std::vector<double>* jetE;
   std::vector<double>* jetCSV;  //.bDiscriminator( "combinedSecondaryVertexBJetTags" )
   std::vector<double>* jetTCHE; //.bDiscriminator( "trackCountingHighEffBJetTags" )
+  std::vector<int   >* jetTrg;  // trigger object index
   std::vector<bool  >* jetPF;   //.isPFJet()
   std::vector<int   >* jetNDau; //.numberOfDaughters()
   std::vector<double>* jetNHF;  //.neutralHadronEnergyFraction()

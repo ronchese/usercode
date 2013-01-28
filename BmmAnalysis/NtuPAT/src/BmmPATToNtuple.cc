@@ -138,6 +138,10 @@ BmmPATToNtuple::BmmPATToNtuple( const edm::ParameterSet& ps ) {
 
   jetPtMin  = ps.getParameter<double>( "jetPtMin"  );
   jetEtaMax = ps.getParameter<double>( "jetEtaMax" );
+  trkPtMin  = ps.getParameter<double>( "trkPtMin"  );
+  trkEtaMax = ps.getParameter<double>( "trkEtaMax" );
+  dRmatchHLT = ps.getParameter<double>( "dRmatchHLT" );
+  dPmatchHLT = ps.getParameter<double>( "dPmatchHLT" );
 
   if ( ps.exists( "eventList" ) )
   setUserParameter( "eventList", ps.getParameter<string>( "eventList" ) );
@@ -217,6 +221,7 @@ void BmmPATToNtuple::read( const edm::EventBase& ev ) {
   if ( use_electrons ) fillElectrons   ();
   if ( use_taus      ) fillTaus        ();
   if ( use_jets      ) fillJets        ();
+  if ( use_pvts      ) fillVtxTrkMap   ();
   if ( use_pflow     ) fillPFCandidates();
   if ( use_tracks    ) fillTracks      ();
   if ( use_pvts      ) fillPVertices   ();
@@ -302,7 +307,10 @@ void BmmPATToNtuple::fillHLTStatus() {
 
 void BmmPATToNtuple::fillHLTObjects() {
 
-  nHLTObjects = 0;
+  currentEvBase->getByLabel( getUserParameter( "labelTrigEvent" ),
+                             trigEvent );
+  bool vHLTo = trigEvent.isValid();
+
   hltObjType->resize( 0 );
   hltPt     ->resize( 0 );
   hltEta    ->resize( 0 );
@@ -311,9 +319,8 @@ void BmmPATToNtuple::fillHLTObjects() {
   hltPy     ->resize( 0 );
   hltPz     ->resize( 0 );
   hltE      ->resize( 0 );
-  currentEvBase->getByLabel( getUserParameter( "labelTrigEvent" ),
-                             trigEvent );
-  if ( !trigEvent.isValid() ) {
+
+  if ( !vHLTo ) {
     cout << "invalid trigEvent" << endl;
     return;
   }
@@ -321,6 +328,7 @@ void BmmPATToNtuple::fillHLTObjects() {
   int iTrg;
   int nTrg = savedTriggerObjects.size();
   int triggerObjectType;
+  nHLTObjects = 0;
   for ( iTrg = 0; iTrg < nTrg; ++iTrg ) {
     const string& name = savedTriggerObjects[iTrg];
     if      ( name == "muon" ) triggerObjectType = trigger::TriggerMuon;
@@ -435,6 +443,7 @@ void BmmPATToNtuple::fillMuons() {
   muoE           ->resize( nObj );
   muoCharge      ->resize( nObj );
   muoTrk         ->resize( nObj );
+  muoTrg         ->resize( nObj );
   muoChaIso      ->resize( nObj );
   muoNeuIso      ->resize( nObj );
   muoPhoIso      ->resize( nObj );
@@ -488,6 +497,8 @@ void BmmPATToNtuple::fillMuons() {
     muoE           ->at( iObj ) = p4.energy();
     muoCharge      ->at( iObj ) = muon.charge();
     muoTrk         ->at( iObj ) = -1;
+    muoTrg         ->at( iObj ) = nearestHLT( "muon",
+                                              p4.pt(), p4.eta(), p4.phi() );
 
     muoChaIso      ->at( iObj ) = muon.chargedHadronIso();
     muoNeuIso      ->at( iObj ) = muon.neutralHadronIso();
@@ -549,6 +560,7 @@ void BmmPATToNtuple::fillElectrons() {
   eleE      ->resize( nObj );
   eleCharge ->resize( nObj );
   eleTrk    ->resize( nObj );
+  eleTrg    ->resize( nObj );
   eleChaIso ->resize( nObj );
   eleNeuIso ->resize( nObj );
   elePhoIso ->resize( nObj );
@@ -594,6 +606,8 @@ void BmmPATToNtuple::fillElectrons() {
     eleE      ->at( iObj ) = p4.energy();
     eleCharge ->at( iObj ) = electron.charge();
     eleTrk    ->at( iObj ) = -1;
+    eleTrg    ->at( iObj ) = nearestHLT( "electron",
+                                         p4.pt(), p4.eta(), p4.phi() );
 
     eleChaIso ->at( iObj ) = electron.chargedHadronIso();
     eleNeuIso ->at( iObj ) = electron.neutralHadronIso();
@@ -637,6 +651,7 @@ void BmmPATToNtuple::fillTaus() {
   tauPz    ->resize( nObj );
   tauE     ->resize( nObj );
   tauCharge->resize( nObj );
+  tauTrg   ->resize( nObj );
   if ( !vTaus ) {
     cout << "invalid taus" << endl;
     return;
@@ -666,6 +681,8 @@ void BmmPATToNtuple::fillTaus() {
     tauPz    ->at( iObj ) = p4.pz    ();
     tauE     ->at( iObj ) = p4.energy();
     tauCharge->at( iObj ) = tau.charge();
+    tauTrg   ->at( iObj ) = nearestHLT( "tau",
+                                        p4.pt(), p4.eta(), p4.phi() );;
 
   }
 
@@ -695,6 +712,7 @@ void BmmPATToNtuple::fillJets() {
   jetCSV ->resize( 0 );
   jetTCHE->resize( 0 );
   jetPF  ->resize( 0 );
+  jetTrg ->resize( 0 );
   jetNDau->resize( 0 );
   jetNHF ->resize( 0 );
   jetNEF ->resize( 0 );
@@ -720,6 +738,7 @@ void BmmPATToNtuple::fillJets() {
   string labelTCHE = "trackCountingHighEffBJetTags";
   jetMap.clear();
   pcjMap.clear();
+  ptjMap.clear();
   nJets = 0;
   for ( iObj = 0; iObj < nObj; ++iObj ) {
 
@@ -733,7 +752,12 @@ void BmmPATToNtuple::fillJets() {
     int iPFC;
     for ( iPFC = 0; iPFC < nPFC; ++iPFC ) {
       const PFCandidatePtr& pfp = jPFC.at( iPFC );
-      pcjMap.insert( make_pair( &(*pfp), nJets ) );
+      if ( pcjMap.find( &(*pfp) ) ==
+           pcjMap.end() ) pcjMap.insert( make_pair( &(*pfp), nJets ) );
+      const TrackRef   & tkr = pfp->trackRef();
+      const Track      * tkp = ( tkr.isNull() ? 0 : &(*tkr) );
+      if ( ptjMap.find( tkp ) ==
+           ptjMap.end() ) ptjMap.insert( make_pair( tkp, nJets ) );
     }
 
     jetPt  ->push_back( jet.pt    () );
@@ -745,6 +769,8 @@ void BmmPATToNtuple::fillJets() {
     jetE   ->push_back( jet.energy() );
     jetCSV ->push_back( jet.bDiscriminator( labelCSV  )   );
     jetTCHE->push_back( jet.bDiscriminator( labelTCHE )   );
+    jetTrg ->push_back( nearestHLT( "jet",
+                                    jet.pt(), jet.eta(), jet.phi() ) );
     jetPF  ->push_back( jet.isPFJet()                     );
     jetNDau->push_back( jet.numberOfDaughters()           );
     jetNHF ->push_back( jet.neutralHadronEnergyFraction() );
@@ -762,13 +788,75 @@ void BmmPATToNtuple::fillJets() {
 }
 
 
+void BmmPATToNtuple::fillVtxTrkMap() {
+
+/*
+*/
+  currentEvBase->getByLabel( getUserParameter( "labelPVertices" ),
+                             pVertices );
+  int iVtx;
+  int nVtx = ( pVertices.isValid() ? pVertices->size() : 0 );
+
+  map<const Track*,int>::const_iterator it_m = tkmMap.begin();
+  map<const Track*,int>::const_iterator ie_m = tkmMap.end();
+  map<const Track*,int>::const_iterator it_e = tkeMap.begin();
+  map<const Track*,int>::const_iterator ie_e = tkeMap.end();
+  map<const Track*,int>::const_iterator it_p = ptjMap.begin();
+  map<const Track*,int>::const_iterator ie_p = ptjMap.end();
+  vtxList.resize( 0 );
+  for ( iVtx = 0; iVtx < nVtx; ++iVtx ) {
+    const Vertex& vtx = pVertices->at( iVtx );
+    bool found = false;
+    try {
+      Vertex::trackRef_iterator it_v = vtx.tracks_begin();
+      Vertex::trackRef_iterator ie_v = vtx.tracks_end();
+      while ( it_v != ie_v ) {
+        const reco::TrackBaseRef& tkr = *it_v++;
+        it_m = tkmMap.find( &(*tkr) );
+        it_e = tkeMap.find( &(*tkr) );
+        it_p = ptjMap.find( &(*tkr) );
+        if ( it_m != ie_m ) found = true;
+        if ( it_e != ie_e ) found = true;
+        if ( it_p != ie_p ) found = true;
+      }
+    }
+    catch ( edm::Exception e ) {
+    }
+    if ( found ) vtxList.push_back( &vtx );
+  }
+
+  nVtx = vtxList.size();
+
+  tkvMap.clear();
+  for ( iVtx = 0; iVtx < nVtx; ++iVtx ) {
+    const Vertex& vtx = *vtxList[iVtx];
+    try {
+      Vertex::trackRef_iterator it_v = vtx.tracks_begin();
+      Vertex::trackRef_iterator ie_v = vtx.tracks_end();
+      while ( it_v != ie_v ) {
+        const reco::TrackBaseRef& tkr = *it_v++;
+        if ( fabs( tkr->eta() ) > trkEtaMax ) continue;
+        if (       tkr->pt ()   < trkPtMin  ) continue;
+        tkvMap.insert( make_pair( &(*tkr), iVtx ) );
+      }
+    }
+    catch ( edm::Exception e ) {
+    }
+  }
+/*
+*/
+  return;
+
+}
+
+
 void BmmPATToNtuple::fillPFCandidates() {
 
   currentEvBase->getByLabel( getUserParameter( "labelPFCandidates" ),
                              pfCandidates );
   bool vPF = pfCandidates.isValid();
 
-  // store tracks info
+  // store particle flow info
 
   int iObj;
   int nObj = 0;
@@ -806,17 +894,22 @@ void BmmPATToNtuple::fillPFCandidates() {
     map<const Track      *,int>::const_iterator m_iend = tkmMap.end();
     map<const Track      *,int>::const_iterator e_iter = tkeMap.find( tkp );
     map<const Track      *,int>::const_iterator e_iend = tkeMap.end();
+    map<const Track      *,int>::const_iterator v_iter = tkvMap.find( tkp );
+    map<const Track      *,int>::const_iterator v_iend = tkvMap.end();
     map<const PFCandidate*,int>::const_iterator j_iter = pcjMap.find( &pfc );
     map<const PFCandidate*,int>::const_iterator j_iend = pcjMap.end();
 
     int muoIndex = -1;
     int eleIndex = -1;
+    int vtxIndex = -1;
     int jetIndex = -1;
     if ( m_iter != m_iend ) muoIndex = m_iter->second;
     if ( e_iter != e_iend ) eleIndex = e_iter->second;
+    if ( v_iter != v_iend ) vtxIndex = v_iter->second;
     if ( j_iter != j_iend ) jetIndex = j_iter->second;
     if ( ( muoIndex < 0 ) &&
          ( eleIndex < 0 ) &&
+         ( vtxIndex < 0 ) &&
          ( jetIndex < 0 ) ) continue;
 
     if ( tkp != 0 )
@@ -893,15 +986,20 @@ void BmmPATToNtuple::fillTracks() {
     map<const Track      *,int>::const_iterator e_iend = tkeMap.end();
     map<const Track      *,int>::const_iterator p_iter = tkpMap.find( tkp );
     map<const Track      *,int>::const_iterator p_iend = tkpMap.end();
+    map<const Track      *,int>::const_iterator v_iter = tkvMap.find( tkp );
+    map<const Track      *,int>::const_iterator v_iend = tkvMap.end();
     int muoIndex = -1;
     int eleIndex = -1;
     int pfcIndex = -1;
+    int vtxIndex = -1;
     if ( m_iter != m_iend ) muoIndex = m_iter->second;
     if ( e_iter != e_iend ) eleIndex = e_iter->second;
     if ( p_iter != p_iend ) pfcIndex = p_iter->second;
-    if ( ( pfcIndex < 0 ) &&
-         ( muoIndex < 0 ) &&
-         ( eleIndex < 0 ) ) continue;
+    if ( v_iter != v_iend ) vtxIndex = v_iter->second;
+    if ( ( muoIndex < 0 ) &&
+         ( eleIndex < 0 ) &&
+         ( pfcIndex < 0 ) &&
+         ( vtxIndex < 0 ) ) continue;
 
     trkMap.insert( make_pair( tkp, nTracks ) );
 
@@ -931,41 +1029,43 @@ void BmmPATToNtuple::fillTracks() {
 
 void BmmPATToNtuple::fillPVertices() {
 
-  currentEvBase->getByLabel( getUserParameter( "labelPVertices" ),
-                             pVertices );
-  bool vPvts = pVertices.isValid();
+//  currentEvBase->getByLabel( getUserParameter( "labelPVertices" ),
+//                             pVertices );
+//  bool vPvts = pVertices.isValid();
 
   // store primary vertices info
 
   int iObj;
   int nObj = 0;
 //  int nObj = ( vPvts ? pVertices->size() : 0 );
-  pvtX         ->resize( nObj );
-  pvtY         ->resize( nObj );
-  pvtZ         ->resize( nObj );
-  pvtSxx       ->resize( nObj );
-  pvtSyy       ->resize( nObj );
-  pvtSzz       ->resize( nObj );
-  pvtSxy       ->resize( nObj );
-  pvtSxz       ->resize( nObj );
-  pvtSyz       ->resize( nObj );
-//  pvtCovariance->resize( nObj );
-  pvtNormChi2  ->resize( nObj );
-  pvtBadQuality->resize( nObj );
-  if ( !vPvts ) {
-    cout << "invalid primary vertices" << endl;
-    return;
-  }
-  else {
-    nObj = pVertices->size();
-  }
+  pvtX         ->resize( 0 );
+  pvtY         ->resize( 0 );
+  pvtZ         ->resize( 0 );
+  pvtSxx       ->resize( 0 );
+  pvtSyy       ->resize( 0 );
+  pvtSzz       ->resize( 0 );
+  pvtSxy       ->resize( 0 );
+  pvtSxz       ->resize( 0 );
+  pvtSyz       ->resize( 0 );
+//  pvtCovariance->resize( 0 );
+  pvtNormChi2  ->resize( 0 );
+  pvtBadQuality->resize( 0 );
+//  if ( !vPvts ) {
+//    cout << "invalid primary vertices" << endl;
+//    return;
+//  }
+//  else {
+//    nObj = pVertices->size();
+//  }
+  nObj = vtxList.size();
 
   map<const Track*,int>::const_iterator it_p = trkMap.begin();
   map<const Track*,int>::const_iterator ie_p = trkMap.end();
   nPVertices = 0;
   for ( iObj = 0; iObj < nObj; ++iObj ) {
 
-    const Vertex& vtx = pVertices->at( iObj );
+//    const Vertex& vtx = pVertices->at( iObj );
+    const Vertex& vtx = *vtxList[iObj];
     const Vertex::Point& pos = vtx.position();
 
     bool found = false;
@@ -1317,4 +1417,32 @@ void BmmPATToNtuple::linkPTracks() {
   return;
 
 }
+
+int BmmPATToNtuple::nearestHLT( const std::string& type,
+                                double pt, double eta, double phi ) {
+  int iHLT;
+  int jHLT = -1;
+  float dRmin = 1.0e+37;
+  float dRcur;
+  float twoPI = 2 * M_PI;
+  for ( iHLT = 0; iHLT < nHLTObjects; ++iHLT ) {
+    if ( hltObjType->at( iHLT ) != type ) continue;
+    double diffEta =       eta - hltEta->at( iHLT );
+    double diffPhi = fabs( phi - hltPhi->at( iHLT ) );
+    while ( diffPhi > twoPI ) diffPhi -= twoPI;
+    dRcur = sqrt( ( diffEta * diffEta ) + ( diffPhi * diffPhi ) );
+    if ( dRcur < dRmin ) {
+      jHLT = iHLT;
+      dRmin = dRcur;
+    }
+  }
+  if ( dRmin < dRmatchHLT ) {
+    if ( type == "jet" ) return jHLT;
+    double diffPt  = ( pt - hltPt->at( jHLT ) ) /
+                     ( pt + hltPt->at( jHLT ) );
+    if ( diffPt < dPmatchHLT ) return jHLT;
+  }
+  return -1;
+}
+
 

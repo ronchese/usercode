@@ -52,6 +52,10 @@ process.bmmAnalyzer = cms.EDAnalyzer('BmmPATAnalyzer',
 
     jetPtMin  = cms.double(  5.0 ),
     jetEtaMax = cms.double(  2.5 ),
+    trkPtMin  = cms.double(  4.0 ),
+    trkEtaMax = cms.double(  3.0 ),
+    dRmatchHLT = cms.double( 0.5 ),
+    dPmatchHLT = cms.double( 0.5 ),
 
     ## trigger paths to save on ntuple: '*' to save all paths
     savedTriggerPaths = cms.vstring(

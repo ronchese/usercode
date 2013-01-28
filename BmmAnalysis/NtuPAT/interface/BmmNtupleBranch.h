@@ -80,6 +80,7 @@ class BmmNtupleBranch: public virtual BmmNtupleData, public virtual T {
   TBranch* b_muoE;
   TBranch* b_muoCharge;
   TBranch* b_muoTrk;
+  TBranch* b_muoTrg;
   TBranch* b_muoChaIso;
   TBranch* b_muoNeuIso;
   TBranch* b_muoPhoIso;
@@ -108,6 +109,7 @@ class BmmNtupleBranch: public virtual BmmNtupleData, public virtual T {
   TBranch* b_eleE;
   TBranch* b_eleCharge;
   TBranch* b_eleTrk;
+  TBranch* b_eleTrg;
   TBranch* b_eleChaIso;
   TBranch* b_eleNeuIso;
   TBranch* b_elePhoIso;
@@ -129,6 +131,7 @@ class BmmNtupleBranch: public virtual BmmNtupleData, public virtual T {
   TBranch* b_tauPz;
   TBranch* b_tauE;
   TBranch* b_tauCharge;
+  TBranch* b_tauTrg;
 
   // jets
   void setBranches_jets();
@@ -142,6 +145,7 @@ class BmmNtupleBranch: public virtual BmmNtupleData, public virtual T {
   TBranch* b_jetE;
   TBranch* b_jetCSV;
   TBranch* b_jetTCHE;
+  TBranch* b_jetTrg;
   TBranch* b_jetPF;
   TBranch* b_jetNDau;
   TBranch* b_jetNHF;

@@ -86,17 +86,25 @@ class BmmPATToNtuple: public BmmAnalyzer,
 
   float jetPtMin;
   float jetEtaMax;
+  float trkPtMin;
+  float trkEtaMax;
+
+  float dRmatchHLT;
+  float dPmatchHLT;
 
   std::map<const pat::Muon        *,int> muoMap;
   std::map<const pat::Electron    *,int> eleMap;
   std::map<const pat::Tau         *,int> tauMap;
   std::map<const pat::Jet         *,int> jetMap;
+  std::map<const reco::PFCandidate*,int> pcjMap;
+  std::map<const reco::PFCandidate*,int> pfcMap;
   std::map<const reco::Track      *,int> tkmMap;
   std::map<const reco::Track      *,int> tkeMap;
   std::map<const reco::Track      *,int> tkpMap;
-  std::map<const reco::PFCandidate*,int> pcjMap;
-  std::map<const reco::PFCandidate*,int> pfcMap;
+  std::map<const reco::Track      *,int> ptjMap;
+  std::map<const reco::Track      *,int> tkvMap;
   std::map<const reco::Track      *,int> trkMap;
+  std::vector<const reco::Vertex*> vtxList;
 
   bool dumpNtuple;
   void fillHLTStatus   ();
@@ -107,6 +115,7 @@ class BmmPATToNtuple: public BmmAnalyzer,
   void fillElectrons   ();
   void fillTaus        ();
   void fillJets        ();
+  void fillVtxTrkMap   ();
   void fillPFCandidates();
   void fillTracks      ();
   void fillPVertices   ();
@@ -116,6 +125,9 @@ class BmmPATToNtuple: public BmmAnalyzer,
   void linkMTracks();
 //  void linkPFJets ();
   void linkPTracks();
+
+  int nearestHLT( const std::string& type,
+                  double pt, double eta, double phi );
 
 };
 

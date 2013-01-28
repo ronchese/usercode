@@ -39,6 +39,7 @@ BmmNtupleData::BmmNtupleData() {
   muoE            = new std::vector<double>;
   muoCharge       = new std::vector<int   >;
   muoTrk          = new std::vector<int   >;
+  muoTrg          = new std::vector<int   >;
   muoChaIso       = new std::vector<double>;
   muoNeuIso       = new std::vector<double>;
   muoPhoIso       = new std::vector<double>;
@@ -67,6 +68,7 @@ BmmNtupleData::BmmNtupleData() {
   eleE            = new std::vector<double>;
   eleCharge       = new std::vector<int   >;
   eleTrk          = new std::vector<int   >;
+  eleTrg          = new std::vector<int   >;
   eleChaIso       = new std::vector<double>;
   eleNeuIso       = new std::vector<double>;
   elePhoIso       = new std::vector<double>;
@@ -88,6 +90,7 @@ BmmNtupleData::BmmNtupleData() {
   tauPz           = new std::vector<double>;
   tauE            = new std::vector<double>;
   tauCharge       = new std::vector<int   >;
+  tauTrg          = new std::vector<int   >;
 
   // jets
   use_jets = false;
@@ -101,6 +104,7 @@ BmmNtupleData::BmmNtupleData() {
   jetE            = new std::vector<double>;
   jetCSV          = new std::vector<double>;
   jetTCHE         = new std::vector<double>;
+  jetTrg          = new std::vector<int   >;
   jetPF           = new std::vector<bool  >;
   jetNDau         = new std::vector<int   >;
   jetNHF          = new std::vector<double>;
