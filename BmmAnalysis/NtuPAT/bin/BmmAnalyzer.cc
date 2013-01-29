@@ -76,7 +76,7 @@ void BmmAnalyzer::beginJob() {
   getUserParameter( "use_electrons", use_electrons );
   getUserParameter( "use_taus"     , use_taus      );
   getUserParameter( "use_jets"     , use_jets      );
-  getUserParameter( "use_pflow"    , use_pflow    );
+  getUserParameter( "use_pflow"    , use_pflow     );
   getUserParameter( "use_tracks"   , use_tracks    );
   getUserParameter( "use_pvts"     , use_pvts      );
   getUserParameter( "use_svts"     , use_svts      );
