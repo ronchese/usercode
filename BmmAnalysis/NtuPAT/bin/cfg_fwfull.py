@@ -50,6 +50,8 @@ process.bmmAnalyzer = cms.EDAnalyzer('BmmPATAnalyzer',
     labelSVertices    = cms.string('secondaryVertexTagInfosAODPFlow'),
     labelGen          = cms.string(''),
 
+#    write_hlto = cms.string('f'),
+
     jetPtMin  = cms.double(  5.0 ),
     jetEtaMax = cms.double(  2.5 ),
     trkPtMin  = cms.double(  4.0 ),

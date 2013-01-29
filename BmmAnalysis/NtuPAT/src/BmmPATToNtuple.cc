@@ -64,70 +64,148 @@ BmmPATToNtuple::BmmPATToNtuple( const edm::ParameterSet& ps ) {
   ntuName = ps.getUntrackedParameter<string>( "ntuName" );
   dumpNtuple = ( ntuName != "" );
 
-  setUserParameter( "labelTrigResults"   , ps.getParameter<string>(
-                    "labelTrigResults"    ) );
+  setUserParameter( "labelTrigResults"   ,
+                     labelTrigResults    = ps.getParameter<string>(
+                    "labelTrigResults"   ) );
   setUserParameter( "use_hlts"     ,
-  getUserParameter( "labelTrigResults" )   == "" ? "f" : "t" );
+                  ( read_hlts      = (
+  getUserParameter( "labelTrigResults"   ) != "" ) ) ? "t" : "f" );
+  if ( ps.exists( "write_hlts"      ) &&
+                    read_hlts      )
+  setUserParameter( "use_hlts"      , ps.getParameter<string>(
+                  "write_hlts"      ) );
 
-  setUserParameter( "labelTrigEvent"     , ps.getParameter<string>(
-                    "labelTrigEvent"      ) );
-  setUserParameter( "use_hlto"     , 
-  getUserParameter( "labelTrigEvent" )     == "" ? "f" : "t" );
+  setUserParameter( "labelTrigEvent"     ,
+                     labelTrigEvent      = ps.getParameter<string>(
+                    "labelTrigEvent"     ) );
+  setUserParameter( "use_hlto"     ,
+		  ( read_hlto      = (
+  getUserParameter( "labelTrigEvent"     ) != "" ) ) ? "t" : "f" );
+  if ( ps.exists( "write_hlto"      ) &&
+                    read_hlto )
+  setUserParameter( "use_hlto"      , ps.getParameter<string>(
+                  "write_hlto"      ) );
 
-  setUserParameter( "labelBeamSpot"      , ps.getParameter<string>(
-                    "labelBeamSpot"       ) );
-  setUserParameter( "use_bspot"    , 
-  getUserParameter( "labelBeamSpot" )      == "" ? "f" : "t" );
+  setUserParameter( "labelBeamSpot"      ,
+                     labelBeamSpot       = ps.getParameter<string>(
+                    "labelBeamSpot"      ) );
+  setUserParameter( "use_bspot"    ,
+                  ( read_bspot     = (
+  getUserParameter( "labelBeamSpot"      ) != "" ) ) ? "t" : "f" );
+  if ( ps.exists( "write_bspot"     ) &&
+                    read_bspot )
+  setUserParameter( "use_bspot"    , ps.getParameter<string>(
+                  "write_bspot"     ) );
 
-  setUserParameter( "labelMets"          , ps.getParameter<string>(
-                    "labelMets"           ) );
-  setUserParameter( "use_met"      , 
-  getUserParameter( "labelMets" )          == "" ? "f" : "t" );
+  setUserParameter( "labelMets"          ,
+                     labelMets           = ps.getParameter<string>(
+                    "labelMets"          ) );
+  setUserParameter( "use_met"      ,
+                  ( read_met       = (
+  getUserParameter( "labelMets"          ) != "" ) ) ? "t" : "f" );
+  if ( ps.exists( "write_met"       ) &&
+                    read_met )
+  setUserParameter( "use_met"      , ps.getParameter<string>(
+                  "write_met"       ) );
 
-  setUserParameter( "labelMuons"         , ps.getParameter<string>(
-                    "labelMuons"          ) );
-  setUserParameter( "use_muons"    , 
-  getUserParameter( "labelMuons" )         == "" ? "f" : "t" );
+  setUserParameter( "labelMuons"         ,
+                     labelMuons          = ps.getParameter<string>(
+                    "labelMuons"         ) );
+  setUserParameter( "use_muons"    ,
+                  ( read_muons     = (
+  getUserParameter( "labelMuons"         ) != "" ) ) ? "t" : "f" );
+  if ( ps.exists( "write_muons"     ) &&
+                    read_muons )
+  setUserParameter( "use_muons"    , ps.getParameter<string>(
+                  "write_muons"     ) );
 
-  setUserParameter( "labelElectrons"     , ps.getParameter<string>(
-                    "labelElectrons"      ) );
-  setUserParameter( "use_electrons", 
-  getUserParameter( "labelElectrons" )     == "" ? "f" : "t" );
+  setUserParameter( "labelElectrons"     ,
+                     labelElectrons      = ps.getParameter<string>(
+                    "labelElectrons"     ) );
+  setUserParameter( "use_electrons",
+                  ( read_electrons = (
+  getUserParameter( "labelElectrons"     ) != "" ) ) ? "t" : "f" );
+  if ( ps.exists( "write_electrons" ) &&
+                    read_electrons )
+  setUserParameter( "use_electrons", ps.getParameter<string>(
+                  "write_electrons" ) );
 
-  setUserParameter( "labelTaus"          , ps.getParameter<string>(
+  setUserParameter( "labelTaus"          ,
+                     labelTaus           = ps.getParameter<string>(
                     "labelTaus"           ) );
-  setUserParameter( "use_taus"     , 
-  getUserParameter( "labelTaus" )          == "" ? "f" : "t" );
+  setUserParameter( "use_taus"     ,
+                  ( read_taus      = (
+  getUserParameter( "labelTaus"          ) != "" ) ) ? "t" : "f" );
+  if ( ps.exists( "write_taus"      ) &&
+                    read_taus )
+  setUserParameter( "use_taus"     , ps.getParameter<string>(
+                  "write_taus"      ) );
 
-  setUserParameter( "labelJets"          , ps.getParameter<string>(
-                    "labelJets"           ) );
-  setUserParameter( "use_jets"     , 
-  getUserParameter( "labelJets" )          == "" ? "f" : "t" );
+  setUserParameter( "labelJets"          ,
+                     labelJets           = ps.getParameter<string>(
+                    "labelJets"          ) );
+  setUserParameter( "use_jets"     ,
+                  ( read_jets      = (
+  getUserParameter( "labelJets"          ) != "" ) ) ? "t" : "f" );
+  if ( ps.exists( "write_jets"      ) &&
+                    read_jets )
+  setUserParameter( "use_jets"     , ps.getParameter<string>(
+                  "write_jets"      ) );
 
-  setUserParameter( "labelPFCandidates"  , ps.getParameter<string>(
-                    "labelPFCandidates"   ) );
-  setUserParameter( "use_pflow"    , 
-  getUserParameter( "labelPFCandidates" )  == "" ? "f" : "t" );
+  setUserParameter( "labelPFCandidates"  ,
+                     labelPFCandidates   = ps.getParameter<string>(
+                    "labelPFCandidates"  ) );
+  setUserParameter( "use_pflow"    ,
+                  ( read_pflow     = (
+  getUserParameter( "labelPFCandidates"  ) != "" ) ) ? "t" : "f" );
+  if ( ps.exists( "write_pflow"     ) &&
+                    read_pflow )
+  setUserParameter( "use_pflow"    , ps.getParameter<string>(
+                  "write_pflow"     ) );
 
-  setUserParameter( "labelGeneralTracks" , ps.getParameter<string>(
-                    "labelGeneralTracks"  ) );
-  setUserParameter( "use_tracks"   , 
-  getUserParameter( "labelGeneralTracks" ) == "" ? "f" : "t" );
+  setUserParameter( "labelGeneralTracks" ,
+                     labelGeneralTracks  = ps.getParameter<string>(
+                    "labelGeneralTracks" ) );
+  setUserParameter( "use_tracks"   ,
+                  ( read_tracks    = (
+  getUserParameter( "labelGeneralTracks" ) != "" ) ) ? "t" : "f" );
+  if ( ps.exists( "write_tracks"    ) &&
+                    read_tracks )
+  setUserParameter( "use_tracks"   , ps.getParameter<string>(
+                  "write_tracks"    ) );
 
-  setUserParameter( "labelPVertices"     , ps.getParameter<string>(
-                    "labelPVertices"      ) );
-  setUserParameter( "use_pvts"     , 
-  getUserParameter( "labelPVertices" )     == "" ? "f" : "t" );
+  setUserParameter( "labelPVertices"     ,
+                     labelPVertices      = ps.getParameter<string>(
+                    "labelPVertices"     ) );
+  setUserParameter( "use_pvts"     ,
+                  ( read_pvts      = (
+  getUserParameter( "labelPVertices"     ) != "" ) ) ? "t" : "f" );
+  if ( ps.exists( "write_pvts"      ) &&
+                    read_pvts )
+  setUserParameter( "use_pvts"     , ps.getParameter<string>(
+                  "write_pvts"      ) );
 
-  setUserParameter( "labelSVertices"     , ps.getParameter<string>(
-                    "labelSVertices"      ) );
-  setUserParameter( "use_svts"     , 
-  getUserParameter( "labelSVertices" )     == "" ? "f" : "t" );
+  setUserParameter( "labelSVertices"     ,
+                     labelSVertices      = ps.getParameter<string>(
+                    "labelSVertices"     ) );
+  setUserParameter( "use_svts"     ,
+                  ( read_svts      = (
+  getUserParameter( "labelSVertices"     ) != "" ) ) ? "t" : "f" );
+  if ( ps.exists( "write_svts"      ) &&
+                    read_svts )
+  setUserParameter( "use_svts"     , ps.getParameter<string>(
+                  "write_svts"      ) );
 
-  setUserParameter( "labelGen"           , ps.getParameter<string>(
-                    "labelGen"            ) );
-  setUserParameter( "use_gen"      , 
-  getUserParameter( "labelGen" )           == "" ? "f" : "t" );
+  setUserParameter( "labelGen"           ,
+                     labelGen            = ps.getParameter<string>(
+                    "labelGen"           ) );
+  setUserParameter( "use_gen"      ,
+                  ( read_gen       = (
+  getUserParameter( "labelGen"           ) != "" ) ) ? "t" : "f" );
+  if ( ps.exists( "write_gen"       ) &&
+                    read_gen )
+  setUserParameter( "use_gen"      , ps.getParameter<string>(
+                  "write_gen"       ) );
 
   if ( ps.exists( "savedTriggerPaths"   ) )
                    savedTriggerPaths    = ps.getParameter< vector<string> >(
@@ -213,20 +291,20 @@ void BmmPATToNtuple::read( const edm::EventBase& ev ) {
   lumiSection = ev.id().luminosityBlock();
   eventNumber = ev.id().event();
 
-  if ( use_hlts      ) fillHLTStatus   ();
-  if ( use_hlto      ) fillHLTObjects  ();
-  if ( use_bspot     ) fillBeamSpot    ();
-  if ( use_met       ) fillMet         ();
-  if ( use_muons     ) fillMuons       ();
-  if ( use_electrons ) fillElectrons   ();
-  if ( use_taus      ) fillTaus        ();
-  if ( use_jets      ) fillJets        ();
-  if ( use_pvts      ) fillVtxTrkMap   ();
-  if ( use_pflow     ) fillPFCandidates();
-  if ( use_tracks    ) fillTracks      ();
-  if ( use_pvts      ) fillPVertices   ();
-  if ( use_svts      ) fillSVertices   ();
-  if ( use_gen       ) fillGenParticles();
+  if ( read_hlts      ) fillHLTStatus   ();
+  if ( read_hlto      ) fillHLTObjects  ();
+  if ( read_bspot     ) fillBeamSpot    ();
+  if ( read_met       ) fillMet         ();
+  if ( read_muons     ) fillMuons       ();
+  if ( read_electrons ) fillElectrons   ();
+  if ( read_taus      ) fillTaus        ();
+  if ( read_jets      ) fillJets        ();
+  if ( read_pvts      ) fillVtxTrkMap   ();
+  if ( read_pflow     ) fillPFCandidates();
+  if ( read_tracks    ) fillTracks      ();
+  if ( read_pvts      ) fillPVertices   ();
+  if ( read_svts      ) fillSVertices   ();
+  if ( read_gen       ) fillGenParticles();
 
   if ( use_muons && use_tracks ) linkMTracks();
 //  if ( use_pflow && use_jets   ) linkPFJets ();
@@ -292,9 +370,9 @@ void BmmPATToNtuple::fillHLTStatus() {
     for ( iTrg = 0; iTrg < nTrg; ++iTrg ) {
       const string& name = savedTriggerPaths[iTrg];
       if ( ( name != "*" ) &&
-           ( hltPathName.find( name, 0 ) != string::npos ) ) continue;
+           ( hltPathName.find( name, 0 ) == string::npos ) ) continue;
       ++nHLTStatus;
-      hltPath  ->push_back( name );
+      hltPath  ->push_back( hltPathName );
       hltRun   ->push_back( trigResults->wasrun( index ) );
       hltAccept->push_back( trigResults->accept( index ) );
     }

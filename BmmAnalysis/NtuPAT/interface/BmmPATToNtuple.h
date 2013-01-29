@@ -65,6 +65,34 @@ class BmmPATToNtuple: public BmmAnalyzer,
     }
   };
 
+  std::string labelTrigResults;
+  std::string labelTrigEvent;
+  std::string labelBeamSpot;
+  std::string labelMets;
+  std::string labelMuons;
+  std::string labelElectrons;
+  std::string labelTaus;
+  std::string labelJets;
+  std::string labelPFCandidates;
+  std::string labelGeneralTracks;
+  std::string labelPVertices;
+  std::string labelSVertices;
+  std::string labelGen;
+
+  bool read_hlts;
+  bool read_hlto;
+  bool read_bspot;
+  bool read_met;
+  bool read_muons;
+  bool read_electrons;
+  bool read_taus;
+  bool read_jets;
+  bool read_pflow;
+  bool read_tracks;
+  bool read_pvts;
+  bool read_svts;
+  bool read_gen;
+
   edm::Handle< edm::TriggerResults                       > trigResults;
   edm::Handle< pat::TriggerEvent                         > trigEvent;
   edm::Handle< reco::BeamSpot                            > beamSpot;

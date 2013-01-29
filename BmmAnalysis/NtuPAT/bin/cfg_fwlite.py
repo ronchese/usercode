@@ -47,6 +47,8 @@ process.bmmAnalyzer = cms.PSet(
     labelSVertices    = cms.string('secondaryVertexTagInfosAODPFlow'),
     labelGen          = cms.string(''),
 
+#    write_hlto = cms.string('f'),
+
     jetPtMin  = cms.double( 10.0 ),
     jetEtaMax = cms.double(  2.5 ),
     trkPtMin  = cms.double(  4.0 ),
