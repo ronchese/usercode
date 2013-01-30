@@ -6,6 +6,8 @@
 #include "NtuTool/Common/interface/TreeWriter.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
+#include "DataFormats/GeometryVector/interface/GlobalVector.h"
+#include "DataFormats/GeometryCommonDetAlgo/interface/Measurement1D.h"
 
 #include <string>
 #include <vector>
@@ -114,6 +116,7 @@ class BmmPATToNtuple: public BmmAnalyzer,
 
   float jetPtMin;
   float jetEtaMax;
+  float trkDzMax;
   float trkPtMin;
   float trkEtaMax;
 
@@ -132,6 +135,8 @@ class BmmPATToNtuple: public BmmAnalyzer,
   std::map<const reco::Track      *,int> ptjMap;
   std::map<const reco::Track      *,int> tkvMap;
   std::map<const reco::Track      *,int> trkMap;
+  std::set<const reco::Track      *    > tkrSet;
+  std::set<const reco::Track      *    > allPTk;
   std::vector<const reco::Vertex*> vtxList;
 
   bool dumpNtuple;
@@ -149,6 +154,16 @@ class BmmPATToNtuple: public BmmAnalyzer,
   void fillPVertices   ();
   void fillSVertices   ();
   void fillGenParticles();
+
+  int addSecondaryVertex( const reco::Vertex& vtx,
+                          const  GlobalVector& dir,
+                          const Measurement1D& d2d,
+                          const Measurement1D& d3d,
+                          const std::string& type, int jetId );
+  int addTrackIP(   int trkIndex, const reco::Track & trk,
+                    int vtxIndex, const reco::Vertex& vtx );
+  int addTrackVtxP( int tipIndex, const reco::Track & trk,
+                                  const reco::Vertex& vtx );
 
   void linkMTracks();
 //  void linkPFJets ();

@@ -138,6 +138,7 @@ BmmNtupleData::BmmNtupleData() {
   trkPz           = new std::vector<double>;
   trkCharge       = new std::vector<int   >;
   trkPFC          = new std::vector<int   >;
+  trkJet          = new std::vector<int   >;
   trkPVtx         = new std::vector<int   >;
   trkSVtx         = new std::vector<int   >;
   trkQuality      = new std::vector<int   >;
@@ -189,6 +190,25 @@ BmmNtupleData::BmmNtupleData() {
   svtSign3D     = new std::vector<double>;
   svtJet        = new std::vector<int   >;
   svtBadQuality = new std::vector<int   >;
+
+  // impact parameters
+  use_ips = false;
+  nTkIPs = 0;
+  tipTrk          = new std::vector<int   >;
+  tipSVtx         = new std::vector<int   >;
+  tipDxy          = new std::vector<double>;
+  tipDz           = new std::vector<double>;
+
+  // momenta at vertices
+  use_vtxp = false;
+  nVtxPs = 0;
+  tvpTrk          = new std::vector<int   >;
+//  tvpPt           = new std::vector<double>;
+//  tvpEta          = new std::vector<double>;
+//  tvpPhi          = new std::vector<double>;
+  tvpPx           = new std::vector<double>;
+  tvpPy           = new std::vector<double>;
+  tvpPz           = new std::vector<double>;
 
   // gen particles
   use_gen = false;

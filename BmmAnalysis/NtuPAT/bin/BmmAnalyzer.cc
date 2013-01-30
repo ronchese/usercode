@@ -35,6 +35,7 @@ BmmAnalyzer::BmmAnalyzer() {
   setUserParameter( "use_tracks"   , "true"  );
   setUserParameter( "use_pvts"     , "true"  );
   setUserParameter( "use_svts"     , "true"  );
+  setUserParameter( "use_refit"    , "true"  );
   setUserParameter( "use_gen"      , "false" );
 
   setUserParameter( "verbose", "f" );
@@ -81,6 +82,8 @@ void BmmAnalyzer::beginJob() {
   getUserParameter( "use_pvts"     , use_pvts      );
   getUserParameter( "use_svts"     , use_svts      );
   getUserParameter( "use_gen"      , use_gen       );
+  getUserParameter( "use_ips"      , use_ips       );
+  getUserParameter( "use_vtxp"     , use_vtxp      );
   if ( !use_jets ) use_svts = false;
   initTree();
 

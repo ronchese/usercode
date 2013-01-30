@@ -33,6 +33,11 @@
 #include "DataFormats/GeometryVector/interface/GlobalVector.h"
 #include "DataFormats/GeometryCommonDetAlgo/interface/Measurement1D.h"
 
+#include "TrackingTools/TransientTrack/interface/TransientTrackBuilder.h"
+#include "TrackingTools/Records/interface/TransientTrackRecord.h"
+#include "RecoVertex/KalmanVertexFit/interface/KalmanVertexFitter.h"
+#include "RecoVertex/VertexPrimitives/interface/TransientVertex.h"
+
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 
 #include <map>
@@ -67,145 +72,157 @@ BmmPATToNtuple::BmmPATToNtuple( const edm::ParameterSet& ps ) {
   setUserParameter( "labelTrigResults"   ,
                      labelTrigResults    = ps.getParameter<string>(
                     "labelTrigResults"   ) );
-  setUserParameter( "use_hlts"     ,
-                  ( read_hlts      = (
+  setUserParameter( "use_hlts"      ,
+                  ( read_hlts       = (
   getUserParameter( "labelTrigResults"   ) != "" ) ) ? "t" : "f" );
   if ( ps.exists( "write_hlts"      ) &&
-                    read_hlts      )
-  setUserParameter( "use_hlts"      , ps.getParameter<string>(
+                    read_hlts         )
+  setUserParameter( "use_hlts"           , ps.getParameter<string>(
                   "write_hlts"      ) );
 
   setUserParameter( "labelTrigEvent"     ,
                      labelTrigEvent      = ps.getParameter<string>(
                     "labelTrigEvent"     ) );
-  setUserParameter( "use_hlto"     ,
-		  ( read_hlto      = (
+  setUserParameter( "use_hlto"      ,
+		  ( read_hlto       = (
   getUserParameter( "labelTrigEvent"     ) != "" ) ) ? "t" : "f" );
   if ( ps.exists( "write_hlto"      ) &&
-                    read_hlto )
-  setUserParameter( "use_hlto"      , ps.getParameter<string>(
+                    read_hlto         )
+  setUserParameter( "use_hlto"           , ps.getParameter<string>(
                   "write_hlto"      ) );
 
   setUserParameter( "labelBeamSpot"      ,
                      labelBeamSpot       = ps.getParameter<string>(
                     "labelBeamSpot"      ) );
-  setUserParameter( "use_bspot"    ,
-                  ( read_bspot     = (
+  setUserParameter( "use_bspot"     ,
+                  ( read_bspot      = (
   getUserParameter( "labelBeamSpot"      ) != "" ) ) ? "t" : "f" );
   if ( ps.exists( "write_bspot"     ) &&
-                    read_bspot )
-  setUserParameter( "use_bspot"    , ps.getParameter<string>(
+                    read_bspot        )
+  setUserParameter( "use_bspot"          , ps.getParameter<string>(
                   "write_bspot"     ) );
 
   setUserParameter( "labelMets"          ,
                      labelMets           = ps.getParameter<string>(
                     "labelMets"          ) );
-  setUserParameter( "use_met"      ,
-                  ( read_met       = (
+  setUserParameter( "use_met"       ,
+                  ( read_met        = (
   getUserParameter( "labelMets"          ) != "" ) ) ? "t" : "f" );
   if ( ps.exists( "write_met"       ) &&
-                    read_met )
-  setUserParameter( "use_met"      , ps.getParameter<string>(
+                    read_met          )
+  setUserParameter( "use_met"            , ps.getParameter<string>(
                   "write_met"       ) );
 
   setUserParameter( "labelMuons"         ,
                      labelMuons          = ps.getParameter<string>(
                     "labelMuons"         ) );
-  setUserParameter( "use_muons"    ,
-                  ( read_muons     = (
+  setUserParameter( "use_muons"     ,
+                  ( read_muons      = (
   getUserParameter( "labelMuons"         ) != "" ) ) ? "t" : "f" );
   if ( ps.exists( "write_muons"     ) &&
-                    read_muons )
-  setUserParameter( "use_muons"    , ps.getParameter<string>(
+                    read_muons        )
+  setUserParameter( "use_muons"          , ps.getParameter<string>(
                   "write_muons"     ) );
 
   setUserParameter( "labelElectrons"     ,
                      labelElectrons      = ps.getParameter<string>(
                     "labelElectrons"     ) );
-  setUserParameter( "use_electrons",
-                  ( read_electrons = (
+  setUserParameter( "use_electrons" ,
+                  ( read_electrons  = (
   getUserParameter( "labelElectrons"     ) != "" ) ) ? "t" : "f" );
   if ( ps.exists( "write_electrons" ) &&
-                    read_electrons )
-  setUserParameter( "use_electrons", ps.getParameter<string>(
+                    read_electrons    )
+  setUserParameter( "use_electrons"      , ps.getParameter<string>(
                   "write_electrons" ) );
 
   setUserParameter( "labelTaus"          ,
                      labelTaus           = ps.getParameter<string>(
                     "labelTaus"           ) );
-  setUserParameter( "use_taus"     ,
-                  ( read_taus      = (
+  setUserParameter( "use_taus"      ,
+                  ( read_taus       = (
   getUserParameter( "labelTaus"          ) != "" ) ) ? "t" : "f" );
   if ( ps.exists( "write_taus"      ) &&
-                    read_taus )
-  setUserParameter( "use_taus"     , ps.getParameter<string>(
+                    read_taus         )
+  setUserParameter( "use_taus"           , ps.getParameter<string>(
                   "write_taus"      ) );
 
   setUserParameter( "labelJets"          ,
                      labelJets           = ps.getParameter<string>(
                     "labelJets"          ) );
-  setUserParameter( "use_jets"     ,
-                  ( read_jets      = (
+  setUserParameter( "use_jets"      ,
+                  ( read_jets       = (
   getUserParameter( "labelJets"          ) != "" ) ) ? "t" : "f" );
   if ( ps.exists( "write_jets"      ) &&
-                    read_jets )
-  setUserParameter( "use_jets"     , ps.getParameter<string>(
+                    read_jets         )
+  setUserParameter( "use_jets"           , ps.getParameter<string>(
                   "write_jets"      ) );
 
   setUserParameter( "labelPFCandidates"  ,
                      labelPFCandidates   = ps.getParameter<string>(
                     "labelPFCandidates"  ) );
-  setUserParameter( "use_pflow"    ,
-                  ( read_pflow     = (
+  setUserParameter( "use_pflow"     ,
+                  ( read_pflow      = (
   getUserParameter( "labelPFCandidates"  ) != "" ) ) ? "t" : "f" );
   if ( ps.exists( "write_pflow"     ) &&
-                    read_pflow )
-  setUserParameter( "use_pflow"    , ps.getParameter<string>(
+                    read_pflow        )
+  setUserParameter( "use_pflow"          , ps.getParameter<string>(
                   "write_pflow"     ) );
 
   setUserParameter( "labelGeneralTracks" ,
                      labelGeneralTracks  = ps.getParameter<string>(
                     "labelGeneralTracks" ) );
-  setUserParameter( "use_tracks"   ,
-                  ( read_tracks    = (
+  setUserParameter( "use_tracks"    ,
+                  ( read_tracks     = (
   getUserParameter( "labelGeneralTracks" ) != "" ) ) ? "t" : "f" );
   if ( ps.exists( "write_tracks"    ) &&
-                    read_tracks )
-  setUserParameter( "use_tracks"   , ps.getParameter<string>(
+                    read_tracks       )
+  setUserParameter( "use_tracks"         , ps.getParameter<string>(
                   "write_tracks"    ) );
 
   setUserParameter( "labelPVertices"     ,
                      labelPVertices      = ps.getParameter<string>(
                     "labelPVertices"     ) );
-  setUserParameter( "use_pvts"     ,
-                  ( read_pvts      = (
+  setUserParameter( "use_pvts"      ,
+                  ( read_pvts       = (
   getUserParameter( "labelPVertices"     ) != "" ) ) ? "t" : "f" );
   if ( ps.exists( "write_pvts"      ) &&
-                    read_pvts )
-  setUserParameter( "use_pvts"     , ps.getParameter<string>(
+                    read_pvts         )
+  setUserParameter( "use_pvts"           , ps.getParameter<string>(
                   "write_pvts"      ) );
 
   setUserParameter( "labelSVertices"     ,
                      labelSVertices      = ps.getParameter<string>(
                     "labelSVertices"     ) );
-  setUserParameter( "use_svts"     ,
-                  ( read_svts      = (
+  setUserParameter( "use_svts"      ,
+                  ( read_svts       = (
   getUserParameter( "labelSVertices"     ) != "" ) ) ? "t" : "f" );
   if ( ps.exists( "write_svts"      ) &&
-                    read_svts )
-  setUserParameter( "use_svts"     , ps.getParameter<string>(
+                    read_svts         )
+  setUserParameter( "use_svts"           , ps.getParameter<string>(
                   "write_svts"      ) );
 
   setUserParameter( "labelGen"           ,
                      labelGen            = ps.getParameter<string>(
                     "labelGen"           ) );
-  setUserParameter( "use_gen"      ,
-                  ( read_gen       = (
+  setUserParameter( "use_gen"       ,
+                  ( read_gen        = (
   getUserParameter( "labelGen"           ) != "" ) ) ? "t" : "f" );
   if ( ps.exists( "write_gen"       ) &&
-                    read_gen )
-  setUserParameter( "use_gen"      , ps.getParameter<string>(
+                    read_gen          )
+  setUserParameter( "use_gen"            , ps.getParameter<string>(
                   "write_gen"       ) );
+
+  setUserParameter( "use_ips" , getUserParameter( "use_svts" ) );
+  if ( ps.exists( "write_ips"  ) &&
+                    read_svts    )
+  setUserParameter( "use_ips" , ps.getParameter<string>(
+                  "write_ips"  ) );
+
+  setUserParameter( "use_vtxp", getUserParameter( "use_svts" ) );
+  if ( ps.exists( "write_vtxp" ) &&
+                     use_ips     )
+  setUserParameter( "use_vtxp", ps.getParameter<string>(
+                  "write_vtxp" ) );
 
   if ( ps.exists( "savedTriggerPaths"   ) )
                    savedTriggerPaths    = ps.getParameter< vector<string> >(
@@ -216,6 +233,7 @@ BmmPATToNtuple::BmmPATToNtuple( const edm::ParameterSet& ps ) {
 
   jetPtMin  = ps.getParameter<double>( "jetPtMin"  );
   jetEtaMax = ps.getParameter<double>( "jetEtaMax" );
+  trkDzMax  = ps.getParameter<double>( "trkDzMax"  );
   trkPtMin  = ps.getParameter<double>( "trkPtMin"  );
   trkEtaMax = ps.getParameter<double>( "trkEtaMax" );
   dRmatchHLT = ps.getParameter<double>( "dRmatchHLT" );
@@ -306,9 +324,9 @@ void BmmPATToNtuple::read( const edm::EventBase& ev ) {
   if ( read_svts      ) fillSVertices   ();
   if ( read_gen       ) fillGenParticles();
 
-  if ( use_muons && use_tracks ) linkMTracks();
-//  if ( use_pflow && use_jets   ) linkPFJets ();
-  if ( use_pflow && use_tracks ) linkPTracks();
+  if ( read_muons && read_tracks ) linkMTracks();
+//  if ( read_pflow && read_jets   ) linkPFJets ();
+  if ( read_pflow && read_tracks ) linkPTracks();
 
   return;
 
@@ -338,6 +356,8 @@ void BmmPATToNtuple::closeNtuple() {
 void BmmPATToNtuple::endJob() {
   BmmAnalyzer::endJob();
   closeNtuple();
+  cout << endl << analyzedEvents() << " events read, "
+               << acceptedEvents() << " accepted" << endl;
   return;
 }
 
@@ -779,7 +799,6 @@ void BmmPATToNtuple::fillJets() {
 
   int iObj;
   int nObj = 0;
-//  int nObj = ( vJets ? jets->size() : 0 );
   jetPt  ->resize( 0 );
   jetEta ->resize( 0 );
   jetPhi ->resize( 0 );
@@ -868,12 +887,14 @@ void BmmPATToNtuple::fillJets() {
 
 void BmmPATToNtuple::fillVtxTrkMap() {
 
-/*
-*/
-  currentEvBase->getByLabel( getUserParameter( "labelPVertices" ),
-                             pVertices );
+  currentEvBase->getByLabel( getUserParameter( "labelGeneralTracks" ),
+                             generalTracks );
+  currentEvBase->getByLabel( getUserParameter( "labelPVertices"     ),
+                             pVertices     );
+  int iTrk;
+  int nTrk = ( generalTracks.isValid() ? generalTracks->size() : 0 );
   int iVtx;
-  int nVtx = ( pVertices.isValid() ? pVertices->size() : 0 );
+  int nVtx = ( pVertices    .isValid() ? pVertices    ->size() : 0 );
 
   map<const Track*,int>::const_iterator it_m = tkmMap.begin();
   map<const Track*,int>::const_iterator ie_m = tkmMap.end();
@@ -882,6 +903,7 @@ void BmmPATToNtuple::fillVtxTrkMap() {
   map<const Track*,int>::const_iterator it_p = ptjMap.begin();
   map<const Track*,int>::const_iterator ie_p = ptjMap.end();
   vtxList.resize( 0 );
+  allPTk.clear();
   for ( iVtx = 0; iVtx < nVtx; ++iVtx ) {
     const Vertex& vtx = pVertices->at( iVtx );
     bool found = false;
@@ -890,9 +912,11 @@ void BmmPATToNtuple::fillVtxTrkMap() {
       Vertex::trackRef_iterator ie_v = vtx.tracks_end();
       while ( it_v != ie_v ) {
         const reco::TrackBaseRef& tkr = *it_v++;
-        it_m = tkmMap.find( &(*tkr) );
-        it_e = tkeMap.find( &(*tkr) );
-        it_p = ptjMap.find( &(*tkr) );
+        const Track* tkp = &(*tkr);
+        if ( allPTk.find( tkp ) == allPTk.end() ) allPTk.insert( tkp );
+        it_m = tkmMap.find( tkp );
+        it_e = tkeMap.find( tkp );
+        it_p = ptjMap.find( tkp );
         if ( it_m != ie_m ) found = true;
         if ( it_e != ie_e ) found = true;
         if ( it_p != ie_p ) found = true;
@@ -921,8 +945,24 @@ void BmmPATToNtuple::fillVtxTrkMap() {
     catch ( edm::Exception e ) {
     }
   }
-/*
-*/
+
+  // recover tracks not linked to any primary vertex
+  tkrSet.clear();
+  set<const Track*>::const_iterator a_iend = allPTk.end();
+  for ( iTrk = 0; iTrk < nTrk; ++iTrk ) {
+    const Track& trk = generalTracks->at( iTrk );
+    const Track* tkp = &trk;
+    // skip tracks linked to a primary vertex
+    if ( allPTk.find( tkp ) != a_iend ) continue;
+    if ( fabs( tkp->eta() ) > trkEtaMax ) continue;
+    if (       tkp->pt ()   < trkPtMin  ) continue;
+    for ( iVtx = 0; iVtx < nVtx; ++iVtx ) {
+      const Vertex& vtx = *vtxList[iVtx];
+      const Vertex::Point& pos = vtx.position();
+      if ( fabs( tkp->dz( pos ) ) < trkDzMax ) tkrSet.insert( tkp );
+    }
+  }
+
   return;
 
 }
@@ -938,7 +978,6 @@ void BmmPATToNtuple::fillPFCandidates() {
 
   int iObj;
   int nObj = 0;
-//  int nObj = ( vPF ? pfCandidates->size() : 0 );
   pfcPt      ->resize( 0 );
   pfcEta     ->resize( 0 );
   pfcPhi     ->resize( 0 );
@@ -960,35 +999,34 @@ void BmmPATToNtuple::fillPFCandidates() {
   pfcMap.clear();
   tkpMap.clear();
   nPF = 0;
+  set<const Track      *    >::const_iterator r_iend = tkrSet.end();
+  map<const Track      *,int>::const_iterator m_iter = tkmMap.begin();
+  map<const Track      *,int>::const_iterator m_iend = tkmMap.end();
+  map<const Track      *,int>::const_iterator e_iter = tkeMap.begin();
+  map<const Track      *,int>::const_iterator e_iend = tkeMap.end();
+  map<const Track      *,int>::const_iterator v_iter = tkvMap.begin();
+  map<const Track      *,int>::const_iterator v_iend = tkvMap.end();
+  map<const PFCandidate*,int>::const_iterator j_iter = pcjMap.begin();
+  map<const PFCandidate*,int>::const_iterator j_iend = pcjMap.end();
   for ( iObj = 0; iObj < nObj; ++iObj ) {
 
     const PFCandidate& pfc = pfCandidates->at( iObj );
     const TrackRef   & tkr = pfc.trackRef();
     const Track      * tkp = ( tkr.isNull() ? 0 : &(*tkr) );
 
-//    map<const PFCandidate*,int>::const_iterator m_iter = pcmMap.find( &pfc );
-//    map<const PFCandidate*,int>::const_iterator m_iend = pcmMap.end();
-    map<const Track      *,int>::const_iterator m_iter = tkmMap.find( tkp );
-    map<const Track      *,int>::const_iterator m_iend = tkmMap.end();
-    map<const Track      *,int>::const_iterator e_iter = tkeMap.find( tkp );
-    map<const Track      *,int>::const_iterator e_iend = tkeMap.end();
-    map<const Track      *,int>::const_iterator v_iter = tkvMap.find( tkp );
-    map<const Track      *,int>::const_iterator v_iend = tkvMap.end();
-    map<const PFCandidate*,int>::const_iterator j_iter = pcjMap.find( &pfc );
-    map<const PFCandidate*,int>::const_iterator j_iend = pcjMap.end();
-
-    int muoIndex = -1;
-    int eleIndex = -1;
-    int vtxIndex = -1;
-    int jetIndex = -1;
-    if ( m_iter != m_iend ) muoIndex = m_iter->second;
-    if ( e_iter != e_iend ) eleIndex = e_iter->second;
-    if ( v_iter != v_iend ) vtxIndex = v_iter->second;
-    if ( j_iter != j_iend ) jetIndex = j_iter->second;
+    int muoIndex = ( ( m_iter = tkmMap.find( tkp  ) ) != m_iend ?
+                       m_iter->second : -1 );
+    int eleIndex = ( ( e_iter = tkeMap.find( tkp  ) ) != e_iend ?
+                       e_iter->second : -1 );
+    int vtxIndex = ( ( v_iter = tkvMap.find( tkp  ) ) != v_iend ?
+                       v_iter->second : -1 );
+    int jetIndex = ( ( j_iter = pcjMap.find( &pfc ) ) != j_iend ?
+                       j_iter->second : -1 );
     if ( ( muoIndex < 0 ) &&
          ( eleIndex < 0 ) &&
          ( vtxIndex < 0 ) &&
-         ( jetIndex < 0 ) ) continue;
+         ( jetIndex < 0 ) &&
+         ( tkrSet.find( tkp ) == r_iend ) ) continue;
 
     if ( tkp != 0 )
     tkpMap.insert( make_pair(  tkp, nPF ) );
@@ -1020,15 +1058,12 @@ void BmmPATToNtuple::fillPFCandidates() {
 
 void BmmPATToNtuple::fillTracks() {
 
-  currentEvBase->getByLabel( getUserParameter( "labelGeneralTracks" ),
-                             generalTracks );
   bool vTracks = generalTracks.isValid();
 
   // store tracks info
 
   int iObj;
   int nObj = 0;
-//  int nObj = ( vTracks ? generalTracks->size() : 0 );
   trkPt      ->resize( 0 );
   trkEta     ->resize( 0 );
   trkPhi     ->resize( 0 );
@@ -1037,6 +1072,7 @@ void BmmPATToNtuple::fillTracks() {
   trkPz      ->resize( 0 );
   trkCharge  ->resize( 0 );
   trkPFC     ->resize( 0 );
+  trkJet     ->resize( 0 );
   trkPVtx    ->resize( 0 );
   trkSVtx    ->resize( 0 );
   trkQuality ->resize( 0 );
@@ -1053,31 +1089,33 @@ void BmmPATToNtuple::fillTracks() {
 
   trkMap.clear();
   nTracks = 0;
+  set<const Track      *    >::const_iterator r_iend = tkrSet.end();
+  map<const Track      *,int>::const_iterator m_iter = tkmMap.begin();
+  map<const Track      *,int>::const_iterator m_iend = tkmMap.end();
+  map<const Track      *,int>::const_iterator e_iter = tkeMap.begin();
+  map<const Track      *,int>::const_iterator e_iend = tkeMap.end();
+  map<const Track      *,int>::const_iterator p_iter = tkpMap.begin();
+  map<const Track      *,int>::const_iterator p_iend = tkpMap.end();
+  map<const Track      *,int>::const_iterator v_iter = tkvMap.begin();
+  map<const Track      *,int>::const_iterator v_iend = tkvMap.end();
   for ( iObj = 0; iObj < nObj; ++iObj ) {
 
     const Track& trk = generalTracks->at( iObj );
     const Track* tkp = &trk;
 
-    map<const Track      *,int>::const_iterator m_iter = tkmMap.find( tkp );
-    map<const Track      *,int>::const_iterator m_iend = tkmMap.end();
-    map<const Track      *,int>::const_iterator e_iter = tkeMap.find( tkp );
-    map<const Track      *,int>::const_iterator e_iend = tkeMap.end();
-    map<const Track      *,int>::const_iterator p_iter = tkpMap.find( tkp );
-    map<const Track      *,int>::const_iterator p_iend = tkpMap.end();
-    map<const Track      *,int>::const_iterator v_iter = tkvMap.find( tkp );
-    map<const Track      *,int>::const_iterator v_iend = tkvMap.end();
-    int muoIndex = -1;
-    int eleIndex = -1;
-    int pfcIndex = -1;
-    int vtxIndex = -1;
-    if ( m_iter != m_iend ) muoIndex = m_iter->second;
-    if ( e_iter != e_iend ) eleIndex = e_iter->second;
-    if ( p_iter != p_iend ) pfcIndex = p_iter->second;
-    if ( v_iter != v_iend ) vtxIndex = v_iter->second;
+    int muoIndex = ( ( m_iter = tkmMap.find( tkp ) ) != m_iend ?
+                       m_iter->second : -1 );
+    int eleIndex = ( ( e_iter = tkeMap.find( tkp ) ) != e_iend ?
+                       e_iter->second : -1 );
+    int pfcIndex = ( ( p_iter = tkpMap.find( tkp ) ) != p_iend ?
+                       p_iter->second : -1 );
+    int vtxIndex = ( ( v_iter = tkvMap.find( tkp ) ) != v_iend ?
+                       v_iter->second : -1 );
     if ( ( muoIndex < 0 ) &&
          ( eleIndex < 0 ) &&
          ( pfcIndex < 0 ) &&
-         ( vtxIndex < 0 ) ) continue;
+         ( vtxIndex < 0 ) &&
+         ( tkrSet.find( tkp ) == r_iend ) ) continue;
 
     trkMap.insert( make_pair( tkp, nTracks ) );
 
@@ -1089,6 +1127,7 @@ void BmmPATToNtuple::fillTracks() {
     trkPz      ->push_back( trk.pz    () );
     trkCharge  ->push_back( trk.charge() );
     trkPFC     ->push_back( -1 );
+    trkJet     ->push_back( -1 );
     trkPVtx    ->push_back( -1 );
     trkSVtx    ->push_back( -1 );
     trkQuality ->push_back( trk.qualityMask() );
@@ -1107,15 +1146,10 @@ void BmmPATToNtuple::fillTracks() {
 
 void BmmPATToNtuple::fillPVertices() {
 
-//  currentEvBase->getByLabel( getUserParameter( "labelPVertices" ),
-//                             pVertices );
-//  bool vPvts = pVertices.isValid();
-
   // store primary vertices info
 
   int iObj;
   int nObj = 0;
-//  int nObj = ( vPvts ? pVertices->size() : 0 );
   pvtX         ->resize( 0 );
   pvtY         ->resize( 0 );
   pvtZ         ->resize( 0 );
@@ -1128,13 +1162,6 @@ void BmmPATToNtuple::fillPVertices() {
 //  pvtCovariance->resize( 0 );
   pvtNormChi2  ->resize( 0 );
   pvtBadQuality->resize( 0 );
-//  if ( !vPvts ) {
-//    cout << "invalid primary vertices" << endl;
-//    return;
-//  }
-//  else {
-//    nObj = pVertices->size();
-//  }
   nObj = vtxList.size();
 
   map<const Track*,int>::const_iterator it_p = trkMap.begin();
@@ -1142,7 +1169,6 @@ void BmmPATToNtuple::fillPVertices() {
   nPVertices = 0;
   for ( iObj = 0; iObj < nObj; ++iObj ) {
 
-//    const Vertex& vtx = pVertices->at( iObj );
     const Vertex& vtx = *vtxList[iObj];
     const Vertex::Point& pos = vtx.position();
 
@@ -1162,11 +1188,7 @@ void BmmPATToNtuple::fillPVertices() {
             trkDxy->at( trkIndex ) = tkr->dxy( pos );
             trkDz ->at( trkIndex ) = tkr->dz ( pos );
           }
-//          else cout << "multiple vertex " << iObj << " " << nPVertices << endl;
         }
-//        else {
-//          if ( tkr->pt() > 4.0 ) cout << "high pt " << tkr->pt() << endl;
-//        }
       }
     }
     catch ( edm::Exception e ) {
@@ -1216,7 +1238,6 @@ void BmmPATToNtuple::fillSVertices() {
 
   int iObj;
   int nObj = 0;
-//  int nObj = ( vSvts ? sVertices->size() : 0 );
   svtX         ->resize( 0 );
   svtY         ->resize( 0 );
   svtZ         ->resize( 0 );
@@ -1239,6 +1260,16 @@ void BmmPATToNtuple::fillSVertices() {
   svtNTracks   ->resize( 0 );
   svtBadQuality->resize( 0 );
 
+  tipTrk       ->resize( 0 );
+  tipSVtx      ->resize( 0 );
+  tipDxy       ->resize( 0 );
+  tipDz        ->resize( 0 );
+
+  tvpTrk       ->resize( 0 );
+  tvpPx        ->resize( 0 );
+  tvpPy        ->resize( 0 );
+  tvpPz        ->resize( 0 );
+
   if ( !vSvts ) {
     cout << "invalid sVertices" << endl;
     return;
@@ -1247,13 +1278,13 @@ void BmmPATToNtuple::fillSVertices() {
     nObj = sVertices->size();
   }
 
-
-//  int ntj = jets->size();
-//  if ( nObj != ntj ) cout << "JETS-VTX: " << nObj << " " << ntj << endl;
-
-  map<const Jet*,int>::const_iterator j_iter = jetMap.begin();
-  map<const Jet*,int>::const_iterator j_iend = jetMap.end();
+  map<const Jet  *,int>::const_iterator j_iter = jetMap.begin();
+  map<const Jet  *,int>::const_iterator j_iend = jetMap.end();
+//  map<const Track*,int>::const_iterator t_iter = trkMap.begin();
+//  map<const Track*,int>::const_iterator t_iend = trkMap.end();
   nSVertices = 0;
+  nTkIPs     = 0;
+  nVtxPs     = 0;
   for ( iObj = 0; iObj < nObj; ++iObj ) {
     const Jet* jet = &( jets->at( iObj ) );
     j_iter = jetMap.find( jet );
@@ -1261,53 +1292,82 @@ void BmmPATToNtuple::fillSVertices() {
     const SecondaryVertexTagInfo& secVtxTagInfo = sVertices->at( iObj );
     int iVtx;
     int nVtx = secVtxTagInfo.nVertices();
-//    if ( secVtxTagInfo.nVertices() <= 0 ) continue;
     for ( iVtx = 0; iVtx < nVtx; ++iVtx ) {
       const        Vertex& vtx = secVtxTagInfo.secondaryVertex( iVtx );
       const  GlobalVector& dir = secVtxTagInfo.flightDirection( iVtx );
-      const Measurement1D& d2d = secVtxTagInfo.flightDistance( iVtx, true  );
-      const Measurement1D& d3d = secVtxTagInfo.flightDistance( iVtx, false );
-      svtX         ->push_back( vtx.x() );
-      svtY         ->push_back( vtx.y() );
-      svtZ         ->push_back( vtx.z() );
-      svtSxx       ->push_back( vtx.covariance( 0, 0 ) );
-      svtSyy       ->push_back( vtx.covariance( 1, 1 ) );
-      svtSzz       ->push_back( vtx.covariance( 2, 2 ) );
-      svtSxy       ->push_back( vtx.covariance( 0, 1 ) );
-      svtSxz       ->push_back( vtx.covariance( 0, 2 ) );
-      svtSyz       ->push_back( vtx.covariance( 1, 2 ) );
-      svtDirX      ->push_back( dir.x() );
-      svtDirY      ->push_back( dir.y() );
-      svtDirZ      ->push_back( dir.z() );
-      svtType      ->push_back( "tagInfo" );
-      svtNTracks   ->push_back( vtx.nTracks() );
-      svtNormChi2  ->push_back( vtx.normalizedChi2() );
-      double vMass = 0;
-      try                        { vMass = vtx.p4().M(); }
-      catch ( edm::Exception e ) { vMass = 0.0; }
-      svtMass      ->push_back( vMass );
-      svtDist2D    ->push_back( d2d.value() );
-      svtSign2D    ->push_back( d2d.significance() );
-      svtDist3D    ->push_back( d3d.value() );
-      svtSign3D    ->push_back( d3d.significance() );
-      svtJet       ->push_back( j_iter->second );
-      svtBadQuality->push_back( vtx.isValid() ? 0 : ( vtx.isFake() ? 1 : 2 ) );
-
+      const Measurement1D& d2d = secVtxTagInfo.flightDistance(  iVtx, true  );
+      const Measurement1D& d3d = secVtxTagInfo.flightDistance(  iVtx, false );
+      addSecondaryVertex( vtx, dir, d2d, d3d, "tagInfo", j_iter->second );
+      if ( currentEvSetup == 0 ) continue;
       try {
-        Vertex::trackRef_iterator iter = vtx.tracks_begin();
-        Vertex::trackRef_iterator iend = vtx.tracks_end();
-        while ( iter != iend ) {
-          const reco::TrackBaseRef& tkr = *iter++;
-          map<const Track*,int>::const_iterator it_p = trkMap.find( &(*tkr) );
-          map<const Track*,int>::const_iterator ie_p = trkMap.end();
-          if ( it_p != ie_p ) trkSVtx->at( it_p->second ) = nSVertices;
+        Vertex::trackRef_iterator v_iter = vtx.tracks_begin();
+        Vertex::trackRef_iterator v_iend = vtx.tracks_end();
+//        if ( distance( v_iter, v_iend ) <= 2 ) continue;
+        edm::ESHandle<TransientTrackBuilder> builder;
+        currentEvSetup->get<  TransientTrackRecord  >()
+                       .get( "TransientTrackBuilder", builder );
+        while ( v_iter != v_iend ) {
+          const reco::TrackBaseRef& tkr = *v_iter++;
+          if ( tkr->charge() != +1 ) continue;
+          Vertex::trackRef_iterator w_iter = vtx.tracks_begin();
+          Vertex::trackRef_iterator w_iend = vtx.tracks_end();
+          while ( w_iter != w_iend ) {
+            const reco::TrackBaseRef& tks = *w_iter++;
+            if ( tks->charge() != -1 ) continue;
+            vector<reco::TransientTrack> vTracks;
+            vTracks.push_back( builder->build( &(*tkr) ) );
+            vTracks.push_back( builder->build( &(*tks) ) );
+            KalmanVertexFitter kvf;
+            TransientVertex tVertex = kvf.vertex( vTracks );    
+            if ( !tVertex.isValid() ) continue;
+            Vertex vtr( tVertex );
+            const  GlobalVector dir;
+            const Measurement1D d2d;
+            const Measurement1D d3d;
+            addSecondaryVertex( vtx, dir, d2d, d3d, "fitPair",
+                                j_iter->second );
+          }
         }
       }
       catch ( edm::Exception e ) {
       }
-
-      ++nSVertices;
-
+/*
+      int currentVtxId = addSecondaryVertex( vtx, dir, d2d, d3d,
+                                             "tagInfo", j_iter->second );
+      std::map<const Track*,int> tipMap;
+      try {
+        t_iter = trkMap.begin();
+        while ( t_iter != t_iend ) {
+          const pair<const Track*,int>& entry = *t_iter++;
+          const Track* tkp = entry.first;
+          int trkIndex     = entry.second;
+          tipMap.insert( make_pair( tkp, addTrackIP( trkIndex, *tkp,
+                                                     currentVtxId, vtx ) ) );
+        }
+        map<const Track*,int>::const_iterator i_iter = tipMap.begin();
+        map<const Track*,int>::const_iterator i_iend = tipMap.end();
+        Vertex::trackRef_iterator v_iter = vtx.tracks_begin();
+        Vertex::trackRef_iterator v_iend = vtx.tracks_end();
+        while ( v_iter != v_iend ) {
+          const reco::TrackBaseRef& tkr = *v_iter++;
+          const Track* tkp = &(*tkr);
+//          t_iter = trkMap.find( tkp );
+          i_iter = tipMap.find( tkp );
+          int tipTrk = ( i_iter != i_iend ? i_iter->second : -1 );
+          addTrackVtxP( tipTrk, *tkp, vtx );
+//          if ( it_p != ie_p ) trkSVtx->at( it_p->second ) = currentVtxId;
+//          if ( tkr->charge() != +1 ) continue;
+//          Vertex::trackRef_iterator jter = vtx.tracks_begin();
+//          while ( jter != iend ) {
+//            const reco::TrackBaseRef& tkp = *jter++;
+//            if ( tkp->charge() != -1 ) continue;
+//            
+//          }
+        }
+      }
+      catch ( edm::Exception e ) {
+      }
+*/
     }
   }
 
@@ -1382,6 +1442,96 @@ void BmmPATToNtuple::fillGenParticles() {
 }
 
 
+int BmmPATToNtuple::addSecondaryVertex( const        Vertex& vtx,
+                                        const  GlobalVector& dir,
+                                        const Measurement1D& d2d,
+                                        const Measurement1D& d3d,
+                                        const string& type, int jetId ) {
+  svtX         ->push_back( vtx.x() );
+  svtY         ->push_back( vtx.y() );
+  svtZ         ->push_back( vtx.z() );
+  svtSxx       ->push_back( vtx.covariance( 0, 0 ) );
+  svtSyy       ->push_back( vtx.covariance( 1, 1 ) );
+  svtSzz       ->push_back( vtx.covariance( 2, 2 ) );
+  svtSxy       ->push_back( vtx.covariance( 0, 1 ) );
+  svtSxz       ->push_back( vtx.covariance( 0, 2 ) );
+  svtSyz       ->push_back( vtx.covariance( 1, 2 ) );
+  svtDirX      ->push_back( dir.x() );
+  svtDirY      ->push_back( dir.y() );
+  svtDirZ      ->push_back( dir.z() );
+  svtType      ->push_back( type );
+  svtNTracks   ->push_back( vtx.nTracks() );
+  svtNormChi2  ->push_back( vtx.normalizedChi2() );
+  double vMass = 0;
+  try                        { vMass = vtx.p4().M(); }
+  catch ( edm::Exception e ) { vMass = 0.0; }
+  svtMass      ->push_back( vMass );
+  svtDist2D    ->push_back( d2d.value() );
+  svtSign2D    ->push_back( d2d.significance() );
+  svtDist3D    ->push_back( d3d.value() );
+  svtSign3D    ->push_back( d3d.significance() );
+  svtJet       ->push_back( jetId );
+  svtBadQuality->push_back( vtx.isValid() ? 0 : ( vtx.isFake() ? 1 : 2 ) );
+
+  std::map<const Track*,int> tipMap;
+  map<const Track*,int>::const_iterator t_iter = trkMap.begin();
+  map<const Track*,int>::const_iterator t_iend = trkMap.end();
+  try {
+//    t_iter = trkMap.begin();
+    while ( t_iter != t_iend ) {
+      const pair<const Track*,int>& entry = *t_iter++;
+      const Track* tkp = entry.first;
+      int trkIndex     = entry.second;
+      tipMap.insert( make_pair( tkp, addTrackIP( trkIndex, *tkp,
+                                                 nSVertices, vtx ) ) );
+    }
+    map<const Track*,int>::const_iterator i_iter = tipMap.begin();
+    map<const Track*,int>::const_iterator i_iend = tipMap.end();
+    Vertex::trackRef_iterator v_iter = vtx.tracks_begin();
+    Vertex::trackRef_iterator v_iend = vtx.tracks_end();
+    while ( v_iter != v_iend ) {
+      const reco::TrackBaseRef& tkr = *v_iter++;
+      const Track* tkp = &(*tkr);
+      i_iter = tipMap.find( tkp );
+      int tipTrk = ( i_iter != i_iend ? i_iter->second : -1 );
+      addTrackVtxP( tipTrk, *tkp, vtx );
+    }
+  }
+  catch ( edm::Exception e ) {
+  }
+
+  return nSVertices++;
+}
+
+
+int BmmPATToNtuple::addTrackIP( int trkIndex, const reco::Track & trk,
+                                int vtxIndex, const reco::Vertex& vtx ) {
+  tipTrk     ->push_back( trkIndex );
+  tipSVtx    ->push_back( vtxIndex );
+  const Vertex::Point& pos = vtx.position();
+  tipDxy     ->push_back( trk.dxy( pos ) );
+  tipDz      ->push_back( trk.dz ( pos ) );
+  return nTkIPs++;
+}
+
+
+int BmmPATToNtuple::addTrackVtxP( int tipIndex, const reco::Track & trk,
+                                                const reco::Vertex& vtx ) {
+  tvpTrk     ->push_back( tipIndex );
+//  tvpPt      ->push_back( trk.pt    () );
+//  tvpEta     ->push_back( trk.eta   () );
+//  tvpPhi     ->push_back( trk.phi   () );
+//  const math::XYZVector& mom = trk.innerMomentum();
+//  tvpPx      ->push_back( mom.X() );
+//  tvpPy      ->push_back( mom.Y() );
+//  tvpPz      ->push_back( mom.Z() );
+  tvpPx      ->push_back( 0.0 );
+  tvpPy      ->push_back( 0.0 );
+  tvpPz      ->push_back( 0.0 );
+  return nVtxPs++;
+}
+
+
 void BmmPATToNtuple::linkMTracks() {
 
   map<const Muon*,int>::const_iterator m_iter = muoMap.begin();
@@ -1391,23 +1541,17 @@ void BmmPATToNtuple::linkMTracks() {
     const Muon* muon = entry.first;
     int iMuon        = entry.second;
     try {
-//      if ( muon->pfCandidateRef().isNull() ) cout << "muon->pfCandidateRef().isNull()" << endl;
       if ( muon->pfCandidateRef().isNull() ) continue;
       const PFCandidate& pfm = *muon->pfCandidateRef();
-//      if ( pfm.trackRef().isNull() ) cout << "muon->pfCandidateRef().trackRef().isNull()" << endl;
       if ( pfm.trackRef().isNull() ) continue;
       const reco::TrackRef& trk = pfm.trackRef();
       map<const Track*,int>::const_iterator t_iter = trkMap.find( &(*trk) );
       map<const Track*,int>::const_iterator t_iend = trkMap.end();
       if ( t_iter != t_iend ) muoTrk->at( iMuon ) = t_iter->second;
-//      if ( t_iter != t_iend ) cout << "muon trk: " << t_iter->second << endl;
-//      else                    cout << "muon trk missing" << endl;
     }
     catch ( edm::Exception e ) {
       cout << "muon trk lost" << endl;
     }
-/*
-*/
   }
 
 /*
@@ -1487,6 +1631,7 @@ void BmmPATToNtuple::linkPTracks() {
       int iTrk = t_iter->second;
       pfcTrk->at( iPFC ) = iTrk;
       trkPFC->at( iTrk ) = iPFC;
+      trkJet->at( iTrk ) = pfcJet->at( iPFC );
     }
     catch ( edm::Exception e ) {
     }

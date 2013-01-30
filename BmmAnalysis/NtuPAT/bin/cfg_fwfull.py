@@ -2,14 +2,20 @@ import FWCore.ParameterSet.Config as cms
 
 process = cms.Process("Bmm")
 
-#process.load('Configuration.StandardSequences.Services_cff')
-#process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
+process.load('Configuration.StandardSequences.Services_cff')
+process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 #process.GlobalTag.globaltag = cms.string('MC_42_V15B::All')
+process.GlobalTag.globaltag = cms.string('GR_R_52_V9D::All')
+process.load("Configuration.StandardSequences.Reconstruction_cff")
+process.load("Configuration.StandardSequences.MagneticField_cff")
+process.load('Configuration/StandardSequences/GeometryExtended_cff')
+process.load("TrackingTools.TransientTrack.TransientTrackBuilder_cfi")
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
 
 # Quiet Mode or event dump
-process.MessageLogger.cerr.threshold = 'ERROR'
+#process.MessageLogger.cerr.threshold = 'ERROR'
+process.MessageLogger.cerr.threshold = 'WARNING'
 #process.MessageLogger.cerr.FwkReport.reportEvery = 10000
 
 #process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
@@ -50,11 +56,13 @@ process.bmmAnalyzer = cms.EDAnalyzer('BmmPATAnalyzer',
     labelSVertices    = cms.string('secondaryVertexTagInfosAODPFlow'),
     labelGen          = cms.string(''),
 
-#    write_hlto = cms.string('f'),
+#    write_hlto  = cms.string('f'),
+#    write_pflow = cms.string('f'),
 
     jetPtMin  = cms.double(  5.0 ),
     jetEtaMax = cms.double(  2.5 ),
-    trkPtMin  = cms.double(  4.0 ),
+    trkDzMax  = cms.double(  0.8 ),
+    trkPtMin  = cms.double(  0.5 ),
     trkEtaMax = cms.double(  3.0 ),
     dRmatchHLT = cms.double( 0.5 ),
     dPmatchHLT = cms.double( 0.5 ),

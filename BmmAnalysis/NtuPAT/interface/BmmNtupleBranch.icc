@@ -35,6 +35,8 @@ void BmmNtupleBranch<T>::initTree() {
   if ( use_tracks    ) setBranches_tracks   ();
   if ( use_pvts      ) setBranches_pVertices();
   if ( use_svts      ) setBranches_sVertices();
+  if ( use_vtxp      ) setBranches_vtxp     ();
+  if ( use_ips       ) setBranches_ips      ();
   if ( use_gen       ) setBranches_gen      ();
 
   return;
@@ -349,6 +351,8 @@ void BmmNtupleBranch<T>::setBranches_tracks() {
                    1000, 99         , &b_trkCharge       );
   this->setBranch( "trkPFC"         , &  trkPFC         ,
                    1000, 99         , &b_trkPFC          );
+  this->setBranch( "trkJet"         , &  trkJet         ,
+                   1000, 99         , &b_trkJet          );
   this->setBranch( "trkPVtx"        , &  trkPVtx        ,
                    1000, 99         , &b_trkPVtx         );
   this->setBranch( "trkSVtx"        , &  trkSVtx        ,
@@ -398,6 +402,7 @@ void BmmNtupleBranch<T>::setBranches_pVertices() {
                    1000, 99         , &b_pvtBadQuality   );
   return;
 }
+
 
 template <class T>
 void BmmNtupleBranch<T>::setBranches_sVertices() {
@@ -450,6 +455,47 @@ void BmmNtupleBranch<T>::setBranches_sVertices() {
                    1000, 99         , &b_svtBadQuality   );
   return;
 }
+
+
+template <class T>
+void BmmNtupleBranch<T>::setBranches_ips() {
+  // refitted vertices tracks
+  this->setBranch( "nTkIPs"         , &  nTkIPs         ,
+                   "nTkIPs/I"       , &b_nTkIPs          );
+  this->setBranch( "tipTrk"         , &  tipTrk         ,
+                   1000, 99         , &b_tipTrk          );
+  this->setBranch( "tipSVtx"        , &  tipSVtx        ,
+                   1000, 99         , &b_tipSVtx         );
+  this->setBranch( "tipDxy"         , &  tipDxy         ,
+                   1000, 99         , &b_tipDxy          );
+  this->setBranch( "tipDz"          , &  tipDz          ,
+                   1000, 99         , &b_tipDz           );
+  return;
+}
+
+
+template <class T>
+void BmmNtupleBranch<T>::setBranches_vtxp() {
+  // momenta at vertices
+  this->setBranch( "nVtxPs"         , &  nVtxPs         ,
+                   "nVtxPs/I"       , &b_nVtxPs          );
+  this->setBranch( "tvpTrk"         , &  tvpTrk         ,
+                   1000, 99         , &b_tvpTrk          );
+//  this->setBranch( "tvpPt"          , &  tvpPt          ,
+//                   1000, 99         , &b_tvpPt           );
+//  this->setBranch( "tvpEta"         , &  tvpEta         ,
+//                   1000, 99         , &b_tvpEta          );
+//  this->setBranch( "tvpPhi"         , &  tvpPhi         ,
+//                   1000, 99         , &b_tvpPhi          );
+  this->setBranch( "tvpPx"          , &  tvpPx          ,
+                   1000, 99         , &b_tvpPx           );
+  this->setBranch( "tvpPy"          , &  tvpPy          ,
+                   1000, 99         , &b_tvpPy           );
+  this->setBranch( "tvpPz"          , &  tvpPz          ,
+                   1000, 99         , &b_tvpPz           );
+  return;
+}
+
 
 template <class T>
 void BmmNtupleBranch<T>::setBranches_gen() {

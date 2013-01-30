@@ -179,6 +179,7 @@ class BmmNtupleBranch: public virtual BmmNtupleData, public virtual T {
   TBranch* b_trkPz;
   TBranch* b_trkCharge;
   TBranch* b_trkPFC;
+  TBranch* b_trkJet;
   TBranch* b_trkPVtx;
   TBranch* b_trkSVtx;
   TBranch* b_trkQuality;
@@ -228,6 +229,25 @@ class BmmNtupleBranch: public virtual BmmNtupleData, public virtual T {
   TBranch* b_svtSign3D;
   TBranch* b_svtJet;
   TBranch* b_svtBadQuality;
+
+  // impact parameters
+  void setBranches_ips();
+  TBranch* b_nTkIPs;
+  TBranch* b_tipTrk;
+  TBranch* b_tipSVtx;
+  TBranch* b_tipDxy;
+  TBranch* b_tipDz;
+
+  // momenta at vertices
+  void setBranches_vtxp();
+  TBranch* b_nVtxPs;
+  TBranch* b_tvpTrk;
+//  TBranch* b_tvpPt;
+//  TBranch* b_tvpEta;
+//  TBranch* b_tvpPhi;
+  TBranch* b_tvpPx;
+  TBranch* b_tvpPy;
+  TBranch* b_tvpPz;
 
   // gen particles
   void setBranches_gen();

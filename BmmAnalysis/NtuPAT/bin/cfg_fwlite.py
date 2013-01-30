@@ -47,11 +47,13 @@ process.bmmAnalyzer = cms.PSet(
     labelSVertices    = cms.string('secondaryVertexTagInfosAODPFlow'),
     labelGen          = cms.string(''),
 
-#    write_hlto = cms.string('f'),
+#    write_hlto  = cms.string('f'),
+#    write_pflow = cms.string('f'),
 
-    jetPtMin  = cms.double( 10.0 ),
+    jetPtMin  = cms.double(  5.0 ),
     jetEtaMax = cms.double(  2.5 ),
-    trkPtMin  = cms.double(  4.0 ),
+    trkDzMax  = cms.double(  0.8 ),
+    trkPtMin  = cms.double(  0.5 ),
     trkEtaMax = cms.double(  3.0 ),
     dRmatchHLT = cms.double( 0.5 ),
     dPmatchHLT = cms.double( 0.5 ),

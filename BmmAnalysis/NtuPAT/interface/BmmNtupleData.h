@@ -176,6 +176,7 @@ class BmmNtupleData {
   std::vector<double>* trkPz;
   std::vector<int   >* trkCharge;
   std::vector<int   >* trkPFC;      // PFCandidate index
+  std::vector<int   >* trkJet;      //         jet index
   std::vector<int   >* trkPVtx;     //   primary vertex index
   std::vector<int   >* trkSVtx;     // secondary vertex index
   std::vector<int   >* trkQuality;  // qualityMask()
@@ -227,6 +228,25 @@ class BmmNtupleData {
   std::vector<double>* svtSign3D;
   std::vector<int   >* svtJet;
   std::vector<int   >* svtBadQuality; // 0=good, 1=fake, 2=invalid
+
+  // impact parameters
+  bool use_ips;
+  int nTkIPs;
+  std::vector<int   >* tipTrk;      // track index
+  std::vector<int   >* tipSVtx;     // secondary vertex index
+  std::vector<double>* tipDxy;      // dxy()
+  std::vector<double>* tipDz;       // dz()
+
+  // momenta at vertices
+  bool use_vtxp;
+  int nVtxPs;
+  std::vector<int   >* tvpTrk;      // impact parameter index
+//  std::vector<double>* tvpPt;
+//  std::vector<double>* tvpEta;
+//  std::vector<double>* tvpPhi;
+  std::vector<double>* tvpPx;
+  std::vector<double>* tvpPy;
+  std::vector<double>* tvpPz;
 
   // gen particles
   bool use_gen;
