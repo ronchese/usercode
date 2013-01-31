@@ -78,7 +78,8 @@ int TreeReader::loop( int evtmax, int evskip, int accmax, bool anaexe ) {
     if ( acceptedEvts >= accmax ) break;
     reset();
     // read tree
-    currentTree->GetEntry( ientry );
+//    currentTree->GetEntry( ientry );
+    getEntry( ientry );
     // preliminary data process
     process( ientry );
     // perform user analysis
@@ -89,6 +90,13 @@ int TreeReader::loop( int evtmax, int evskip, int accmax, bool anaexe ) {
 
   return evtnum;
 
+}
+
+
+void TreeReader::getEntry( int ientry ) {
+// default preliminary process - read all event
+  currentTree->GetEntry( ientry );
+  return;
 }
 
 

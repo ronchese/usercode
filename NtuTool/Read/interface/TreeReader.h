@@ -24,6 +24,7 @@ class TreeReader: public virtual TreeWrapper {
 
   std::string currentFile;
 
+  virtual void getEntry( int ientry );
   virtual void process( int ientry );
 
  private:
