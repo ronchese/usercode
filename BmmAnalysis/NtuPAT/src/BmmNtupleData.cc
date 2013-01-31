@@ -192,7 +192,7 @@ BmmNtupleData::BmmNtupleData() {
   svtBadQuality = new std::vector<int   >;
 
   // impact parameters
-  use_ips = false;
+  use_tkips = false;
   nTkIPs = 0;
   tipTrk          = new std::vector<int   >;
   tipSVtx         = new std::vector<int   >;
@@ -200,7 +200,7 @@ BmmNtupleData::BmmNtupleData() {
   tipDz           = new std::vector<double>;
 
   // momenta at vertices
-  use_vtxp = false;
+  use_vtxps = false;
   nVtxPs = 0;
   tvpTrk          = new std::vector<int   >;
 //  tvpPt           = new std::vector<double>;

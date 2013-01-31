@@ -73,6 +73,9 @@ class BmmAnalyzer: public BmmLightNtuple,
   const edm::Event       * currentEvent;
   const edm::EventSetup  * currentEvSetup;
 
+  virtual void getEntry( int ientry );
+  virtual void getEntry( TBranch* branch, int ientry );
+
  private:
 
   // cuts to select good jets

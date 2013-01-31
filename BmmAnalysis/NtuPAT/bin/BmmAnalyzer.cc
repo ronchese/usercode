@@ -6,6 +6,8 @@
 #include "BmmAnalyzer.h"
 
 #include "TDirectory.h"
+#include "TBranch.h"
+#include "TTree.h"
 #include "TCanvas.h"
 #include "Math/LorentzVector.h"
 
@@ -35,7 +37,8 @@ BmmAnalyzer::BmmAnalyzer() {
   setUserParameter( "use_tracks"   , "true"  );
   setUserParameter( "use_pvts"     , "true"  );
   setUserParameter( "use_svts"     , "true"  );
-  setUserParameter( "use_refit"    , "true"  );
+  setUserParameter( "use_tkips"    , "true"  );
+  setUserParameter( "use_vtxps"    , "true"  );
   setUserParameter( "use_gen"      , "false" );
 
   setUserParameter( "verbose", "f" );
@@ -81,9 +84,9 @@ void BmmAnalyzer::beginJob() {
   getUserParameter( "use_tracks"   , use_tracks    );
   getUserParameter( "use_pvts"     , use_pvts      );
   getUserParameter( "use_svts"     , use_svts      );
+  getUserParameter( "use_tkips"    , use_tkips     );
+  getUserParameter( "use_vtxps"    , use_vtxps     );
   getUserParameter( "use_gen"      , use_gen       );
-  getUserParameter( "use_ips"      , use_ips       );
-  getUserParameter( "use_vtxp"     , use_vtxp      );
   if ( !use_jets ) use_svts = false;
   initTree();
 
@@ -155,6 +158,9 @@ bool BmmAnalyzer::analyze( int entry, int event_file, int event_tot ) {
 
   flag = true;
 
+//  getEntry( b_nMuons, entry );
+//  getEntry( b_muoPt , entry );
+
   int iMuon;
   float ptmu;
   float ptmumax = -1.0;
@@ -209,6 +215,25 @@ void BmmAnalyzer::plot() {
   hptmumax->Draw();
   hptmu2nd->Draw();
 */
+  return;
+}
+
+
+void BmmAnalyzer::getEntry( int ientry ) {
+//  cout << "BmmAnalyzer::getEntry" << endl;
+  b_runNumber  ->GetEntry( ientry );
+  b_lumiSection->GetEntry( ientry );
+  b_eventNumber->GetEntry( ientry );
+  if ( !find( runNumber, eventNumber ) ) return;
+  currentTree->GetEntry( ientry );
+  return;
+}
+
+
+void BmmAnalyzer::getEntry( TBranch* branch, int ientry ) {
+  if ( currentEvBase != 0 ) return;
+  if ( currentEvent  != 0 ) return;
+  branch->GetEntry( ientry );
   return;
 }
 

@@ -4,7 +4,12 @@
 #include "NtuTool/Read/bin/treeAnalyze.cc"
 
 class BmmAnalyzerInstance: public BmmAnalyzer, public TreeReader {
+  virtual void getEntry( int ientry );
 };
+
+void BmmAnalyzerInstance::getEntry( int ientry ) {
+  BmmAnalyzer::getEntry( ientry );
+}
 
 static BmmAnalyzerInstance ai;
 

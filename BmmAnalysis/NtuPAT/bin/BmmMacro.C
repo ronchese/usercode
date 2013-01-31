@@ -23,9 +23,9 @@ void BmmMacro( const std::string& dataset ) {
   BmmAnalyzer* ntu = new BmmAnalyzer;
   ntu->setUserParameter( "verbose", "t" );
   ntu->beginJob();
+  TDirectory* currentDir = gDirectory;
   ntu->book();
 //  ntu->eqlumi = eqlumi;
-
   vector<string> fileName;
   std::stringstream sstr;
   std::string ntuListName = "ntu_";
@@ -78,6 +78,7 @@ void BmmMacro( const std::string& dataset ) {
   ntu->save();
   histFile->Close();
   delete histFile;
+  currentDir->cd();
 
   return;
 

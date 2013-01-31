@@ -35,8 +35,8 @@ void BmmNtupleBranch<T>::initTree() {
   if ( use_tracks    ) setBranches_tracks   ();
   if ( use_pvts      ) setBranches_pVertices();
   if ( use_svts      ) setBranches_sVertices();
-  if ( use_vtxp      ) setBranches_vtxp     ();
-  if ( use_ips       ) setBranches_ips      ();
+  if ( use_vtxps     ) setBranches_vtxps    ();
+  if ( use_tkips     ) setBranches_tkips    ();
   if ( use_gen       ) setBranches_gen      ();
 
   return;
@@ -458,7 +458,7 @@ void BmmNtupleBranch<T>::setBranches_sVertices() {
 
 
 template <class T>
-void BmmNtupleBranch<T>::setBranches_ips() {
+void BmmNtupleBranch<T>::setBranches_tkips() {
   // refitted vertices tracks
   this->setBranch( "nTkIPs"         , &  nTkIPs         ,
                    "nTkIPs/I"       , &b_nTkIPs          );
@@ -475,7 +475,7 @@ void BmmNtupleBranch<T>::setBranches_ips() {
 
 
 template <class T>
-void BmmNtupleBranch<T>::setBranches_vtxp() {
+void BmmNtupleBranch<T>::setBranches_vtxps() {
   // momenta at vertices
   this->setBranch( "nVtxPs"         , &  nVtxPs         ,
                    "nVtxPs/I"       , &b_nVtxPs          );

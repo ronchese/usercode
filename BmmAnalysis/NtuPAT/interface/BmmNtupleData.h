@@ -230,7 +230,7 @@ class BmmNtupleData {
   std::vector<int   >* svtBadQuality; // 0=good, 1=fake, 2=invalid
 
   // impact parameters
-  bool use_ips;
+  bool use_tkips;
   int nTkIPs;
   std::vector<int   >* tipTrk;      // track index
   std::vector<int   >* tipSVtx;     // secondary vertex index
@@ -238,7 +238,7 @@ class BmmNtupleData {
   std::vector<double>* tipDz;       // dz()
 
   // momenta at vertices
-  bool use_vtxp;
+  bool use_vtxps;
   int nVtxPs;
   std::vector<int   >* tvpTrk;      // impact parameter index
 //  std::vector<double>* tvpPt;

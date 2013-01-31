@@ -212,17 +212,17 @@ BmmPATToNtuple::BmmPATToNtuple( const edm::ParameterSet& ps ) {
   setUserParameter( "use_gen"            , ps.getParameter<string>(
                   "write_gen"       ) );
 
-  setUserParameter( "use_ips" , getUserParameter( "use_svts" ) );
-  if ( ps.exists( "write_ips"  ) &&
-                    read_svts    )
-  setUserParameter( "use_ips" , ps.getParameter<string>(
-                  "write_ips"  ) );
+  setUserParameter( "use_tkips", getUserParameter( "use_svts" ) );
+  if ( ps.exists( "write_tkips"   ) &&
+                    read_svts  )
+  setUserParameter( "use_tkips", ps.getParameter<string>(
+                  "write_tkips" ) );
 
-  setUserParameter( "use_vtxp", getUserParameter( "use_svts" ) );
-  if ( ps.exists( "write_vtxp" ) &&
-                     use_ips     )
-  setUserParameter( "use_vtxp", ps.getParameter<string>(
-                  "write_vtxp" ) );
+  setUserParameter( "use_vtxps", getUserParameter( "use_svts" ) );
+  if ( ps.exists( "write_vtxps" ) &&
+                     use_tkips   )
+  setUserParameter( "use_vtxps", ps.getParameter<string>(
+                  "write_vtxps" ) );
 
   if ( ps.exists( "savedTriggerPaths"   ) )
                    savedTriggerPaths    = ps.getParameter< vector<string> >(
@@ -1324,13 +1324,17 @@ void BmmPATToNtuple::fillSVertices() {
             const  GlobalVector dir;
             const Measurement1D d2d;
             const Measurement1D d3d;
-            addSecondaryVertex( vtx, dir, d2d, d3d, "fitPair",
+            addSecondaryVertex( vtr, dir, d2d, d3d, "fitPair",
                                 j_iter->second );
           }
         }
       }
       catch ( edm::Exception e ) {
       }
+      catch ( cms::Exception e ) {
+      }
+//      catch ( eventsetup::NoRecordException<T> e ) {
+//      }
 /*
       int currentVtxId = addSecondaryVertex( vtx, dir, d2d, d3d,
                                              "tagInfo", j_iter->second );
@@ -1464,7 +1468,7 @@ int BmmPATToNtuple::addSecondaryVertex( const        Vertex& vtx,
   svtNormChi2  ->push_back( vtx.normalizedChi2() );
   double vMass = 0;
   try                        { vMass = vtx.p4().M(); }
-  catch ( edm::Exception e ) { vMass = 0.0; }
+  catch ( edm::Exception e ) { vMass = -1.0; }
   svtMass      ->push_back( vMass );
   svtDist2D    ->push_back( d2d.value() );
   svtSign2D    ->push_back( d2d.significance() );

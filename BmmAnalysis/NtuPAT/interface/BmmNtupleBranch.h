@@ -231,7 +231,7 @@ class BmmNtupleBranch: public virtual BmmNtupleData, public virtual T {
   TBranch* b_svtBadQuality;
 
   // impact parameters
-  void setBranches_ips();
+  void setBranches_tkips();
   TBranch* b_nTkIPs;
   TBranch* b_tipTrk;
   TBranch* b_tipSVtx;
@@ -239,7 +239,7 @@ class BmmNtupleBranch: public virtual BmmNtupleData, public virtual T {
   TBranch* b_tipDz;
 
   // momenta at vertices
-  void setBranches_vtxp();
+  void setBranches_vtxps();
   TBranch* b_nVtxPs;
   TBranch* b_tvpTrk;
 //  TBranch* b_tvpPt;
