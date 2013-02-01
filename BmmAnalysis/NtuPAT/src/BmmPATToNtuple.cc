@@ -665,7 +665,7 @@ void BmmPATToNtuple::fillMuons() {
     muoE           ->at( iObj ) = p4.energy();
     muoCharge      ->at( iObj ) = muon.charge();
     muoTrk         ->at( iObj ) = -1;
-    muoTrg         ->at( iObj ) = nearestHLT( "muon",
+    muoTrg         ->at( iObj ) = nearestHLT( "hltMuon",
                                               p4.pt(), p4.eta(), p4.phi() );
 
     muoChaIso      ->at( iObj ) = muon.chargedHadronIso();
@@ -774,7 +774,7 @@ void BmmPATToNtuple::fillElectrons() {
     eleE      ->at( iObj ) = p4.energy();
     eleCharge ->at( iObj ) = electron.charge();
     eleTrk    ->at( iObj ) = -1;
-    eleTrg    ->at( iObj ) = nearestHLT( "electron",
+    eleTrg    ->at( iObj ) = nearestHLT( "hltElectron",
                                          p4.pt(), p4.eta(), p4.phi() );
 
     eleChaIso ->at( iObj ) = electron.chargedHadronIso();
@@ -849,7 +849,7 @@ void BmmPATToNtuple::fillTaus() {
     tauPz    ->at( iObj ) = p4.pz    ();
     tauE     ->at( iObj ) = p4.energy();
     tauCharge->at( iObj ) = tau.charge();
-    tauTrg   ->at( iObj ) = nearestHLT( "tau",
+    tauTrg   ->at( iObj ) = nearestHLT( "hltTau",
                                         p4.pt(), p4.eta(), p4.phi() );;
 
   }
@@ -936,7 +936,7 @@ void BmmPATToNtuple::fillJets() {
     jetE   ->push_back( jet.energy() );
     jetCSV ->push_back( jet.bDiscriminator( labelCSV  )   );
     jetTCHE->push_back( jet.bDiscriminator( labelTCHE )   );
-    jetTrg ->push_back( nearestHLT( "jet",
+    jetTrg ->push_back( nearestHLT( "hltJet",
                                     jet.pt(), jet.eta(), jet.phi() ) );
     jetPF  ->push_back( jet.isPFJet()                     );
     jetNDau->push_back( jet.numberOfDaughters()           );
@@ -1722,7 +1722,8 @@ int BmmPATToNtuple::nearestHLT( const std::string& type,
   float dRmin = 1.0e+37;
   float dRcur;
   for ( iHLT = 0; iHLT < nHLTObjects; ++iHLT ) {
-    if ( hltObjType->at( iHLT ) != type ) continue;
+    if ( hltObjType->at( iHLT ) != BmmEnumString::findTrigObject( type ) )
+         continue;
     double diffEta =       eta - hltEta->at( iHLT );
     double diffPhi = fabs( phi - hltPhi->at( iHLT ) );
     while ( diffPhi > M_PI ) diffPhi -= ( 2.0 * M_PI );
