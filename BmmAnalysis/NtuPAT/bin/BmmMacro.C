@@ -21,7 +21,8 @@
 void BmmMacro( const std::string& dataset ) {
 
   BmmAnalyzer* ntu = new BmmAnalyzer;
-  ntu->setUserParameter( "verbose", "t" );
+  ntu->setUserParameter( "verbose", "f" );
+//  ntu->setConfiguration( "cfg.txt" );
   ntu->beginJob();
   TDirectory* currentDir = gDirectory;
   ntu->book();
@@ -65,7 +66,7 @@ void BmmMacro( const std::string& dataset ) {
     for ( iEvt = 0; iEvt < nEvt; ++iEvt ) {
       if ( ( endAna = ( ( nMax > 0 ) &&
                         ( ntu->analyzedEvents() >= nMax ) ) ) ) break;
-      tree->GetEntry( iEvt );
+      ntu->getEntry( iEvt );
       ntu->analyze( iEvt, iEvt );
     }
     delete c;

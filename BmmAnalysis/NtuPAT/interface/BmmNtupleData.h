@@ -11,6 +11,8 @@ class BmmNtupleData {
   BmmNtupleData();
   virtual ~BmmNtupleData();
 
+  typedef float number;
+
  protected:
 
   // Declaration of leaf types
@@ -24,208 +26,223 @@ class BmmNtupleData {
   bool use_hlts;
   int nHLTStatus;
   std::vector<std::string>* hltPath;
+  std::vector<int >* hltVersion;
   std::vector<bool       >* hltRun;
   std::vector<bool       >* hltAccept;
 
   // hlt objects
   bool use_hlto;
+  bool use_hlto_sphe;
+  bool use_hlto_cart;
   int nHLTObjects;
   std::vector<std::string>* hltObjType;
-  std::vector<double     >* hltPt;
-  std::vector<double     >* hltEta;
-  std::vector<double     >* hltPhi;
-  std::vector<double     >* hltPx;
-  std::vector<double     >* hltPy;
-  std::vector<double     >* hltPz;
-  std::vector<double     >* hltE;
+  std::vector<number     >* hltPt;
+  std::vector<number     >* hltEta;
+  std::vector<number     >* hltPhi;
+  std::vector<number     >* hltPx;
+  std::vector<number     >* hltPy;
+  std::vector<number     >* hltPz;
+  std::vector<number     >* hltE;
 
   // beam spot
   bool use_bspot;
-  double bwX;         // beam width
-  double bwY;
-  double bwXError;
-  double bwYError;
-  double bsX;         // beam spot
-  double bsY;
-  double bsZ;
-  double bsXError;
-  double bsYError;
-  double bsZError;
-  double bsdXdZ;      // beam slope
-  double bsdYdZ;
-  double bsdXdZError;
-  double bsdYdZError;
+  number bwX;         // beam width
+  number bwY;
+  number bwXError;
+  number bwYError;
+  number bsX;         // beam spot
+  number bsY;
+  number bsZ;
+  number bsXError;
+  number bsYError;
+  number bsZError;
+  number bsdXdZ;      // beam slope
+  number bsdYdZ;
+  number bsdXdZError;
+  number bsdYdZError;
 
   // met
   bool use_met;
-  double mEt;
-  double mEx;
-  double mEy;
+  number mEt;
+  number mEx;
+  number mEy;
 
   // muons
   bool use_muons;
+  bool use_muons_sphe;
+  bool use_muons_cart;
   int nMuons;
-  std::vector<double>* muoPt;
-  std::vector<double>* muoEta;
-  std::vector<double>* muoPhi;
-  std::vector<double>* muoPx;
-  std::vector<double>* muoPy;
-  std::vector<double>* muoPz;
-  std::vector<double>* muoE;
+  std::vector<number>* muoPt;
+  std::vector<number>* muoEta;
+  std::vector<number>* muoPhi;
+  std::vector<number>* muoPx;
+  std::vector<number>* muoPy;
+  std::vector<number>* muoPz;
+  std::vector<number>* muoE;
   std::vector<int   >* muoCharge;
   std::vector<int   >* muoTrk;        // track index
   std::vector<int   >* muoTrg;        // trigger object index
-  std::vector<double>* muoChaIso;     //.chargedHadronIso()
-  std::vector<double>* muoNeuIso;     //.neutralHadronIso()
-  std::vector<double>* muoPhoIso;     //.photonIso()
-  std::vector<double>* muoSumCHpt;    //.pfIsolationR04().sumChargedHadronPt
-  std::vector<double>* muoSumCPpt;    //.pfIsolationR04().sumChargedParticlePt
-  std::vector<double>* muoSumNHet;    //.pfIsolationR04().sumNeutralHadronEt
-  std::vector<double>* muoSumPHet;    //.pfIsolationR04().sumPhotonEt
-  std::vector<double>* muoSumPUpt;    //.pfIsolationR04().sumPUPt
-  std::vector<double>* muoNumMatches; //.numberOfMatchedStations()
-  std::vector<double>* muoDb;         //.dB()
+  std::vector<number>* muoChaIso;     //.chargedHadronIso()
+  std::vector<number>* muoNeuIso;     //.neutralHadronIso()
+  std::vector<number>* muoPhoIso;     //.photonIso()
+  std::vector<number>* muoSumCHpt;    //.pfIsolationR04().sumChargedHadronPt
+  std::vector<number>* muoSumCPpt;    //.pfIsolationR04().sumChargedParticlePt
+  std::vector<number>* muoSumNHet;    //.pfIsolationR04().sumNeutralHadronEt
+  std::vector<number>* muoSumPHet;    //.pfIsolationR04().sumPhotonEt
+  std::vector<number>* muoSumPUpt;    //.pfIsolationR04().sumPUPt
+  std::vector<number>* muoNumMatches; //.numberOfMatchedStations()
+  std::vector<number>* muoDb;         //.dB()
   std::vector<int   >* muoNumValidHits; //. innerTrack()->numberOfValidHits()
-  std::vector<double>* muoNormChi2;     //.globalTrack()->normalizedChi2()
+  std::vector<number>* muoNormChi2;     //.globalTrack()->normalizedChi2()
   std::vector<int   >* muoNumMuHits;    //.globalTrack()->hitPattern().numberOfValidMuonHits()
   std::vector<int   >* muoNumPixHits;   //.globalTrack()->hitPattern().numberOfValidPixelHits()
   std::vector<int   >* muoNumTkHits;    //.globalTrack()->hitPattern().numberOfValidTrackerHits()
 
   // electrons
   bool use_electrons;
+  bool use_electrons_sphe;
+  bool use_electrons_cart;
   int nElectrons;
-  std::vector<double>* elePt;
-  std::vector<double>* eleEta;
-  std::vector<double>* elePhi;
-  std::vector<double>* elePx;
-  std::vector<double>* elePy;
-  std::vector<double>* elePz;
-  std::vector<double>* eleE;
+  std::vector<number>* elePt;
+  std::vector<number>* eleEta;
+  std::vector<number>* elePhi;
+  std::vector<number>* elePx;
+  std::vector<number>* elePy;
+  std::vector<number>* elePz;
+  std::vector<number>* eleE;
   std::vector<int   >* eleCharge;
   std::vector<int   >* eleTrk;     // track index
   std::vector<int   >* eleTrg;     // trigger object index
-  std::vector<double>* eleChaIso;  //.chargedHadronIso()
-  std::vector<double>* eleNeuIso;  //.neutralHadronIso()
-  std::vector<double>* elePhoIso;  //.photonIso()
-  std::vector<double>* eleAbsEta;  //fabs(.superCluster()->eta())
-  std::vector<double>* eleAEff;
+  std::vector<number>* eleChaIso;  //.chargedHadronIso()
+  std::vector<number>* eleNeuIso;  //.neutralHadronIso()
+  std::vector<number>* elePhoIso;  //.photonIso()
+  std::vector<number>* eleAbsEta;  //fabs(.superCluster()->eta())
+  std::vector<number>* eleAEff;
     //ElectronEffectiveArea::GetElectronEffectiveArea(
     //ElectronEffectiveArea::kEleGammaAndNeutralHadronIso03, absEta,
     //ElectronEffectiveArea::kEleEAData2011 )
   std::vector<int   >* eleID;      //.electronID( "eidMediumMC" );
   std::vector<bool  >* eleConsCha; //.isGsfCtfScPixChargeConsistent();
   std::vector<bool  >* eleEBEEGap; //.isEBEEGap();
-  std::vector<double>* eleDb;      //.dB();
+  std::vector<number>* eleDb;      //.dB();
 
   // taus
   bool use_taus;
+  bool use_taus_sphe;
+  bool use_taus_cart;
   int nTaus;
-  std::vector<double>* tauPt;
-  std::vector<double>* tauEta;
-  std::vector<double>* tauPhi;
-  std::vector<double>* tauPx;
-  std::vector<double>* tauPy;
-  std::vector<double>* tauPz;
-  std::vector<double>* tauE;
+  std::vector<number>* tauPt;
+  std::vector<number>* tauEta;
+  std::vector<number>* tauPhi;
+  std::vector<number>* tauPx;
+  std::vector<number>* tauPy;
+  std::vector<number>* tauPz;
+  std::vector<number>* tauE;
   std::vector<int   >* tauCharge;
   std::vector<int   >* tauTrg;     // trigger object index
 
   // jets
   bool use_jets;
+  bool use_jets_sphe;
+  bool use_jets_cart;
   int nJets;
-  std::vector<double>* jetPt;
-  std::vector<double>* jetEta;
-  std::vector<double>* jetPhi;
-  std::vector<double>* jetPx;
-  std::vector<double>* jetPy;
-  std::vector<double>* jetPz;
-  std::vector<double>* jetE;
-  std::vector<double>* jetCSV;  //.bDiscriminator( "combinedSecondaryVertexBJetTags" )
-  std::vector<double>* jetTCHE; //.bDiscriminator( "trackCountingHighEffBJetTags" )
+  std::vector<number>* jetPt;
+  std::vector<number>* jetEta;
+  std::vector<number>* jetPhi;
+  std::vector<number>* jetPx;
+  std::vector<number>* jetPy;
+  std::vector<number>* jetPz;
+  std::vector<number>* jetE;
+  std::vector<number>* jetCSV;  //.bDiscriminator( "combinedSecondaryVertexBJetTags" )
+  std::vector<number>* jetTCHE; //.bDiscriminator( "trackCountingHighEffBJetTags" )
   std::vector<int   >* jetTrg;  // trigger object index
   std::vector<bool  >* jetPF;   //.isPFJet()
   std::vector<int   >* jetNDau; //.numberOfDaughters()
-  std::vector<double>* jetNHF;  //.neutralHadronEnergyFraction()
-  std::vector<double>* jetNEF;  //.neutralEmEnergyFraction()
-  std::vector<double>* jetCHF;  //.chargedHadronEnergyFraction()
-  std::vector<double>* jetCEF;  //.chargedEmEnergyFraction()
-  std::vector<double>* jetNCH;  //.chargedMultiplicity()
+  std::vector<number>* jetNHF;  //.neutralHadronEnergyFraction()
+  std::vector<number>* jetNEF;  //.neutralEmEnergyFraction()
+  std::vector<number>* jetCHF;  //.chargedHadronEnergyFraction()
+  std::vector<number>* jetCEF;  //.chargedEmEnergyFraction()
+  std::vector<number>* jetNCH;  //.chargedMultiplicity()
 
   // particle flow
   bool use_pflow;
+  bool use_pflow_sphe;
+  bool use_pflow_cart;
   int nPF;
-  std::vector<double>* pfcPt;
-  std::vector<double>* pfcEta;
-  std::vector<double>* pfcPhi;
-  std::vector<double>* pfcPx;
-  std::vector<double>* pfcPy;
-  std::vector<double>* pfcPz;
-  std::vector<double>* pfcE;
+  std::vector<number>* pfcPt;
+  std::vector<number>* pfcEta;
+  std::vector<number>* pfcPhi;
+  std::vector<number>* pfcPx;
+  std::vector<number>* pfcPy;
+  std::vector<number>* pfcPz;
+  std::vector<number>* pfcE;
   std::vector<int   >* pfcCharge;
   std::vector<int   >* pfcJet;      //   jet index
   std::vector<int   >* pfcTrk;      // track index
 
   // tracks
   bool use_tracks;
+  bool use_tracks_sphe;
+  bool use_tracks_cart;
   int nTracks;
-  std::vector<double>* trkPt;
-  std::vector<double>* trkEta;
-  std::vector<double>* trkPhi;
-  std::vector<double>* trkPx;
-  std::vector<double>* trkPy;
-  std::vector<double>* trkPz;
+  std::vector<number>* trkPt;
+  std::vector<number>* trkEta;
+  std::vector<number>* trkPhi;
+  std::vector<number>* trkPx;
+  std::vector<number>* trkPy;
+  std::vector<number>* trkPz;
   std::vector<int   >* trkCharge;
   std::vector<int   >* trkPFC;      // PFCandidate index
   std::vector<int   >* trkJet;      //         jet index
   std::vector<int   >* trkPVtx;     //   primary vertex index
   std::vector<int   >* trkSVtx;     // secondary vertex index
   std::vector<int   >* trkQuality;  // qualityMask()
-  std::vector<double>* trkNormChi2; // normalizedChi2()
-  std::vector<double>* trkDxy;      // dxy()
-  std::vector<double>* trkDz;       // dz()
+  std::vector<number>* trkNormChi2; // normalizedChi2()
+  std::vector<number>* trkDxy;      // dxy()
+  std::vector<number>* trkDz;       // dz()
 
   // primary vertices
   bool use_pvts;
   int nPVertices;
-  std::vector<double>* pvtX;
-  std::vector<double>* pvtY;
-  std::vector<double>* pvtZ;
-  std::vector<double>* pvtSxx;
-  std::vector<double>* pvtSyy;
-  std::vector<double>* pvtSzz;
-  std::vector<double>* pvtSxy;
-  std::vector<double>* pvtSxz;
-  std::vector<double>* pvtSyz;
+  std::vector<number>* pvtX;
+  std::vector<number>* pvtY;
+  std::vector<number>* pvtZ;
+  std::vector<number>* pvtSxx;
+  std::vector<number>* pvtSyy;
+  std::vector<number>* pvtSzz;
+  std::vector<number>* pvtSxy;
+  std::vector<number>* pvtSxz;
+  std::vector<number>* pvtSyz;
 //  std::vector<
-//  std::vector<double>
+//  std::vector<number>
 //                    >* pvtCovariance;
   std::vector<int   >* pvtNTracks;
-  std::vector<double>* pvtNormChi2;
+  std::vector<number>* pvtNormChi2;
   std::vector<int   >* pvtBadQuality; // 0=good, 1=fake, 2=invalid
 
   // secondary vertices
   bool use_svts;
   int nSVertices;
-  std::vector<double>* svtX;
-  std::vector<double>* svtY;
-  std::vector<double>* svtZ;
-  std::vector<double>* svtSxx;
-  std::vector<double>* svtSyy;
-  std::vector<double>* svtSzz;
-  std::vector<double>* svtSxy;
-  std::vector<double>* svtSxz;
-  std::vector<double>* svtSyz;
-  std::vector<double>* svtDirX;
-  std::vector<double>* svtDirY;
-  std::vector<double>* svtDirZ;
+  std::vector<number>* svtX;
+  std::vector<number>* svtY;
+  std::vector<number>* svtZ;
+  std::vector<number>* svtSxx;
+  std::vector<number>* svtSyy;
+  std::vector<number>* svtSzz;
+  std::vector<number>* svtSxy;
+  std::vector<number>* svtSxz;
+  std::vector<number>* svtSyz;
+  std::vector<number>* svtDirX;
+  std::vector<number>* svtDirY;
+  std::vector<number>* svtDirZ;
   std::vector<std::string>* svtType;
   std::vector<int   >* svtNTracks;
-  std::vector<double>* svtNormChi2;
-  std::vector<double>* svtMass;
-  std::vector<double>* svtDist2D;
-  std::vector<double>* svtSign2D;
-  std::vector<double>* svtDist3D;
-  std::vector<double>* svtSign3D;
+  std::vector<number>* svtNormChi2;
+  std::vector<number>* svtMass;
+  std::vector<number>* svtDist2D;
+  std::vector<number>* svtSign2D;
+  std::vector<number>* svtDist3D;
+  std::vector<number>* svtSign3D;
   std::vector<int   >* svtJet;
   std::vector<int   >* svtBadQuality; // 0=good, 1=fake, 2=invalid
 
@@ -234,35 +251,39 @@ class BmmNtupleData {
   int nTkIPs;
   std::vector<int   >* tipTrk;      // track index
   std::vector<int   >* tipSVtx;     // secondary vertex index
-  std::vector<double>* tipDxy;      // dxy()
-  std::vector<double>* tipDz;       // dz()
+  std::vector<number>* tipDxy;      // dxy()
+  std::vector<number>* tipDz;       // dz()
 
   // momenta at vertices
   bool use_vtxps;
+  bool use_vtxps_sphe;
+  bool use_vtxps_cart;
   int nVtxPs;
   std::vector<int   >* tvpTrk;      // impact parameter index
-//  std::vector<double>* tvpPt;
-//  std::vector<double>* tvpEta;
-//  std::vector<double>* tvpPhi;
-  std::vector<double>* tvpPx;
-  std::vector<double>* tvpPy;
-  std::vector<double>* tvpPz;
+  std::vector<number>* tvpPt;
+  std::vector<number>* tvpEta;
+  std::vector<number>* tvpPhi;
+  std::vector<number>* tvpPx;
+  std::vector<number>* tvpPy;
+  std::vector<number>* tvpPz;
 
   // gen particles
   bool use_gen;
+  bool use_gen_sphe;
+  bool use_gen_cart;
   int nGenP;
   std::vector<int   >* genId;
   std::vector<int   >* genStatus;
   std::vector<int   >* genMother; // mother index
-  std::vector<double>* genPt;
-  std::vector<double>* genEta;
-  std::vector<double>* genPhi;
-  std::vector<double>* genPx;
-  std::vector<double>* genPy;
-  std::vector<double>* genPz;
-  std::vector<double>* genE;
+  std::vector<number>* genPt;
+  std::vector<number>* genEta;
+  std::vector<number>* genPhi;
+  std::vector<number>* genPx;
+  std::vector<number>* genPy;
+  std::vector<number>* genPz;
+  std::vector<number>* genE;
   std::vector<int   >* genCharge;
-  std::vector<double>* genMass;
+  std::vector<number>* genMass;
 
  private:
 

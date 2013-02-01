@@ -16,6 +16,8 @@ ${BMM_PATH}/src/BmmEventSelect.cc         \
 ${BMM_PATH}/src/BmmAnalyzerFW.cc          \
 ${BMM_PATH}/bin/BmmAnalyzer.h             \
 ${BMM_PATH}/bin/BmmAnalyzer.cc            \
+${BMM_PATH}/bin/BmmAnalyzerUtil.h         \
+${BMM_PATH}/bin/BmmAnalyzerUtil.cc        \
 ${BMM_PATH}/bin/BmmAnalyzerInstance.cc    \
 ${BMM_PATH}/bin/compile.csh               \
 ${BMM_PATH}/bin/TreeLightReader.h         \

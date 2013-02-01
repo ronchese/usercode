@@ -30,6 +30,7 @@ class BmmNtupleBranch: public virtual BmmNtupleData, public virtual T {
   void setBranches_hlts();
   TBranch* b_nHLTStatus;
   TBranch* b_hltPath;
+  TBranch* b_hltVersion;
   TBranch* b_hltRun;
   TBranch* b_hltAccept;
 
@@ -242,9 +243,9 @@ class BmmNtupleBranch: public virtual BmmNtupleData, public virtual T {
   void setBranches_vtxps();
   TBranch* b_nVtxPs;
   TBranch* b_tvpTrk;
-//  TBranch* b_tvpPt;
-//  TBranch* b_tvpEta;
-//  TBranch* b_tvpPhi;
+  TBranch* b_tvpPt;
+  TBranch* b_tvpEta;
+  TBranch* b_tvpPhi;
   TBranch* b_tvpPx;
   TBranch* b_tvpPy;
   TBranch* b_tvpPz;

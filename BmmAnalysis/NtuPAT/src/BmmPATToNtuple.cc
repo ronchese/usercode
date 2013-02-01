@@ -224,6 +224,58 @@ BmmPATToNtuple::BmmPATToNtuple( const edm::ParameterSet& ps ) {
   setUserParameter( "use_vtxps", ps.getParameter<string>(
                   "write_vtxps" ) );
 
+  if ( ps.exists( "write_hlto_cart"     ) )
+  setUserParameter( "use_hlto_cart"     , ps.getParameter<string>(
+                  "write_hlto_cart"     ) );
+  if ( ps.exists( "write_hlto_sphe"     ) )
+  setUserParameter( "use_hlto_sphe"     , ps.getParameter<string>(
+                  "write_hlto_sphe"     ) );
+  if ( ps.exists( "write_muons_cart"    ) )
+  setUserParameter( "use_muons_cart"    , ps.getParameter<string>(
+                  "write_muons_cart"    ) );
+  if ( ps.exists( "write_muons_sphe"    ) )
+  setUserParameter( "use_muons_sphe"    , ps.getParameter<string>(
+                  "write_muons_sphe"     ) );
+  if ( ps.exists( "write_electrons_cart" ) )
+  setUserParameter( "use_electrons_cart", ps.getParameter<string>(
+                  "write_electrons_cart" ) );
+  if ( ps.exists( "write_electrons_sphe" ) )
+  setUserParameter( "use_electrons_sphe", ps.getParameter<string>(
+                  "write_electrons_sphe" ) );
+  if ( ps.exists( "write_taus_cart"      ) )
+  setUserParameter( "use_taus_cart"     , ps.getParameter<string>(
+                  "write_taus_cart"      ) );
+  if ( ps.exists( "write_taus_sphe"      ) )
+  setUserParameter( "use_taus_sphe"     , ps.getParameter<string>(
+                  "write_taus_sphe"      ) );
+  if ( ps.exists( "write_jets_cart"      ) )
+  setUserParameter( "use_jets_cart"     , ps.getParameter<string>(
+                  "write_jets_cart"      ) );
+  if ( ps.exists( "write_jets_sphe"      ) )
+  setUserParameter( "use_jets_sphe"     , ps.getParameter<string>(
+                  "write_jets_sphe"      ) );
+  if ( ps.exists( "write_pflow_cart"     ) )
+  setUserParameter( "use_pflow_cart"    , ps.getParameter<string>(
+                  "write_pflow_cart"     ) );
+  if ( ps.exists( "write_pflow_sphe"     ) )
+  setUserParameter( "use_pflow_sphe"    , ps.getParameter<string>(
+                  "write_pflow_sphe"     ) );
+  if ( ps.exists( "write_tracks_cart"    ) )
+  setUserParameter( "use_tracks_cart"   , ps.getParameter<string>(
+                  "write_tracks_cart"    ) );
+  if ( ps.exists( "write_tracks_sphe"    ) )
+  setUserParameter( "use_tracks_sphe"   , ps.getParameter<string>(
+                  "write_tracks_sphe"    ) );
+  if ( ps.exists( "write_vtxps_cart"     ) )
+  setUserParameter( "use_vtxps_cart"    , ps.getParameter<string>(
+                  "write_vtxps_cart"     ) );
+  if ( ps.exists( "write_vtxps_sphe"     ) )
+  setUserParameter( "use_gen_sphe"      , ps.getParameter<string>(
+                  "write_gen_sphe"       ) );
+  if ( ps.exists( "write_gen_cart"       ) )
+  setUserParameter( "use_gen_cart"      , ps.getParameter<string>(
+                  "write_gen_cart"       ) );
+
   if ( ps.exists( "savedTriggerPaths"   ) )
                    savedTriggerPaths    = ps.getParameter< vector<string> >(
                   "savedTriggerPaths"   );
@@ -1651,12 +1703,11 @@ int BmmPATToNtuple::nearestHLT( const std::string& type,
   int jHLT = -1;
   float dRmin = 1.0e+37;
   float dRcur;
-  float twoPI = 2 * M_PI;
   for ( iHLT = 0; iHLT < nHLTObjects; ++iHLT ) {
     if ( hltObjType->at( iHLT ) != type ) continue;
     double diffEta =       eta - hltEta->at( iHLT );
     double diffPhi = fabs( phi - hltPhi->at( iHLT ) );
-    while ( diffPhi > twoPI ) diffPhi -= twoPI;
+    while ( diffPhi > M_PI ) diffPhi -= ( 2.0 * M_PI );
     dRcur = sqrt( ( diffEta * diffEta ) + ( diffPhi * diffPhi ) );
     if ( dRcur < dRmin ) {
       jHLT = iHLT;
@@ -1667,7 +1718,7 @@ int BmmPATToNtuple::nearestHLT( const std::string& type,
     if ( type == "jet" ) return jHLT;
     double diffPt  = ( pt - hltPt->at( jHLT ) ) /
                      ( pt + hltPt->at( jHLT ) );
-    if ( diffPt < dPmatchHLT ) return jHLT;
+    if ( fabs( diffPt ) < dPmatchHLT ) return jHLT;
   }
   return -1;
 }
