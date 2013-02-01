@@ -1,4 +1,5 @@
 #include "BmmAnalysis/NtuPAT/interface/BmmPATToNtuple.h"
+#include "BmmAnalysis/NtuPAT/interface/BmmEnumString.h"
 #include "TFile.h"
 #include "TROOT.h"
 
@@ -40,6 +41,8 @@
 
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 
+#include <iostream>
+#include <sstream>
 #include <map>
 
 
@@ -417,9 +420,10 @@ void BmmPATToNtuple::endJob() {
 void BmmPATToNtuple::fillHLTStatus() {
 
   nHLTStatus = 0;
-  hltPath  ->resize( 0 );
-  hltRun   ->resize( 0 );
-  hltAccept->resize( 0 );
+  hltPath   ->resize( 0 );
+  hltVersion->resize( 0 );
+  hltRun    ->resize( 0 );
+  hltAccept ->resize( 0 );
 
   currentEvBase->getByLabel( getUserParameter( "labelTrigResults" ),
                              trigResults );
@@ -435,18 +439,32 @@ void BmmPATToNtuple::fillHLTStatus() {
   int nObj = triggerNames->size();
   int iObj;
   int iTrg;
+  int iPath;
+  int iVers;
+  int lVers;
+  int lSave;
   int nTrg = savedTriggerPaths.size();
   for ( iObj = 0; iObj < nObj; ++iObj ) {
     const string& hltPathName = triggerNames->triggerName( iObj );
     int index = triggerNames->triggerIndex( hltPathName );
+    iPath = -1;
+    iVers = -1;
+    stringstream sstr;
     for ( iTrg = 0; iTrg < nTrg; ++iTrg ) {
       const string& name = savedTriggerPaths[iTrg];
       if ( ( name != "*" ) &&
            ( hltPathName.find( name, 0 ) == string::npos ) ) continue;
+      if ( ( iPath = BmmEnumString::findTrigPath( name ) ) < 0 ) continue;
+      lSave =        name.length();
+      lVers = hltPathName.length() - lSave;
+      sstr.clear();
+      sstr.str(  hltPathName.substr( lSave, lVers ) );
+      sstr >> iVers;
       ++nHLTStatus;
-      hltPath  ->push_back( hltPathName );
-      hltRun   ->push_back( trigResults->wasrun( index ) );
-      hltAccept->push_back( trigResults->accept( index ) );
+      hltPath   ->push_back( iPath );
+      hltVersion->push_back( iVers );
+      hltRun    ->push_back( trigResults->wasrun( index ) );
+      hltAccept ->push_back( trigResults->accept( index ) );
     }
   }
 
@@ -481,8 +499,8 @@ void BmmPATToNtuple::fillHLTObjects() {
   nHLTObjects = 0;
   for ( iTrg = 0; iTrg < nTrg; ++iTrg ) {
     const string& name = savedTriggerObjects[iTrg];
-    if      ( name == "muon" ) triggerObjectType = trigger::TriggerMuon;
-    else if ( name == "jet"  ) triggerObjectType = trigger::TriggerJet;
+    if      ( name == "hltMuon" ) triggerObjectType = trigger::TriggerMuon;
+    else if ( name == "hltJet"  ) triggerObjectType = trigger::TriggerJet;
     else continue;
     const pat::TriggerObjectRefVector
           trigRefs( trigEvent->objects( triggerObjectType ) );
@@ -490,7 +508,7 @@ void BmmPATToNtuple::fillHLTObjects() {
     pat::TriggerObjectRefVector::const_iterator iend = trigRefs.end();
     while ( iter != iend ) {
       const pat::TriggerObject& obj = **iter++;
-      hltObjType->push_back( name );
+      hltObjType->push_back( BmmEnumString::findTrigObject( name ) );
       const Candidate::LorentzVector p4 = obj.p4();
       hltPt          ->push_back( p4.pt    () );
       hltEta         ->push_back( p4.eta   () );
@@ -1349,7 +1367,7 @@ void BmmPATToNtuple::fillSVertices() {
       const  GlobalVector& dir = secVtxTagInfo.flightDirection( iVtx );
       const Measurement1D& d2d = secVtxTagInfo.flightDistance(  iVtx, true  );
       const Measurement1D& d3d = secVtxTagInfo.flightDistance(  iVtx, false );
-      addSecondaryVertex( vtx, dir, d2d, d3d, "tagInfo", j_iter->second );
+      addSecondaryVertex( vtx, dir, d2d, d3d, "svtTagInfo", j_iter->second );
       if ( currentEvSetup == 0 ) continue;
       try {
         Vertex::trackRef_iterator v_iter = vtx.tracks_begin();
@@ -1376,7 +1394,7 @@ void BmmPATToNtuple::fillSVertices() {
             const  GlobalVector dir;
             const Measurement1D d2d;
             const Measurement1D d3d;
-            addSecondaryVertex( vtr, dir, d2d, d3d, "fitPair",
+            addSecondaryVertex( vtr, dir, d2d, d3d, "svtFitPair",
                                 j_iter->second );
           }
         }
@@ -1515,7 +1533,7 @@ int BmmPATToNtuple::addSecondaryVertex( const        Vertex& vtx,
   svtDirX      ->push_back( dir.x() );
   svtDirY      ->push_back( dir.y() );
   svtDirZ      ->push_back( dir.z() );
-  svtType      ->push_back( type );
+  svtType      ->push_back( BmmEnumString::findVertexType( type ) );
   svtNTracks   ->push_back( vtx.nTracks() );
   svtNormChi2  ->push_back( vtx.normalizedChi2() );
   double vMass = 0;

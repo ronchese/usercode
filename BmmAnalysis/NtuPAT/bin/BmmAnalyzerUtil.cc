@@ -181,3 +181,69 @@ bool BmmAnalyzerUtil::goodJet( unsigned int iJet ) {
 }
 
 
+float BmmAnalyzerUtil::energy( float px, float py, float pz, float mm ) {
+  return sqrt( ( px * px ) + ( py * py ) + ( pz * pz ) + ( mm * mm ) );
+}
+
+float BmmAnalyzerUtil::invMass( float px1, float py1,
+                                float pz1, float mm1,
+                                float px2, float py2,
+                                float pz2, float mm2 ) {
+  float pxt = px1 + px2;
+  float pyt = py1 + py2;
+  float pzt = pz1 + pz2;
+  float eet = energy( px1, py1, pz1, mm1 ) +
+              energy( px2, py2, pz2, mm2 );
+  return sqrt( ( eet * eet ) -
+             ( ( pxt * pxt ) + ( pyt * pyt ) + ( pzt * pzt ) ) );
+}
+
+
+float BmmAnalyzerUtil::invMSph( float  pt1, float eta1,
+                                float phi1, float  mm1,
+                                float  pt2, float eta2,
+                                float phi2, float  mm2 ) {
+//  float pxt = px1 + px2;
+//  float pyt = py1 + py2;
+//  float pzt = pz1 + pz2;
+//  float eet = energy( px1, py1, pz1, mm1 ) +
+//              energy( px2, py2, pz2, mm2 );
+//  return sqrt( ( eet * eet ) -
+//             ( ( pxt * pxt ) + ( pyt * pyt ) + ( pzt * pzt ) ) );
+  return 0;
+}
+
+
+float BmmAnalyzerUtil::dSqua2( float a1, float b1,
+                               float a2, float b2 ) {
+  float aD = a1 - a2;
+  float bD = b1 - b2;
+  return ( ( aD * aD ) + ( bD * bD ) );
+}
+
+
+float BmmAnalyzerUtil::dSqua3( float a1, float b1, float c1,
+                               float a2, float b2, float c2 ) {
+  float aD = a1 - a2;
+  float bD = b1 - b2;
+  float cD = c1 - c2;
+  return ( ( aD * aD ) + ( bD * bD ) + ( cD * cD ) );
+}
+
+
+float BmmAnalyzerUtil::delta2( float a1, float b1,
+                               float a2, float b2 ) {
+  float aD = a1 - a2;
+  float bD = b1 - b2;
+  return sqrt( ( aD * aD ) + ( bD * bD ) );
+}
+
+
+float BmmAnalyzerUtil::delta3( float a1, float b1, float c1,
+                               float a2, float b2, float c2 ) {
+  float aD = a1 - a2;
+  float bD = b1 - b2;
+  float cD = c1 - c2;
+  return sqrt( ( aD * aD ) + ( bD * bD ) + ( cD * cD ) );
+}
+

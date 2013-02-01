@@ -38,6 +38,20 @@ class BmmAnalyzerUtil: public BmmLightNtuple,
   BmmAnalyzerUtil();
   virtual ~BmmAnalyzerUtil();
 
+  static float energy( float px, float py, float pz, float mm );
+  static float invMass( float px1, float py1, float pz1, float mm1,
+                        float px2, float py2, float pz2, float mm2 );
+  static float invMSph( float px1, float py1, float pz1, float mm1,
+                        float px2, float py2, float pz2, float mm2 );
+  static float dSqua2( float a1, float b1,
+                       float a2, float b2 );
+  static float dSqua3( float a1, float b1, float c1,
+                       float a2, float b2, float c2 );
+  static float delta2( float a1, float b1,
+                       float a2, float b2 );
+  static float delta3( float a1, float b1, float c1,
+                       float a2, float b2, float c2 );
+
  protected:
 
   const edm::ParameterSet* parameterSet ;

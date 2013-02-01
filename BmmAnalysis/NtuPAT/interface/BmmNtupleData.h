@@ -25,24 +25,24 @@ class BmmNtupleData {
   // hlt status
   bool use_hlts;
   int nHLTStatus;
-  std::vector<std::string>* hltPath;
+  std::vector<int >* hltPath;
   std::vector<int >* hltVersion;
-  std::vector<bool       >* hltRun;
-  std::vector<bool       >* hltAccept;
+  std::vector<bool>* hltRun;
+  std::vector<bool>* hltAccept;
 
   // hlt objects
   bool use_hlto;
   bool use_hlto_sphe;
   bool use_hlto_cart;
   int nHLTObjects;
-  std::vector<std::string>* hltObjType;
-  std::vector<number     >* hltPt;
-  std::vector<number     >* hltEta;
-  std::vector<number     >* hltPhi;
-  std::vector<number     >* hltPx;
-  std::vector<number     >* hltPy;
-  std::vector<number     >* hltPz;
-  std::vector<number     >* hltE;
+  std::vector<int   >* hltObjType;
+  std::vector<number>* hltPt;
+  std::vector<number>* hltEta;
+  std::vector<number>* hltPhi;
+  std::vector<number>* hltPx;
+  std::vector<number>* hltPy;
+  std::vector<number>* hltPz;
+  std::vector<number>* hltE;
 
   // beam spot
   bool use_bspot;
@@ -235,7 +235,7 @@ class BmmNtupleData {
   std::vector<number>* svtDirX;
   std::vector<number>* svtDirY;
   std::vector<number>* svtDirZ;
-  std::vector<std::string>* svtType;
+  std::vector<int   >* svtType;
   std::vector<int   >* svtNTracks;
   std::vector<number>* svtNormChi2;
   std::vector<number>* svtMass;

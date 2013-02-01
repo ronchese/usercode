@@ -6,23 +6,23 @@ BmmNtupleData::BmmNtupleData() {
 
   // hlt status
   use_hlts = false;
-  hltPath         = new std::vector<std::string>;
+  hltPath         = new std::vector<int >;
   hltVersion      = new std::vector<int >;
-  hltRun          = new std::vector<bool       >;
-  hltAccept       = new std::vector<bool       >;
+  hltRun          = new std::vector<bool>;
+  hltAccept       = new std::vector<bool>;
 
   // hlt objects
   use_hlto      = false;
   use_hlto_sphe = true;
   use_hlto_cart = false;
-  hltObjType      = new std::vector<std::string>;
-  hltPt           = new std::vector<number     >;
-  hltEta          = new std::vector<number     >;
-  hltPhi          = new std::vector<number     >;
-  hltPx           = new std::vector<number     >;
-  hltPy           = new std::vector<number     >;
-  hltPz           = new std::vector<number     >;
-  hltE            = new std::vector<number     >;
+  hltObjType      = new std::vector<int   >;
+  hltPt           = new std::vector<number>;
+  hltEta          = new std::vector<number>;
+  hltPhi          = new std::vector<number>;
+  hltPx           = new std::vector<number>;
+  hltPy           = new std::vector<number>;
+  hltPz           = new std::vector<number>;
+  hltE            = new std::vector<number>;
 
   // beam spot
   use_bspot = false;
@@ -195,7 +195,7 @@ BmmNtupleData::BmmNtupleData() {
   svtDirX       = new std::vector<number>;
   svtDirY       = new std::vector<number>;
   svtDirZ       = new std::vector<number>;
-  svtType       = new std::vector<std::string>;
+  svtType       = new std::vector<int   >;
   svtNTracks    = new std::vector<int   >;
   svtNormChi2   = new std::vector<number>;
   svtMass       = new std::vector<number>;

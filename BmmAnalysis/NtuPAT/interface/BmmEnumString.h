@@ -17,8 +17,21 @@ class BmmEnumString {
                     hltTau };
   enum trigPath   { HLT_Mu40_eta2p1_v = 1,
                     HLT_Mu12_eta2p1_DiCentral_40_20_DiBTagIP3D1stTrack_v,
+                    HLT_Mu12_eta2p1_DiCentral_40_20_BTagIP3D1stTrack_v,
+                    HLT_Mu12_eta2p1_DiCentral_40_20_v,
+                    HLT_Mu12_eta2p1_DiCentral_20_v,
+                    HLT_Mu12_eta2p1_L1Mu10erJetC12WdEtaPhi1DiJetsC_v,
+                    HLT_Mu12_DoubleCentralJet65_v,
+                    HLT_Mu12_v,
                     HLT_Mu15_eta2p1_TriCentral_40_20_20_DiBTagIP3D1stTrack_v,
-                    HLT_DoubleMu4_Jpsi_Displaced_v };
+                    HLT_Mu15_eta2p1_TriCentral_40_20_20_BTagIP3D1stTrack_v,
+                    HLT_Mu15_eta2p1_TriCentral_40_20_20_v,
+                    HLT_Mu15_eta2p1_L1Mu10erJetC12WdEtaPhi1DiJetsC_v,
+                    HLT_DoubleMu4_Jpsi_Displaced_v,
+                    HLT_DoubleMu4_JpsiTk_Displaced_v,
+                    HLT_DoubleMu3p5_LowMassNonResonant_Displaced_v,
+                    HLT_DoubleMu3p5_LowMass_Displaced_v,
+                    HLT_DoubleDisplacedMu4_DiPFJet40Neutral_v };
   enum vertexType { svtTagInfo = 1,
                     svtFitPair };
 

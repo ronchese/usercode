@@ -1,5 +1,7 @@
 #include "BmmAnalysis/NtuPAT/interface/BmmEnumString.h"
 
+#include <iostream>
+
 std::string BmmEnumString::defaultString;
 std::map<int,std::string> BmmEnumString::trigObjectMapIS;
 std::map<std::string,int> BmmEnumString::trigObjectMapSI;
@@ -28,17 +30,57 @@ BmmEnumString::BmmEnumString() {
 
   trigPathMapSI.clear();
   trigPathMapSI.insert( std::make_pair(
-                "HLT_Mu40_eta2p1_v"                                       ,
-                 HLT_Mu40_eta2p1_v                                        ) );
+                "HLT_Mu40_eta2p1_v",
+                 HLT_Mu40_eta2p1_v ) );
   trigPathMapSI.insert( std::make_pair(
-                "HLT_Mu12_eta2p1_DiCentral_40_20_DiBTagIP3D1stTrack_v"    ,
-                 HLT_Mu12_eta2p1_DiCentral_40_20_DiBTagIP3D1stTrack_v     ) );
+                "HLT_Mu12_eta2p1_DiCentral_40_20_DiBTagIP3D1stTrack_v",
+                 HLT_Mu12_eta2p1_DiCentral_40_20_DiBTagIP3D1stTrack_v ) );
+  trigPathMapSI.insert( std::make_pair(
+                "HLT_Mu12_eta2p1_DiCentral_40_20_BTagIP3D1stTrack_v",
+                 HLT_Mu12_eta2p1_DiCentral_40_20_BTagIP3D1stTrack_v ) );
+  trigPathMapSI.insert( std::make_pair(
+                "HLT_Mu12_eta2p1_DiCentral_40_20_v",
+                 HLT_Mu12_eta2p1_DiCentral_40_20_v ) );
+  trigPathMapSI.insert( std::make_pair(
+                "HLT_Mu12_eta2p1_DiCentral_20_v",
+                 HLT_Mu12_eta2p1_DiCentral_20_v ) );
+  trigPathMapSI.insert( std::make_pair(
+                "HLT_Mu12_eta2p1_L1Mu10erJetC12WdEtaPhi1DiJetsC_v",
+                 HLT_Mu12_eta2p1_L1Mu10erJetC12WdEtaPhi1DiJetsC_v ) );
+  trigPathMapSI.insert( std::make_pair(
+                "HLT_Mu12_DoubleCentralJet65_v",
+                 HLT_Mu12_DoubleCentralJet65_v ) );
+  trigPathMapSI.insert( std::make_pair(
+                "HLT_Mu12_v",
+                 HLT_Mu12_v ) );
   trigPathMapSI.insert( std::make_pair(
                 "HLT_Mu15_eta2p1_TriCentral_40_20_20_DiBTagIP3D1stTrack_v",
                  HLT_Mu15_eta2p1_TriCentral_40_20_20_DiBTagIP3D1stTrack_v ) );
   trigPathMapSI.insert( std::make_pair(
-                "HLT_DoubleMu4_Jpsi_Displaced_v"                          ,
-                 HLT_DoubleMu4_Jpsi_Displaced_v                           ) );
+                "HLT_Mu15_eta2p1_TriCentral_40_20_20_BTagIP3D1stTrack_v",
+                 HLT_Mu15_eta2p1_TriCentral_40_20_20_BTagIP3D1stTrack_v ) );
+  trigPathMapSI.insert( std::make_pair(
+                "HLT_Mu15_eta2p1_TriCentral_40_20_20_v",
+                 HLT_Mu15_eta2p1_TriCentral_40_20_20_v ) );
+  trigPathMapSI.insert( std::make_pair(
+                "HLT_Mu15_eta2p1_L1Mu10erJetC12WdEtaPhi1DiJetsC_v",
+                 HLT_Mu15_eta2p1_L1Mu10erJetC12WdEtaPhi1DiJetsC_v ) );
+  trigPathMapSI.insert( std::make_pair(
+                "HLT_DoubleMu4_Jpsi_Displaced_v",
+                 HLT_DoubleMu4_Jpsi_Displaced_v ) );
+  trigPathMapSI.insert( std::make_pair(
+                "HLT_DoubleMu4_JpsiTk_Displaced_v",
+                 HLT_DoubleMu4_JpsiTk_Displaced_v ) );
+  trigPathMapSI.insert( std::make_pair(
+                "HLT_DoubleMu3p5_LowMassNonResonant_Displaced_v",
+                 HLT_DoubleMu3p5_LowMassNonResonant_Displaced_v ) );
+  trigPathMapSI.insert( std::make_pair(
+                "HLT_DoubleMu3p5_LowMass_Displaced_v",
+                 HLT_DoubleMu3p5_LowMass_Displaced_v ) );
+  trigPathMapSI.insert( std::make_pair(
+                "HLT_DoubleDisplacedMu4_DiPFJet40Neutral_v",
+                 HLT_DoubleDisplacedMu4_DiPFJet40Neutral_v ) );
+
   revertMap( trigPathMapSI,
              trigPathMapIS );
 
@@ -64,7 +106,7 @@ BmmEnumString::findTrigObject( const std::string& trigObject ) {
   std::map<std::string,int>::const_iterator
     iend = trigObjectMapSI.end();
   if ( iter != iend ) return iter->second;
-  return 0;
+  return -1;
 }
 
 
@@ -79,8 +121,52 @@ BmmEnumString::findTrigObject( int trigObject ) {
 }
 
 
+int
+BmmEnumString::findTrigPath( const std::string& trigObject ) {
+  std::map<std::string,int>::const_iterator
+    iter = trigPathMapSI.find( trigObject );
+  std::map<std::string,int>::const_iterator
+    iend = trigPathMapSI.end();
+  if ( iter != iend ) return iter->second;
+  return -1;
+}
+
+
+const std::string&
+BmmEnumString::findTrigPath( int trigObject ) {
+  std::map<int,std::string>::const_iterator
+    iter = trigPathMapIS.find( trigObject );
+  std::map<int,std::string>::const_iterator
+    iend = trigPathMapIS.end();
+  if ( iter != iend ) return iter->second;
+  return defaultString;
+}
+
+
+int
+BmmEnumString::findVertexType( const std::string& trigObject ) {
+  std::map<std::string,int>::const_iterator
+    iter = vertexTypeMapSI.find( trigObject );
+  std::map<std::string,int>::const_iterator
+    iend = vertexTypeMapSI.end();
+  if ( iter != iend ) return iter->second;
+  return -1;
+}
+
+
+const std::string&
+BmmEnumString::findVertexType( int trigObject ) {
+  std::map<int,std::string>::const_iterator
+    iter = vertexTypeMapIS.find( trigObject );
+  std::map<int,std::string>::const_iterator
+    iend = vertexTypeMapIS.end();
+  if ( iter != iend ) return iter->second;
+  return defaultString;
+}
+
+
 void BmmEnumString::revertMap( const std::map<std::string,int>& mapSI,
-                                    std::map<int,std::string>& mapIS ) {
+                                     std::map<int,std::string>& mapIS ) {
   mapIS.clear();
   std::map<std::string,int>::const_iterator iter = mapSI.begin();
   std::map<std::string,int>::const_iterator iend = mapSI.end();
