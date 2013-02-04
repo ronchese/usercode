@@ -247,3 +247,73 @@ float BmmAnalyzerUtil::delta3( float a1, float b1, float c1,
   return sqrt( ( aD * aD ) + ( bD * bD ) + ( cD * cD ) );
 }
 
+
+void BmmAnalyzerUtil::convCartSphe( number  x, number  y, number  z,
+                                    number& t, number& e, number& p ) {
+  t = sqrt( ( x * x ) + ( y * y ) );
+  float
+  r = sqrt( ( x * x ) + ( y * y ) + ( z * z ) );
+  e = -log( ( r + z ) / ( r - z ) ) / 2.0;
+  p = atan2( y, x );
+  return;
+}
+
+
+void BmmAnalyzerUtil::convSpheCart( number  t, number  e, number  p,
+                                    number& x, number& y, number& z ) {
+  x = t * cos( p );
+  y = t * sin( p );
+  z = t / tan( 2 * atan( exp( -e ) ) );
+  return;
+}
+
+
+void BmmAnalyzerUtil::convCartSphe( const std::vector<number>* x,
+                                    const std::vector<number>* y,
+                                    const std::vector<number>* z,
+                                          std::vector<number>* t,
+                                          std::vector<number>* e,
+                                          std::vector<number>* p,
+                                          int i ) {
+  if ( i < 0 ) {
+    int j;
+    int n = x->size();
+    t->resize( n );
+    e->resize( n );
+    p->resize( n );
+    for ( j = 0; j < n; ++j )
+    convCartSphe( x->at( j ), y->at( j ), z->at( j ),
+                  t->at( j ), e->at( j ), p->at( j ) );
+  }
+  else {
+    convCartSphe( x->at( i ), y->at( i ), z->at( i ),
+                  t->at( i ), e->at( i ), p->at( i ) );
+  }
+  return;
+}
+
+
+void BmmAnalyzerUtil::convSpheCart( const std::vector<number>* t,
+                                    const std::vector<number>* e,
+                                    const std::vector<number>* p,
+                                          std::vector<number>* x,
+                                          std::vector<number>* y,
+                                          std::vector<number>* z,
+                                          int i ) {
+  if ( i < 0 ) {
+    int j;
+    int n = t->size();
+    x->resize( n );
+    y->resize( n );
+    z->resize( n );
+    for ( j = 0; j < n; ++j )
+    convSpheCart( t->at( j ), e->at( j ), p->at( j ),
+                  x->at( j ), y->at( j ), z->at( j ) );
+  }
+  else {
+    convSpheCart( t->at( i ), e->at( i ), p->at( i ),
+                  x->at( i ), y->at( i ), z->at( i ) );
+  }
+  return;
+}
+

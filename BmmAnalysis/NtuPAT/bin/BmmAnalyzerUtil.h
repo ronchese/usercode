@@ -52,6 +52,23 @@ class BmmAnalyzerUtil: public BmmLightNtuple,
   static float delta3( float a1, float b1, float c1,
                        float a2, float b2, float c2 );
 
+  static void convCartSphe( number  x, number  y, number  z,
+                            number& t, number& e, number& p );
+  static void convSpheCart( number  t, number  e, number  p,
+                            number& x, number& y, number& z );
+  static void convCartSphe( const std::vector<number>* x,
+                            const std::vector<number>* y,
+                            const std::vector<number>* z,
+                                  std::vector<number>* t,
+                                  std::vector<number>* e,
+                                  std::vector<number>* p, int i = -1 );
+  static void convSpheCart( const std::vector<number>* t,
+                            const std::vector<number>* e,
+                            const std::vector<number>* p,
+                                  std::vector<number>* x,
+                                  std::vector<number>* y,
+                                  std::vector<number>* z, int i = -1 );
+
  protected:
 
   const edm::ParameterSet* parameterSet ;
