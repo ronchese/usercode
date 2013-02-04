@@ -23,7 +23,6 @@ void BmmEventSelect::read( const std::string& name ) {
   std::stringstream sstr;
   char* line = new char[1000];
   while ( file.getline( line, 1000 ) ) {
-    std::cout << line << std::endl;
     char* lptr = line;
     while ( *lptr == ' ' ) ++lptr;
     if ( ( *lptr < '0' ) ||
@@ -31,12 +30,9 @@ void BmmEventSelect::read( const std::string& name ) {
     sstr.clear();
     sstr.str( lptr );
     ev_id evId;
-    std::cout << lptr << std::endl;
     sstr >> evId.run >> evId.event;
-    std::cout << "insert " << evId.run << " " << evId.event << std::endl;
     eventSet.insert( evId );
   }
-  std::cout << eventSet.size() << std::endl;
   delete[] line;
   return;
 }
