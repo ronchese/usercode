@@ -182,9 +182,12 @@ bool BmmAnalyzerUtil::goodJet( unsigned int iJet ) {
 
 
 int BmmAnalyzerUtil::findSVtx( int trkIndex, int prevSVtx ) {
-  int tipIndex;
   int svtIndex;
-  for ( tipIndex = 0; tipIndex < nTkIPs; ++tipIndex ) {
+  int tipIndex;
+  int tvpIndex;
+  for ( tvpIndex = 0; tvpIndex < nVtxPs; ++tvpIndex ) {
+    tipIndex = tvpTrk->at( tvpIndex );
+    if ( tipIndex < 0 ) continue;
     if ( ( ( svtIndex = tipSVtx->at( tipIndex ) ) > prevSVtx ) &&
          (              tipTrk ->at( tipIndex )  == trkIndex ) )
        return svtIndex;
