@@ -32,6 +32,7 @@ class BmmEventSelect {
       if ( l.event < r.event ) return true;
       return false;
     }
+    static ev_compare instance;
   };
   std::set<ev_id, ev_compare> eventSet;
 

@@ -1,6 +1,8 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <vector>
+#include <algorithm>
 #include <math.h>
 
 #include "BmmAnalysis/NtuPAT/interface/BmmEventSelect.h"
@@ -8,6 +10,8 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+
+BmmEventSelect::ev_compare BmmEventSelect::ev_compare::instance;
 
 BmmEventSelect::BmmEventSelect() {
 }
@@ -22,6 +26,8 @@ void BmmEventSelect::read( const std::string& name ) {
   std::ifstream file( name.c_str() );
   std::stringstream sstr;
   char* line = new char[1000];
+  std::vector<ev_id> evList;
+  evList.reserve( 100000 );
   while ( file.getline( line, 1000 ) ) {
     char* lptr = line;
     while ( *lptr == ' ' ) ++lptr;
@@ -31,9 +37,10 @@ void BmmEventSelect::read( const std::string& name ) {
     sstr.str( lptr );
     ev_id evId;
     sstr >> evId.run >> evId.event;
-    eventSet.insert( evId );
+    evList.push_back( evId );
   }
-  delete[] line;
+  sort( evList.begin(), evList.end(), ev_compare::instance );
+  eventSet.insert( evList.begin(), evList.end() );
   return;
 }
 
