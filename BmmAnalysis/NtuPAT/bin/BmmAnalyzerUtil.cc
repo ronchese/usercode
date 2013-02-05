@@ -181,9 +181,22 @@ bool BmmAnalyzerUtil::goodJet( unsigned int iJet ) {
 }
 
 
+int BmmAnalyzerUtil::findSVtx( int trkIndex, int prevSVtx ) {
+  int tipIndex;
+  int svtIndex;
+  for ( tipIndex = 0; tipIndex < nTkIPs; ++tipIndex ) {
+    if ( ( ( svtIndex = tipSVtx->at( tipIndex ) ) > prevSVtx ) &&
+         (              tipTrk ->at( tipIndex )  == trkIndex ) )
+       return svtIndex;
+  }
+  return -1;
+}
+
+
 float BmmAnalyzerUtil::energy( float px, float py, float pz, float mm ) {
   return sqrt( ( px * px ) + ( py * py ) + ( pz * pz ) + ( mm * mm ) );
 }
+
 
 float BmmAnalyzerUtil::invMass( float px1, float py1,
                                 float pz1, float mm1,
@@ -199,31 +212,83 @@ float BmmAnalyzerUtil::invMass( float px1, float py1,
 }
 
 
+float BmmAnalyzerUtil::invMass( float px1, float py1,
+                                float pz1, float mm1,
+                                float px2, float py2,
+                                float pz2, float mm2,
+                                float px3, float py3,
+                                float pz3, float mm3 ) {
+  float pxt = px1 + px2 + px3;
+  float pyt = py1 + py2 + py3;
+  float pzt = pz1 + pz2 + pz3;
+  float eet = energy( px1, py1, pz1, mm1 ) +
+              energy( px2, py2, pz2, mm2 ) +
+              energy( px3, py3, pz3, mm3 );
+  return sqrt( ( eet * eet ) -
+             ( ( pxt * pxt ) + ( pyt * pyt ) + ( pzt * pzt ) ) );
+}
+
+
+float BmmAnalyzerUtil::invMass( float px1, float py1,
+                                float pz1, float mm1,
+                                float px2, float py2,
+                                float pz2, float mm2,
+                                float px3, float py3,
+                                float pz3, float mm3,
+                                float px4, float py4,
+                                float pz4, float mm4 ) {
+  float pxt = px1 + px2 + px3 + px4;
+  float pyt = py1 + py2 + py3 + py4;
+  float pzt = pz1 + pz2 + pz3 + pz4;
+  float eet = energy( px1, py1, pz1, mm1 ) +
+              energy( px2, py2, pz2, mm2 ) +
+              energy( px3, py3, pz3, mm3 ) +
+              energy( px4, py4, pz4, mm4 );
+  return sqrt( ( eet * eet ) -
+             ( ( pxt * pxt ) + ( pyt * pyt ) + ( pzt * pzt ) ) );
+}
+
+
 float BmmAnalyzerUtil::invMSph( float  pt1, float eta1,
                                 float phi1, float  mm1,
                                 float  pt2, float eta2,
                                 float phi2, float  mm2 ) {
-//  float pxt = px1 + px2;
-//  float pyt = py1 + py2;
-//  float pzt = pz1 + pz2;
-//  float eet = energy( px1, py1, pz1, mm1 ) +
-//              energy( px2, py2, pz2, mm2 );
-//  return sqrt( ( eet * eet ) -
-//             ( ( pxt * pxt ) + ( pyt * pyt ) + ( pzt * pzt ) ) );
   return 0;
 }
 
 
-float BmmAnalyzerUtil::dSqua2( float a1, float b1,
-                               float a2, float b2 ) {
+float BmmAnalyzerUtil::invMSph( float  pt1, float eta1,
+                                float phi1, float  mm1,
+                                float  pt2, float eta2,
+                                float phi2, float  mm2,
+                                float  pt3, float eta3,
+                                float phi3, float  mm3 ) {
+  return 0;
+}
+
+
+float BmmAnalyzerUtil::invMSph( float  pt1, float eta1,
+                                float phi1, float  mm1,
+                                float  pt2, float eta2,
+                                float phi2, float  mm2,
+                                float  pt3, float eta3,
+                                float phi3, float  mm3,
+                                float  pt4, float eta4,
+                                float phi4, float  mm4 ) {
+  return 0;
+}
+
+
+float BmmAnalyzerUtil::dSqua( float a1, float b1,
+                              float a2, float b2 ) {
   float aD = a1 - a2;
   float bD = b1 - b2;
   return ( ( aD * aD ) + ( bD * bD ) );
 }
 
 
-float BmmAnalyzerUtil::dSqua3( float a1, float b1, float c1,
-                               float a2, float b2, float c2 ) {
+float BmmAnalyzerUtil::dSqua( float a1, float b1, float c1,
+                              float a2, float b2, float c2 ) {
   float aD = a1 - a2;
   float bD = b1 - b2;
   float cD = c1 - c2;
@@ -231,16 +296,16 @@ float BmmAnalyzerUtil::dSqua3( float a1, float b1, float c1,
 }
 
 
-float BmmAnalyzerUtil::delta2( float a1, float b1,
-                               float a2, float b2 ) {
+float BmmAnalyzerUtil::delta( float a1, float b1,
+                              float a2, float b2 ) {
   float aD = a1 - a2;
   float bD = b1 - b2;
   return sqrt( ( aD * aD ) + ( bD * bD ) );
 }
 
 
-float BmmAnalyzerUtil::delta3( float a1, float b1, float c1,
-                               float a2, float b2, float c2 ) {
+float BmmAnalyzerUtil::delta( float a1, float b1, float c1,
+                              float a2, float b2, float c2 ) {
   float aD = a1 - a2;
   float bD = b1 - b2;
   float cD = c1 - c2;
