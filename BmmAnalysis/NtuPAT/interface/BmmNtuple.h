@@ -3,12 +3,14 @@
 
 #include "NtuTool/Common/interface/TreeWrapper.h"
 #include "BmmAnalysis/NtuPAT/interface/BmmNtupleBranch.h"
+#include "BmmAnalysis/NtuPAT/interface/BmmUtil.h"
 #include <string>
 #include <vector>
 
 // The class with the tree definition must inherit from "TreeWrapper"
 
 class BmmNtuple: public virtual BmmNtupleBranch<TreeWrapper>,
+                 public BmmUtil,
                  public virtual TreeWrapper {
 
  public:

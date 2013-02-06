@@ -2,6 +2,7 @@
 #define BmmLightNtuple_H
 
 #include "BmmAnalysis/NtuPAT/interface/BmmNtupleBranch.h"
+#include "BmmAnalysis/NtuPAT/interface/BmmUtil.h"
 #include "TreeLightReader.h"
 #include <string>
 #include <vector>
@@ -9,6 +10,7 @@
 // The class with the tree definition must inherit from "TreeLightReader"
 
 class BmmLightNtuple: public virtual BmmNtupleBranch<TreeLightReader>,
+                      public BmmUtil,
                       public virtual TreeLightReader {
 
  public:
