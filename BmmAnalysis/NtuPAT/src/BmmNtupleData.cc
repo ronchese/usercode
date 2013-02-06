@@ -155,7 +155,7 @@ BmmNtupleData::BmmNtupleData() {
   trkPFC          = new std::vector<int   >;
   trkJet          = new std::vector<int   >;
   trkPVtx         = new std::vector<int   >;
-  trkSVtx         = new std::vector<int   >;
+//  trkSVtx         = new std::vector<int   >;
   trkQuality      = new std::vector<int   >;
   trkNormChi2     = new std::vector<number>;
   trkDxy          = new std::vector<number>;

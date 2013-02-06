@@ -395,8 +395,8 @@ void BmmNtupleBranch<T>::setBranches_tracks() {
                    size, 99         , &b_trkJet          );
   this->setBranch( "trkPVtx"        , &  trkPVtx        ,
                    size, 99         , &b_trkPVtx         );
-  this->setBranch( "trkSVtx"        , &  trkSVtx        ,
-                   size, 99         , &b_trkSVtx         );
+//  this->setBranch( "trkSVtx"        , &  trkSVtx        ,
+//                   size, 99         , &b_trkSVtx         );
   this->setBranch( "trkQuality"     , &  trkQuality     ,
                    size, 99         , &b_trkQuality      );
   this->setBranch( "trkNormChi2"    , &  trkNormChi2    ,

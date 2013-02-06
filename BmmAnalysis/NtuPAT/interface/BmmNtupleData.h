@@ -195,7 +195,7 @@ class BmmNtupleData {
   std::vector<int   >* trkPFC;      // PFCandidate index
   std::vector<int   >* trkJet;      //         jet index
   std::vector<int   >* trkPVtx;     //   primary vertex index
-  std::vector<int   >* trkSVtx;     // secondary vertex index
+//  std::vector<int   >* trkSVtx;     // secondary vertex index
   std::vector<int   >* trkQuality;  // qualityMask()
   std::vector<number>* trkNormChi2; // normalizedChi2()
   std::vector<number>* trkDxy;      // dxy()

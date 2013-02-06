@@ -182,7 +182,7 @@ class BmmNtupleBranch: public virtual BmmNtupleData, public virtual T {
   TBranch* b_trkPFC;
   TBranch* b_trkJet;
   TBranch* b_trkPVtx;
-  TBranch* b_trkSVtx;
+//  TBranch* b_trkSVtx;
   TBranch* b_trkQuality;
   TBranch* b_trkNormChi2;
   TBranch* b_trkDxy;
