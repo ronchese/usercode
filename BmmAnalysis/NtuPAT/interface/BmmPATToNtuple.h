@@ -3,6 +3,8 @@
 
 #include "BmmAnalysis/NtuPAT/interface/BmmNtuple.h"
 #include "BmmAnalysis/NtuPAT/interface/BmmAnalyzerFW.h"
+#include "BmmAnalysis/NtuPAT/interface/BmmEnumString.h"
+
 #include "NtuTool/Common/interface/TreeWriter.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
@@ -169,7 +171,7 @@ class BmmPATToNtuple: public BmmAnalyzer,
 //  void linkPFJets ();
   void linkPTracks();
 
-  int nearestHLT( const std::string& type,
+  int nearestHLT( BmmEnumString::trigObject type,
                   double pt, double eta, double phi );
 
 };

@@ -665,7 +665,7 @@ void BmmPATToNtuple::fillMuons() {
     muoE           ->at( iObj ) = p4.energy();
     muoCharge      ->at( iObj ) = muon.charge();
     muoTrk         ->at( iObj ) = -1;
-    muoTrg         ->at( iObj ) = nearestHLT( "hltMuon",
+    muoTrg         ->at( iObj ) = nearestHLT( BmmEnumString::hltMuon,
                                               p4.pt(), p4.eta(), p4.phi() );
 
     muoChaIso      ->at( iObj ) = muon.chargedHadronIso();
@@ -774,7 +774,7 @@ void BmmPATToNtuple::fillElectrons() {
     eleE      ->at( iObj ) = p4.energy();
     eleCharge ->at( iObj ) = electron.charge();
     eleTrk    ->at( iObj ) = -1;
-    eleTrg    ->at( iObj ) = nearestHLT( "hltElectron",
+    eleTrg    ->at( iObj ) = nearestHLT( BmmEnumString::hltElectron,
                                          p4.pt(), p4.eta(), p4.phi() );
 
     eleChaIso ->at( iObj ) = electron.chargedHadronIso();
@@ -849,7 +849,7 @@ void BmmPATToNtuple::fillTaus() {
     tauPz    ->at( iObj ) = p4.pz    ();
     tauE     ->at( iObj ) = p4.energy();
     tauCharge->at( iObj ) = tau.charge();
-    tauTrg   ->at( iObj ) = nearestHLT( "hltTau",
+    tauTrg   ->at( iObj ) = nearestHLT( BmmEnumString::hltTau,
                                         p4.pt(), p4.eta(), p4.phi() );;
 
   }
@@ -936,7 +936,7 @@ void BmmPATToNtuple::fillJets() {
     jetE   ->push_back( jet.energy() );
     jetCSV ->push_back( jet.bDiscriminator( labelCSV  )   );
     jetTCHE->push_back( jet.bDiscriminator( labelTCHE )   );
-    jetTrg ->push_back( nearestHLT( "hltJet",
+    jetTrg ->push_back( nearestHLT( BmmEnumString::hltJet,
                                     jet.pt(), jet.eta(), jet.phi() ) );
     jetPF  ->push_back( jet.isPFJet()                     );
     jetNDau->push_back( jet.numberOfDaughters()           );
@@ -1715,14 +1715,14 @@ void BmmPATToNtuple::linkPTracks() {
 
 }
 
-int BmmPATToNtuple::nearestHLT( const std::string& type,
+int BmmPATToNtuple::nearestHLT( BmmEnumString::trigObject type,
                                 double pt, double eta, double phi ) {
   int iHLT;
   int jHLT = -1;
   float dRmin = 1.0e+37;
   float dRcur;
   for ( iHLT = 0; iHLT < nHLTObjects; ++iHLT ) {
-    if ( hltObjType->at( iHLT ) != BmmEnumString::findTrigObject( type ) )
+    if ( hltObjType->at( iHLT ) != type )
          continue;
     double diffEta =       eta - hltEta->at( iHLT );
     double diffPhi = fabs( phi - hltPhi->at( iHLT ) );
@@ -1734,7 +1734,7 @@ int BmmPATToNtuple::nearestHLT( const std::string& type,
     }
   }
   if ( dRmin < dRmatchHLT ) {
-    if ( type == "jet" ) return jHLT;
+    if ( type == BmmEnumString::hltJet ) return jHLT;
     double diffPt  = ( pt - hltPt->at( jHLT ) ) /
                      ( pt + hltPt->at( jHLT ) );
     if ( fabs( diffPt ) < dPmatchHLT ) return jHLT;
