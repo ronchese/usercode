@@ -1144,7 +1144,7 @@ void BmmPATToNtuple::fillTracks() {
   trkPFC     ->resize( 0 );
   trkJet     ->resize( 0 );
   trkPVtx    ->resize( 0 );
-  trkSVtx    ->resize( 0 );
+//  trkSVtx    ->resize( 0 );
   trkQuality ->resize( 0 );
   trkNormChi2->resize( 0 );
   trkDxy     ->resize( 0 );
@@ -1199,7 +1199,7 @@ void BmmPATToNtuple::fillTracks() {
     trkPFC     ->push_back( -1 );
     trkJet     ->push_back( -1 );
     trkPVtx    ->push_back( -1 );
-    trkSVtx    ->push_back( -1 );
+//    trkSVtx    ->push_back( -1 );
     trkQuality ->push_back( trk.qualityMask() );
     trkNormChi2->push_back( trk.normalizedChi2() );
     trkDxy     ->push_back( trk.dxy() );
