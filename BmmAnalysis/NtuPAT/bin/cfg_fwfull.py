@@ -19,7 +19,7 @@ process.MessageLogger.cerr.threshold = 'WARNING'
 #process.MessageLogger.cerr.FwkReport.reportEvery = 10000
 
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100000) )
+#process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100000) )
 
 filename = open('pat_files.list', 'r')
 #filename = open('SingleMu-Run2012B-13Jul2012-v1_BsMuMu_Data2012_v4_01.list', 'r')

@@ -337,24 +337,24 @@ void BmmNtupleBranch<T>::setBranches_pflow() {
   int size = 32768;
   this->setBranch( "nPF"            , &  nPF            ,
                    "nPF/I"          , &b_nPF             );
+  if ( use_pflow_sphe ) {
   this->setBranch( "pfcPt"          , &  pfcPt          ,
                    size, 99         , &b_pfcPt           );
-  if ( use_pflow_sphe ) {
   this->setBranch( "pfcEta"         , &  pfcEta         ,
                    size, 99         , &b_pfcEta          );
   this->setBranch( "pfcPhi"         , &  pfcPhi         ,
                    size, 99         , &b_pfcPhi          );
-  this->setBranch( "pfcPx"          , &  pfcPx          ,
-                   size, 99         , &b_pfcPx           );
   }
   if ( use_pflow_cart ) {
+  this->setBranch( "pfcPx"          , &  pfcPx          ,
+                   size, 99         , &b_pfcPx           );
   this->setBranch( "pfcPy"          , &  pfcPy          ,
                    size, 99         , &b_pfcPy           );
   this->setBranch( "pfcPz"          , &  pfcPz          ,
                    size, 99         , &b_pfcPz           );
+  }
   this->setBranch( "pfcE"           , &  pfcE           ,
                    size, 99         , &b_pfcE            );
-  }
   this->setBranch( "pfcCharge"      , &  pfcCharge      ,
                    size, 99         , &b_pfcCharge       );
   this->setBranch( "pfcJet"         , &  pfcJet         ,
@@ -483,10 +483,10 @@ void BmmNtupleBranch<T>::setBranches_sVertices() {
                    size, 99         , &b_svtNormChi2     );
   this->setBranch( "svtMass"        , &  svtMass        ,
                    size, 99         , &b_svtMass         );
-  this->setBranch( "svtDist2D"      , &  svtDist3D      ,
-                   size, 99         , &b_svtDist3D       );
-  this->setBranch( "svtSign2D"      , &  svtSign3D      ,
-                   size, 99         , &b_svtSign3D       );
+  this->setBranch( "svtDist2D"      , &  svtDist2D      ,
+                   size, 99         , &b_svtDist2D       );
+  this->setBranch( "svtSign2D"      , &  svtSign2D      ,
+                   size, 99         , &b_svtSign2D       );
   this->setBranch( "svtDist3D"      , &  svtDist3D      ,
                    size, 99         , &b_svtDist3D       );
   this->setBranch( "svtSign3D"      , &  svtSign3D      ,
