@@ -863,7 +863,10 @@ void BmmPATToNtuple::fillJets() {
 
   currentEvBase->getByLabel( getUserParameter( "labelJets" ),
                              jets );
+  currentEvBase->getByLabel( getUserParameter( "labelSVertices"     ),
+                             sVertices     );
   bool vJets = jets.isValid();
+  bool vSvts = sVertices.isValid();
 
   // store jets info
 
@@ -894,9 +897,11 @@ void BmmPATToNtuple::fillJets() {
     nObj = jets->size();
   }
 
+  map<const Jet*,int> jhiMap;
   vector<const Jet*> jetPtr;
   jetPtr.resize( nObj );
-  for ( iObj = 0; iObj < nObj; ++iObj ) jetPtr[iObj] = &( jets->at( iObj ) );
+  for ( iObj = 0; iObj < nObj; ++iObj ) 
+    jhiMap.insert( make_pair( jetPtr[iObj] = &( jets->at( iObj ) ), iObj ) );
 
   compareByPt<Jet> jetComp;
   sort( jetPtr.begin(), jetPtr.end(), jetComp );
@@ -907,11 +912,27 @@ void BmmPATToNtuple::fillJets() {
   pcjMap.clear();
   ptjMap.clear();
   nJets = 0;
+  bool select;
+  int jhiIndex;
+  map<const Jet*,int>::const_iterator j_iter = jhiMap.begin();
+  map<const Jet*,int>::const_iterator j_iend = jhiMap.end();
   for ( iObj = 0; iObj < nObj; ++iObj ) {
 
-    const Jet& jet = *jetPtr[iObj];
-    if ( fabs( jet.eta() ) > jetEtaMax ) continue;
-    if (       jet.pt ()   < jetPtMin  ) continue;
+    select = false;
+
+    const Jet* jPtr = jetPtr[iObj];
+    const Jet& jet = *jPtr;
+
+    if ( fabs( jet.eta() ) < jetEtaMax ) select = true;
+    if (       jet.pt ()   > jetPtMin  ) select = true;
+    if ( !select ) {
+      if ( !vSvts ) continue;
+      j_iter = jhiMap.find( jPtr );
+      if ( j_iter == j_iend ) continue;
+      jhiIndex = j_iter->second;
+      if ( sVertices->at( jhiIndex ).nVertices() ) select = true;
+    }
+    if ( !select ) continue;
 
     jetMap.insert( make_pair( &jet, nJets ) );
     const vector<PFCandidatePtr>& jPFC = jet.getPFConstituents();
@@ -963,8 +984,10 @@ void BmmPATToNtuple::fillVtxTrkMap() {
                              pVertices     );
   int iTrk;
   int nTrk = ( generalTracks.isValid() ? generalTracks->size() : 0 );
-  int iVtx;
-  int nVtx = ( pVertices    .isValid() ? pVertices    ->size() : 0 );
+  int iPVt;
+  int nPVt = ( pVertices    .isValid() ? pVertices    ->size() : 0 );
+  int iSVt;
+  int nSVt = ( sVertices    .isValid() ? sVertices    ->size() : 0 );
 
   map<const Track*,int>::const_iterator it_m = tkmMap.begin();
   map<const Track*,int>::const_iterator ie_m = tkmMap.end();
@@ -974,8 +997,8 @@ void BmmPATToNtuple::fillVtxTrkMap() {
   map<const Track*,int>::const_iterator ie_p = ptjMap.end();
   vtxList.resize( 0 );
   allPTk.clear();
-  for ( iVtx = 0; iVtx < nVtx; ++iVtx ) {
-    const Vertex& vtx = pVertices->at( iVtx );
+  for ( iPVt = 0; iPVt < nPVt; ++iPVt ) {
+    const Vertex& vtx = pVertices->at( iPVt );
     bool found = false;
     try {
       Vertex::trackRef_iterator it_v = vtx.tracks_begin();
@@ -997,11 +1020,11 @@ void BmmPATToNtuple::fillVtxTrkMap() {
     if ( found ) vtxList.push_back( &vtx );
   }
 
-  nVtx = vtxList.size();
+  nPVt = vtxList.size();
 
   tkvMap.clear();
-  for ( iVtx = 0; iVtx < nVtx; ++iVtx ) {
-    const Vertex& vtx = *vtxList[iVtx];
+  for ( iPVt = 0; iPVt < nPVt; ++iPVt ) {
+    const Vertex& vtx = *vtxList[iPVt];
     try {
       Vertex::trackRef_iterator it_v = vtx.tracks_begin();
       Vertex::trackRef_iterator ie_v = vtx.tracks_end();
@@ -1009,7 +1032,7 @@ void BmmPATToNtuple::fillVtxTrkMap() {
         const reco::TrackBaseRef& tkr = *it_v++;
         if ( fabs( tkr->eta() ) > trkEtaMax ) continue;
         if (       tkr->pt ()   < trkPtMin  ) continue;
-        tkvMap.insert( make_pair( &(*tkr), iVtx ) );
+        tkvMap.insert( make_pair( &(*tkr), iPVt ) );
       }
     }
     catch ( edm::Exception e ) {
@@ -1026,10 +1049,27 @@ void BmmPATToNtuple::fillVtxTrkMap() {
     if ( allPTk.find( tkp ) != a_iend ) continue;
     if ( fabs( tkp->eta() ) > trkEtaMax ) continue;
     if (       tkp->pt ()   < trkPtMin  ) continue;
-    for ( iVtx = 0; iVtx < nVtx; ++iVtx ) {
-      const Vertex& vtx = *vtxList[iVtx];
+    for ( iPVt = 0; iPVt < nPVt; ++iPVt ) {
+      const Vertex& vtx = *vtxList[iPVt];
       const Vertex::Point& pos = vtx.position();
       if ( fabs( tkp->dz( pos ) ) < trkDzMax ) tkrSet.insert( tkp );
+    }
+  }
+
+  // recover tracks linked to a secondary vertex
+  for ( iSVt = 0; iSVt < nSVt; ++iSVt ) {
+    const SecondaryVertexTagInfo& secVtxTagInfo = sVertices->at( iSVt );
+    int iVtx;
+    int nVtx = secVtxTagInfo.nVertices();
+    for ( iVtx = 0; iVtx < nVtx; ++iVtx ) {
+      const        Vertex& vtx = secVtxTagInfo.secondaryVertex( iVtx );
+      Vertex::trackRef_iterator v_iter = vtx.tracks_begin();
+      Vertex::trackRef_iterator v_iend = vtx.tracks_end();
+      while ( v_iter != v_iend ) {
+        const reco::TrackBaseRef& tkr = *v_iter++;
+        const Track* tkp = &(*tkr);
+        if ( tkrSet.find( tkp ) == tkrSet.end() ) tkrSet.insert( tkp );
+      }
     }
   }
 
@@ -1232,8 +1272,8 @@ void BmmPATToNtuple::fillPVertices() {
 //  pvtCovariance->resize( 0 );
   pvtNormChi2  ->resize( 0 );
   pvtBadQuality->resize( 0 );
-  nObj = vtxList.size();
 
+  nObj = vtxList.size();
   map<const Track*,int>::const_iterator it_p = trkMap.begin();
   map<const Track*,int>::const_iterator ie_p = trkMap.end();
   nPVertices = 0;
@@ -1300,8 +1340,8 @@ void BmmPATToNtuple::fillPVertices() {
 
 void BmmPATToNtuple::fillSVertices() {
 
-  currentEvBase->getByLabel( getUserParameter( "labelSVertices" ),
-                             sVertices );
+//  currentEvBase->getByLabel( getUserParameter( "labelSVertices" ),
+//                             sVertices );
   bool vSvts = sVertices.isValid();
 
   // store secondary vertices info
