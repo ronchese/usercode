@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <string>
 
 #include "NtuTool/Common/interface/TreeWrapper.h"
 #include "NtuTool/Common/interface/DataHandler.h"
@@ -14,6 +15,7 @@
 TreeWrapper::TreeWrapper():
  analyzedEvts( 0 ),
  acceptedEvts( 0 )  {
+  setUserParameter( "overwrite", "f" );
 }
 
 
@@ -147,7 +149,10 @@ void TreeWrapper::plot() {
 
 void TreeWrapper::save( const std::string& name ) {
   TDirectory* currentDir = gDirectory;
-  TFile file( name.c_str(), "CREATE" );
+  bool overwrite;
+  getUserParameter( "overwrite", overwrite );
+  std::string mode = ( overwrite ? "RECREATE" : "CREATE" );
+  TFile file( name.c_str(), mode.c_str() );
   save();
   file.Close();
   currentDir->cd();
