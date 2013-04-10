@@ -15,7 +15,7 @@
 TreeWrapper::TreeWrapper():
  analyzedEvts( 0 ),
  acceptedEvts( 0 )  {
-  setUserParameter( "overwrite", "f" );
+  setUserParameter( "histoMode", "CREATE" );
 }
 
 
@@ -149,10 +149,7 @@ void TreeWrapper::plot() {
 
 void TreeWrapper::save( const std::string& name ) {
   TDirectory* currentDir = gDirectory;
-  bool overwrite;
-  getUserParameter( "overwrite", overwrite );
-  std::string mode = ( overwrite ? "RECREATE" : "CREATE" );
-  TFile file( name.c_str(), mode.c_str() );
+  TFile file( name.c_str(), getUserParameter( "histoMode" ).c_str() );
   save();
   file.Close();
   currentDir->cd();

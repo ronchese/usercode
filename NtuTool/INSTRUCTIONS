@@ -96,6 +96,9 @@ j       a flag to draw the histograms at the end (as coded in plot() )
         at the end of the execution and then have a ROOT prompt
 b       a flag to simply save the histograms
 
+-v histoMode RECREATE
+        to open the output file with RECREATE option (CREATE by default)
+
 ---
 
 read "ntuple_edm.root"
