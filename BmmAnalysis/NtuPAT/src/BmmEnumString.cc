@@ -122,9 +122,11 @@ BmmEnumString::findTrigObject( int trigObject ) {
 
 
 int
-BmmEnumString::findTrigPath( const std::string& trigObject ) {
+BmmEnumString::findTrigPath( const std::string& trigPath ) {
+//  std::map<std::string,int>::const_iterator
+//    iter = trigPathMapSI.find( trigPath );
   std::map<std::string,int>::const_iterator
-    iter = trigPathMapSI.find( trigObject );
+    iter = trigPathMapSI.find( trigBase( trigPath ) );
   std::map<std::string,int>::const_iterator
     iend = trigPathMapSI.end();
   if ( iter != iend ) return iter->second;
@@ -133,9 +135,9 @@ BmmEnumString::findTrigPath( const std::string& trigObject ) {
 
 
 const std::string&
-BmmEnumString::findTrigPath( int trigObject ) {
+BmmEnumString::findTrigPath( int trigPath ) {
   std::map<int,std::string>::const_iterator
-    iter = trigPathMapIS.find( trigObject );
+    iter = trigPathMapIS.find( trigPath );
   std::map<int,std::string>::const_iterator
     iend = trigPathMapIS.end();
   if ( iter != iend ) return iter->second;
@@ -144,9 +146,9 @@ BmmEnumString::findTrigPath( int trigObject ) {
 
 
 int
-BmmEnumString::findVertexType( const std::string& trigObject ) {
+BmmEnumString::findVertexType( const std::string& vtxType ) {
   std::map<std::string,int>::const_iterator
-    iter = vertexTypeMapSI.find( trigObject );
+    iter = vertexTypeMapSI.find( vtxType );
   std::map<std::string,int>::const_iterator
     iend = vertexTypeMapSI.end();
   if ( iter != iend ) return iter->second;
@@ -155,9 +157,9 @@ BmmEnumString::findVertexType( const std::string& trigObject ) {
 
 
 const std::string&
-BmmEnumString::findVertexType( int trigObject ) {
+BmmEnumString::findVertexType( int vtxType ) {
   std::map<int,std::string>::const_iterator
-    iter = vertexTypeMapIS.find( trigObject );
+    iter = vertexTypeMapIS.find( vtxType );
   std::map<int,std::string>::const_iterator
     iend = vertexTypeMapIS.end();
   if ( iter != iend ) return iter->second;
@@ -175,5 +177,16 @@ void BmmEnumString::revertMap( const std::map<std::string,int>& mapSI,
     mapIS.insert( std::make_pair( entry.second, entry.first ) );
   }
   return;
+}
+
+
+std::string BmmEnumString::trigBase( const std::string& trigPath ) {
+  int pathLength = trigPath.length();
+  const char* str = trigPath.c_str() + pathLength - 1;
+  while ( ( *str >= '0' ) && ( *str <= '9' ) ) {
+    --str;
+    --pathLength;
+  }
+  return trigPath.substr( 0, pathLength );
 }
 

@@ -55,6 +55,8 @@ class BmmEnumString {
   static void revertMap( const std::map<std::string,int>& mapSI,
                                std::map<int,std::string>& mapIS );
 
+  static std::string trigBase( const std::string& trigPath );
+
 };
 
 
