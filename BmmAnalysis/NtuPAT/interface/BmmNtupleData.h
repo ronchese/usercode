@@ -27,6 +27,7 @@ class BmmNtupleData {
   int nHLTStatus;
   std::vector<int >* hltPath;
   std::vector<int >* hltVersion;
+  std::vector<int >* hltScale;
   std::vector<bool>* hltRun;
   std::vector<bool>* hltAccept;
 

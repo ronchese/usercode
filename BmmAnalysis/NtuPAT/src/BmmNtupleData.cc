@@ -8,6 +8,7 @@ BmmNtupleData::BmmNtupleData() {
   use_hlts = false;
   hltPath         = new std::vector<int >;
   hltVersion      = new std::vector<int >;
+  hltScale        = new std::vector<int >;
   hltRun          = new std::vector<bool>;
   hltAccept       = new std::vector<bool>;
 

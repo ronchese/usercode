@@ -7,7 +7,7 @@
 #include "DataFormats/Common/interface/TriggerResults.h"
 //#include "DataFormats/HLTReco/interface/TriggerObject.h"
 //#include "DataFormats/HLTReco/interface/TriggerEvent.h"
-//#include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
+#include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
 
 #include "DataFormats/PatCandidates/interface/TriggerEvent.h"
 #include "DataFormats/PatCandidates/interface/TriggerObjectStandAlone.h"
@@ -320,6 +320,29 @@ void BmmPATToNtuple::beginJob() {
 }
 
 
+void BmmPATToNtuple::beginRun() {
+  if ( currentEvSetup != 0 ) {
+    try {
+      bool changed;
+      hltConfigProvider = new HLTConfigProvider;
+      hltConfigProvider->init( *currentRun, *currentEvSetup, "HLT", changed );
+      std::cout << "hltConfigProvider->size(): "
+                <<  hltConfigProvider->size() << std::endl;
+      const std::string tableName = hltConfigProvider->tableName();
+      std::cout << "tableName: " << tableName << std::endl;
+      std::vector<std::string> triggerNames =
+            hltConfigProvider->triggerNames();
+      unsigned int n = triggerNames.size();
+      std::cout << "n: " << n << std::endl;
+    }
+    catch ( cms::Exception e ) {
+      hltConfigProvider = 0;
+    }
+  }
+  return;
+}
+
+
 void BmmPATToNtuple::openNtuple( const string& name ) {
   TDirectory* current = gDirectory;
   file = ( dumpNtuple ? new TFile( name.c_str(), "CREATE" ) : 0 );
@@ -408,6 +431,11 @@ void BmmPATToNtuple::closeNtuple() {
 }
 
 
+void BmmPATToNtuple::endRun() {
+  return;
+}
+
+
 void BmmPATToNtuple::endJob() {
   BmmAnalyzer::endJob();
   closeNtuple();
@@ -422,6 +450,7 @@ void BmmPATToNtuple::fillHLTStatus() {
   nHLTStatus = 0;
   hltPath   ->resize( 0 );
   hltVersion->resize( 0 );
+  hltScale  ->resize( 0 );
   hltRun    ->resize( 0 );
   hltAccept ->resize( 0 );
 
@@ -436,6 +465,7 @@ void BmmPATToNtuple::fillHLTStatus() {
     triggerNames = &( currentEvBase->triggerNames( *trigResults ) );
   }
 
+
   int nObj = triggerNames->size();
   int iObj;
   int iTrg;
@@ -443,26 +473,42 @@ void BmmPATToNtuple::fillHLTStatus() {
   int iVers;
   int lVers;
   int lSave;
+  int iPres;
   int nTrg = savedTriggerPaths.size();
   for ( iObj = 0; iObj < nObj; ++iObj ) {
     const string& hltPathName = triggerNames->triggerName( iObj );
     int index = triggerNames->triggerIndex( hltPathName );
     iPath = -1;
     iVers = -1;
+    iPres = -1;
     stringstream sstr;
     for ( iTrg = 0; iTrg < nTrg; ++iTrg ) {
       const string& name = savedTriggerPaths[iTrg];
       if ( ( name != "*" ) &&
            ( hltPathName.find( name, 0 ) == string::npos ) ) continue;
-      if ( ( iPath = BmmEnumString::findTrigPath( name ) ) < 0 ) continue;
+      if ( ( iPath = BmmEnumString::findTrigPath( hltPathName ) ) < 0 )
+          continue;
       lSave =        name.length();
       lVers = hltPathName.length() - lSave;
       sstr.clear();
       sstr.str(  hltPathName.substr( lSave, lVers ) );
       sstr >> iVers;
+      if ( hltConfigProvider != 0 ) {
+        cout << "look prescale for " << hltPathName << endl;
+        try {
+          pair<int,int> pathPS = hltConfigProvider->prescaleValues(
+                                 *currentEvent, *currentEvSetup, hltPathName );
+          iPres = pathPS.first * pathPS.second;
+          cout << "factors: " << pathPS.first << " " << pathPS.second << endl;
+        }
+        catch ( cms::Exception e ) {
+          iPres = -1;
+        }
+      }
       ++nHLTStatus;
       hltPath   ->push_back( iPath );
       hltVersion->push_back( iVers );
+      hltScale  ->push_back( iPres );
       hltRun    ->push_back( trigResults->wasrun( index ) );
       hltAccept ->push_back( trigResults->accept( index ) );
     }

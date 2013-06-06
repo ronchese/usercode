@@ -53,6 +53,8 @@ void BmmNtupleBranch<T>::setBranches_hlts() {
                    size, 99         , &b_hltPath         );
   this->setBranch( "hltVersion"     , &  hltVersion     ,
                    size, 99         , &b_hltVersion      );
+  this->setBranch( "hltScale"       , &  hltScale       ,
+                   size, 99         , &b_hltScale        );
   this->setBranch( "hltRun"         , &  hltRun         ,
                    size, 99         , &b_hltRun          );
   this->setBranch( "hltAccept"      , &  hltAccept      ,

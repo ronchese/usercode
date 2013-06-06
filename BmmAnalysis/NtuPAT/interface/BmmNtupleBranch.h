@@ -31,6 +31,7 @@ class BmmNtupleBranch: public virtual BmmNtupleData, public virtual T {
   TBranch* b_nHLTStatus;
   TBranch* b_hltPath;
   TBranch* b_hltVersion;
+  TBranch* b_hltScale;
   TBranch* b_hltRun;
   TBranch* b_hltAccept;
 

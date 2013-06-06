@@ -39,6 +39,7 @@ namespace reco {
   class GenParticle;
 }
 
+class HLTConfigProvider;
 
 class BmmPATToNtuple: public BmmAnalyzer,
                       public TreeWriter {
@@ -49,12 +50,14 @@ class BmmPATToNtuple: public BmmAnalyzer,
   virtual ~BmmPATToNtuple();
 
   virtual void beginJob();
+  virtual void beginRun();
   virtual void openNtuple( const std::string& ntuName );
   virtual void analyze( const edm::EventBase& ev,
                         int ientry, int event_file );
   virtual void read( const edm::EventBase& ev );
   virtual void writeNtuple();
   virtual void closeNtuple();
+  virtual void endRun();
   virtual void endJob();
 
  private:
@@ -115,6 +118,7 @@ class BmmPATToNtuple: public BmmAnalyzer,
   const edm::TriggerNames* triggerNames;
   std::vector<std::string> savedTriggerPaths;
   std::vector<std::string> savedTriggerObjects;
+  HLTConfigProvider* hltConfigProvider;
 
   float jetPtMin;
   float jetEtaMax;
