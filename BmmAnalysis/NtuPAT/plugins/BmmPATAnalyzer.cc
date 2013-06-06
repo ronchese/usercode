@@ -54,6 +54,22 @@ void BmmPATAnalyzer::fillDescriptions( edm::ConfigurationDescriptions&
 }
 
 
+void BmmPATAnalyzer::beginRun( const edm::Run& run,
+                               const edm::EventSetup& es ) {
+  currentRun     = &run;
+  currentEvSetup = &es;
+  BmmPATToNtuple::beginRun();
+  return;
+}
+
+
+void BmmPATAnalyzer::endRun(   const edm::Run& run,
+                               const edm::EventSetup& es ) {
+  BmmPATToNtuple::endRun();
+  return;
+}
+
+
 void BmmPATAnalyzer::analyze( const edm::Event& ev,
                               const edm::EventSetup& es ) {
   currentEvent   = &ev;

@@ -1,3 +1,4 @@
+
 #ifndef BmmPATAnalyzer_h
 #define BmmPATAnalyzer_h
 
@@ -26,15 +27,17 @@ class BmmPATAnalyzer: public edm::EDAnalyzer,
   ~BmmPATAnalyzer();
 
   static void fillDescriptions( edm::ConfigurationDescriptions& descriptions );
-  void beginJob();
-  void endJob();
+  virtual void beginJob();
+  virtual void endJob();
 
  private:
 
   int analyzedFile;
   std::string histName;
 
-  virtual void analyze( const edm::Event& ev, const edm::EventSetup& es );
+  virtual void beginRun( const edm::Run& run , const edm::EventSetup& es );
+  virtual void endRun(   const edm::Run& run , const edm::EventSetup& es );
+  virtual void analyze(  const edm::Event& ev, const edm::EventSetup& es );
 
 };
 
