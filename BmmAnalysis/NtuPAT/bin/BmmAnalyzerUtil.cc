@@ -16,8 +16,9 @@ using namespace std;
 BmmAnalyzerUtil::BmmAnalyzerUtil() {
 
   parameterSet = 0;
-  currentEvBase  = 0;
+  currentRun     = 0;
   currentEvent   = 0;
+  currentEvBase  = 0;
   currentEvSetup = 0;
 
   // user parameters are set as names associated to a string, 

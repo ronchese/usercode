@@ -6,6 +6,7 @@
 
 namespace edm {
   class ParameterSet;
+  class Run;
   class Event;
   class EventBase;
   class EventSetup;
@@ -41,8 +42,9 @@ class BmmAnalyzerUtil: public BmmLightNtuple,
  protected:
 
   const edm::ParameterSet* parameterSet ;
-  const edm::EventBase   * currentEvBase;
+  const edm::Run         * currentRun;
   const edm::Event       * currentEvent;
+  const edm::EventBase   * currentEvBase;
   const edm::EventSetup  * currentEvSetup;
 
   virtual void beginJob();
