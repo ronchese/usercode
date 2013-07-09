@@ -50,6 +50,9 @@ process.bmmAnalyzer = cms.PSet(
 #    write_hlto  = cms.string('f'),
 #    write_pflow = cms.string('f'),
 
+    selectAssociatedPF = cms.string('f'),
+    selectAssociatedTk = cms.string('f'),
+
     jetPtMin  = cms.double(  5.0 ),
     jetEtaMax = cms.double(  2.5 ),
     trkDzMax  = cms.double(  0.8 ),

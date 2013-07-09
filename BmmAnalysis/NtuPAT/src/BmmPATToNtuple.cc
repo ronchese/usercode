@@ -286,6 +286,11 @@ BmmPATToNtuple::BmmPATToNtuple( const edm::ParameterSet& ps ) {
                    savedTriggerObjects  = ps.getParameter< vector<string> >(
                   "savedTriggerObjects" );
 
+  char sPF = *ps.getParameter<string>( "selectAssociatedPF" ).c_str();
+  char sTk = *ps.getParameter<string>( "selectAssociatedTk" ).c_str();
+  selectAssociatedPF = ( sPF != 'f' ) && ( sPF != 'F' );
+  selectAssociatedTk = ( sTk != 'f' ) && ( sTk != 'F' );
+
   jetPtMin  = ps.getParameter<double>( "jetPtMin"  );
   jetEtaMax = ps.getParameter<double>( "jetEtaMax" );
   trkDzMax  = ps.getParameter<double>( "trkDzMax"  );
@@ -326,14 +331,14 @@ void BmmPATToNtuple::beginRun() {
       bool changed;
       hltConfigProvider = new HLTConfigProvider;
       hltConfigProvider->init( *currentRun, *currentEvSetup, "HLT", changed );
-      std::cout << "hltConfigProvider->size(): "
-                <<  hltConfigProvider->size() << std::endl;
+//      std::cout << "hltConfigProvider->size(): "
+//                <<  hltConfigProvider->size() << std::endl;
       const std::string tableName = hltConfigProvider->tableName();
-      std::cout << "tableName: " << tableName << std::endl;
+//      std::cout << "tableName: " << tableName << std::endl;
       std::vector<std::string> triggerNames =
             hltConfigProvider->triggerNames();
       unsigned int n = triggerNames.size();
-      std::cout << "n: " << n << std::endl;
+//      std::cout << "n: " << n << std::endl;
     }
     catch ( cms::Exception e ) {
       hltConfigProvider = 0;
@@ -387,6 +392,19 @@ void BmmPATToNtuple::read( const edm::EventBase& ev ) {
   lumiSection = ev.id().luminosityBlock();
   eventNumber = ev.id().event();
 
+  nHLTStatus  = 0;
+  nHLTObjects = 0;
+  nMuons      = 0;
+  nElectrons  = 0;
+  nTaus       = 0;
+  nJets       = 0;
+  nPF         = 0;
+  nTracks     = 0;
+  nPVertices  = 0;
+  nSVertices  = 0;
+  nTkIPs      = 0;
+  nVtxPs      = 0;
+  nGenP       = 0;
   if ( read_hlts      ) fillHLTStatus   ();
   if ( read_hlto      ) fillHLTObjects  ();
   if ( read_bspot     ) fillBeamSpot    ();
@@ -494,12 +512,12 @@ void BmmPATToNtuple::fillHLTStatus() {
       sstr.str(  hltPathName.substr( lSave, lVers ) );
       sstr >> iVers;
       if ( hltConfigProvider != 0 ) {
-        cout << "look prescale for " << hltPathName << endl;
+//        cout << "look prescale for " << hltPathName << endl;
         try {
           pair<int,int> pathPS = hltConfigProvider->prescaleValues(
                                  *currentEvent, *currentEvSetup, hltPathName );
           iPres = pathPS.first * pathPS.second;
-          cout << "factors: " << pathPS.first << " " << pathPS.second << endl;
+//          cout << "factors: " << pathPS.first << " " << pathPS.second << endl;
         }
         catch ( cms::Exception e ) {
           iPres = -1;
@@ -694,11 +712,15 @@ void BmmPATToNtuple::fillMuons() {
 
     const Muon& muon = *muonPtr[iObj];
     muoMap.insert( make_pair( &muon, iObj ) );
-    const reco::PFCandidateRef& pcr = muon.pfCandidateRef();
-    if ( !pcr.isNull() ) {
-//    pcmMap.insert( make_pair( &(*pcr), iObj ) );
-      const TrackRef& tkr = pcr->trackRef();
-      if ( !tkr.isNull() ) tkmMap.insert( make_pair( &(*tkr), iObj ) );
+    try {
+      const reco::PFCandidateRef& pcr = muon.pfCandidateRef();
+      if ( !pcr.isNull() ) {
+//      pcmMap.insert( make_pair( &(*pcr), iObj ) );
+        const TrackRef& tkr = pcr->trackRef();
+        if ( !tkr.isNull() ) tkmMap.insert( make_pair( &(*tkr), iObj ) );
+      }
+    }
+    catch ( edm::Exception e ) {
     }
 
     const Candidate::LorentzVector p4 = muon.p4();
@@ -763,6 +785,7 @@ void BmmPATToNtuple::fillElectrons() {
 
   // store electrons info
 
+  return;
   int iObj;
   int nObj = nElectrons = ( vElectrons ? electrons->size() : 0 );
   elePt     ->resize( nObj );
@@ -804,10 +827,14 @@ void BmmPATToNtuple::fillElectrons() {
 
     const Electron& electron = *electronPtr[iObj];
     eleMap.insert( make_pair( &electron, iObj ) );
-    const reco::PFCandidateRef& pcr = electron.pfCandidateRef();
-    if ( !pcr.isNull() ) {
-      const TrackRef& tkr = pcr->trackRef();
-      if ( !tkr.isNull() ) tkeMap.insert( make_pair( &(*tkr), iObj ) );
+    try {
+      const reco::PFCandidateRef& pcr = electron.pfCandidateRef();
+      if ( !pcr.isNull() ) {
+        const TrackRef& tkr = pcr->trackRef();
+        if ( !tkr.isNull() ) tkeMap.insert( make_pair( &(*tkr), iObj ) );
+      }
+    }
+    catch ( edm::Exception e ) {
     }
 
     const Candidate::LorentzVector p4 = electron.p4();
@@ -986,12 +1013,16 @@ void BmmPATToNtuple::fillJets() {
     int iPFC;
     for ( iPFC = 0; iPFC < nPFC; ++iPFC ) {
       const PFCandidatePtr& pfp = jPFC.at( iPFC );
-      if ( pcjMap.find( &(*pfp) ) ==
-           pcjMap.end() ) pcjMap.insert( make_pair( &(*pfp), nJets ) );
-      const TrackRef   & tkr = pfp->trackRef();
-      const Track      * tkp = ( tkr.isNull() ? 0 : &(*tkr) );
-      if ( ptjMap.find( tkp ) ==
-           ptjMap.end() ) ptjMap.insert( make_pair( tkp, nJets ) );
+      try {
+        if ( pcjMap.find( &(*pfp) ) ==
+             pcjMap.end() ) pcjMap.insert( make_pair( &(*pfp), nJets ) );
+        const TrackRef   & tkr = pfp->trackRef();
+        const Track      * tkp = ( tkr.isNull() ? 0 : &(*tkr) );
+        if ( ptjMap.find( tkp ) ==
+             ptjMap.end() ) ptjMap.insert( make_pair( tkp, nJets ) );
+      }
+      catch ( edm::Exception e ) {
+      }
     }
 
     jetPt  ->push_back( jet.pt    () );
@@ -1168,7 +1199,12 @@ void BmmPATToNtuple::fillPFCandidates() {
 
     const PFCandidate& pfc = pfCandidates->at( iObj );
     const TrackRef   & tkr = pfc.trackRef();
-    const Track      * tkp = ( tkr.isNull() ? 0 : &(*tkr) );
+    const Track      * tkp = 0;
+    try {
+      tkp = ( tkr.isNull() ? 0 : &(*tkr) );
+    }
+    catch ( edm::Exception e ) {
+    }
 
     int muoIndex = ( ( m_iter = tkmMap.find( tkp  ) ) != m_iend ?
                        m_iter->second : -1 );
@@ -1178,7 +1214,8 @@ void BmmPATToNtuple::fillPFCandidates() {
                        v_iter->second : -1 );
     int jetIndex = ( ( j_iter = pcjMap.find( &pfc ) ) != j_iend ?
                        j_iter->second : -1 );
-    if ( ( muoIndex < 0 ) &&
+    if ( selectAssociatedPF &&
+         ( muoIndex < 0 ) &&
          ( eleIndex < 0 ) &&
          ( vtxIndex < 0 ) &&
          ( jetIndex < 0 ) &&
@@ -1267,7 +1304,8 @@ void BmmPATToNtuple::fillTracks() {
                        p_iter->second : -1 );
     int vtxIndex = ( ( v_iter = tkvMap.find( tkp ) ) != v_iend ?
                        v_iter->second : -1 );
-    if ( ( muoIndex < 0 ) &&
+    if ( selectAssociatedTk &&
+         ( muoIndex < 0 ) &&
          ( eleIndex < 0 ) &&
          ( pfcIndex < 0 ) &&
          ( vtxIndex < 0 ) &&

@@ -86,6 +86,9 @@ class BmmPATToNtuple: public BmmAnalyzer,
   std::string labelSVertices;
   std::string labelGen;
 
+  bool selectAssociatedPF;
+  bool selectAssociatedTk;
+
   bool read_hlts;
   bool read_hlto;
   bool read_bspot;
