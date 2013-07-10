@@ -60,8 +60,8 @@ process.bmmAnalyzer = cms.EDAnalyzer('BmmPATAnalyzer',
 #    write_hlto  = cms.string('f'),
 #    write_pflow = cms.string('f'),
 
-    selectAssociatedPF = cms.string('f'),
-    selectAssociatedTk = cms.string('f'),
+    selectAssociatedPF = cms.string('t'),
+    selectAssociatedTk = cms.string('t'),
 
     jetPtMin  = cms.double(  5.0 ),
     jetEtaMax = cms.double(  2.5 ),
