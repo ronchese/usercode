@@ -13,6 +13,7 @@ namespace edm {
 }
 
 #include "BmmAnalysis/NtuPAT/interface/BmmEventSelect.h"
+class BmmTrigPathMap;
 
 #  if UTIL_USE == FULL
 
@@ -47,6 +48,9 @@ class BmmAnalyzerUtil: public BmmLightNtuple,
   const edm::EventBase   * currentEvBase;
   const edm::EventSetup  * currentEvSetup;
 
+  const BmmTrigPathMap* trigMap;
+
+  // function called before starting the analysis
   virtual void beginJob();
 
   virtual void getEntry( int ientry );

@@ -4,6 +4,8 @@
 #include <map>
 #include <string>
 
+class BmmTrigPathMap;
+
 class BmmEnumString {
 
  public:
@@ -42,6 +44,10 @@ class BmmEnumString {
   static int                findVertexType( const std::string& vtxType    );
   static const std::string& findVertexType( int                vtxType    );
 
+  static std::string trigBase( const std::string& trigPath );
+ 
+  static const BmmTrigPathMap* pathMap();
+
  private:
 
   static std::string defaultString;
@@ -54,8 +60,6 @@ class BmmEnumString {
 
   static void revertMap( const std::map<std::string,int>& mapSI,
                                std::map<int,std::string>& mapIS );
-
-  static std::string trigBase( const std::string& trigPath );
 
 };
 

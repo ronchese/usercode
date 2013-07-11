@@ -5,6 +5,7 @@
 
 #include "BmmAnalyzer.h"
 #include "BmmAnalyzerUtil.cc"
+#include "BmmAnalysis/NtuPAT/interface/BmmTrigPathMap.h"
 
 #include "TDirectory.h"
 #include "TBranch.h"
@@ -94,6 +95,8 @@ bool BmmAnalyzer::analyze( int entry, int event_file, int event_tot ) {
 
 //  getEntry( b_nMuons, entry );
 //  getEntry( b_muoPt , entry );
+
+//  if ( trigMap != 0 ) trigMap->print();
 
   int iMuon;
   float ptmu;

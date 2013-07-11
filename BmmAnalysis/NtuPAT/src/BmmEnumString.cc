@@ -1,5 +1,7 @@
 #include "BmmAnalysis/NtuPAT/interface/BmmEnumString.h"
 
+#include "BmmAnalysis/NtuPAT/interface/BmmTrigPathMap.h"
+
 #include <iostream>
 
 std::string BmmEnumString::defaultString;
@@ -130,7 +132,12 @@ BmmEnumString::findTrigPath( const std::string& trigPath ) {
   std::map<std::string,int>::const_iterator
     iend = trigPathMapSI.end();
   if ( iter != iend ) return iter->second;
-  return -1;
+//  return -1;
+  int nextSlot = trigPathMapIS.rbegin()->first + 1;
+  std::cout << "add " << nextSlot << " " << trigPath << std::endl;
+  trigPathMapSI.insert( std::make_pair( trigPath, nextSlot ) );
+  trigPathMapIS.insert( std::make_pair( nextSlot, trigPath ) );
+  return nextSlot;
 }
 
 
@@ -167,6 +174,22 @@ BmmEnumString::findVertexType( int vtxType ) {
 }
 
 
+std::string BmmEnumString::trigBase( const std::string& trigPath ) {
+  int pathLength = trigPath.length();
+  const char* str = trigPath.c_str() + pathLength - 1;
+  while ( ( *str >= '0' ) && ( *str <= '9' ) ) {
+    --str;
+    --pathLength;
+  }
+  return trigPath.substr( 0, pathLength );
+}
+
+
+const BmmTrigPathMap* BmmEnumString::pathMap() {
+  return new BmmTrigPathMap( trigPathMapIS, trigPathMapSI );
+}
+
+
 void BmmEnumString::revertMap( const std::map<std::string,int>& mapSI,
                                      std::map<int,std::string>& mapIS ) {
   mapIS.clear();
@@ -177,16 +200,5 @@ void BmmEnumString::revertMap( const std::map<std::string,int>& mapSI,
     mapIS.insert( std::make_pair( entry.second, entry.first ) );
   }
   return;
-}
-
-
-std::string BmmEnumString::trigBase( const std::string& trigPath ) {
-  int pathLength = trigPath.length();
-  const char* str = trigPath.c_str() + pathLength - 1;
-  while ( ( *str >= '0' ) && ( *str <= '9' ) ) {
-    --str;
-    --pathLength;
-  }
-  return trigPath.substr( 0, pathLength );
 }
 

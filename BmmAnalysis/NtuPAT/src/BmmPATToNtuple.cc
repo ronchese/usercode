@@ -1,5 +1,6 @@
 #include "BmmAnalysis/NtuPAT/interface/BmmPATToNtuple.h"
 #include "BmmAnalysis/NtuPAT/interface/BmmEnumString.h"
+#include "BmmAnalysis/NtuPAT/interface/BmmTrigPathMap.h"
 #include "TFile.h"
 #include "TROOT.h"
 
@@ -318,6 +319,8 @@ void BmmPATToNtuple::beginJob() {
   gROOT->cd();
   BmmAnalyzer::beginJob();
   openNtuple( ntuName );
+  hltConfigProvider = 0;
+  trigMap = 0;
   gROOT->cd();
   book();
   current->cd();
@@ -327,6 +330,7 @@ void BmmPATToNtuple::beginJob() {
 
 void BmmPATToNtuple::beginRun() {
   if ( currentEvSetup != 0 ) {
+    cout << "currentEvSetup: " << currentEvSetup << endl;
     try {
       bool changed;
       hltConfigProvider = new HLTConfigProvider;
@@ -337,7 +341,7 @@ void BmmPATToNtuple::beginRun() {
 //      std::cout << "tableName: " << tableName << std::endl;
       std::vector<std::string> triggerNames =
             hltConfigProvider->triggerNames();
-      unsigned int n = triggerNames.size();
+//      unsigned int n = triggerNames.size();
 //      std::cout << "n: " << n << std::endl;
     }
     catch ( cms::Exception e ) {
@@ -424,6 +428,9 @@ void BmmPATToNtuple::read( const edm::EventBase& ev ) {
 //  if ( read_pflow && read_jets   ) linkPFJets ();
   if ( read_pflow && read_tracks ) linkPTracks();
 
+  delete trigMap;
+  trigMap = BmmEnumString::pathMap();
+
   return;
 
 }
@@ -444,6 +451,10 @@ void BmmPATToNtuple::writeNtuple() {
 void BmmPATToNtuple::closeNtuple() {
   if ( !dumpNtuple ) return;
   close();
+  TDirectory* current = gDirectory;
+  file->cd();
+  trigMap->Write( "trigMap" );
+  current->cd();
   file->Close();
   return;
 }
@@ -504,13 +515,18 @@ void BmmPATToNtuple::fillHLTStatus() {
       const string& name = savedTriggerPaths[iTrg];
       if ( ( name != "*" ) &&
            ( hltPathName.find( name, 0 ) == string::npos ) ) continue;
-      if ( ( iPath = BmmEnumString::findTrigPath( hltPathName ) ) < 0 )
-          continue;
-      lSave =        name.length();
+      std::string base = BmmEnumString::trigBase( hltPathName );
+      iPath = BmmEnumString::findTrigPath( base );
+//      if ( ( iPath = BmmEnumString::findTrigPath( hltPathName ) ) < 0 )
+//          continue;
+//      lSave =        name.length();
+      lSave =        base.length();
       lVers = hltPathName.length() - lSave;
-      sstr.clear();
-      sstr.str(  hltPathName.substr( lSave, lVers ) );
-      sstr >> iVers;
+      if ( lVers ) {
+        sstr.clear();
+        sstr.str(  hltPathName.substr( lSave, lVers ) );
+        sstr >> iVers;
+      }
       if ( hltConfigProvider != 0 ) {
 //        cout << "look prescale for " << hltPathName << endl;
         try {
@@ -529,6 +545,7 @@ void BmmPATToNtuple::fillHLTStatus() {
       hltScale  ->push_back( iPres );
       hltRun    ->push_back( trigResults->wasrun( index ) );
       hltAccept ->push_back( trigResults->accept( index ) );
+      break;
     }
   }
 
