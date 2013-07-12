@@ -338,7 +338,7 @@ void BmmPATToNtuple::beginRun() {
 //      std::cout << "tableName: " << tableName << std::endl;
       std::vector<std::string> triggerNames =
             hltConfigProvider->triggerNames();
-      unsigned int n = triggerNames.size();
+//      unsigned int n = triggerNames.size();
 //      std::cout << "n: " << n << std::endl;
     }
     catch ( cms::Exception e ) {
