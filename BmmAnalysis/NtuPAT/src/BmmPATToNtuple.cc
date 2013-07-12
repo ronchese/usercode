@@ -318,6 +318,7 @@ void BmmPATToNtuple::beginJob() {
   gROOT->cd();
   BmmAnalyzer::beginJob();
   openNtuple( ntuName );
+  hltConfigProvider = 0;
   gROOT->cd();
   book();
   current->cd();
